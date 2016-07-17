@@ -1,11 +1,5 @@
 # reproducibility-via-singularity
-Code repositories like SourceForge, Github, BitBucket, and Gitlab have made reproducable research a possibility for everyone. But trying to reproduce the same results, even when using the exact same code, when run on a different computer or computing environment can prove as fruitless as trying to reproduce the same biological phenomena in the same cell line when using a completely different growth medium. It's an intractible problem
-
-can often prove as problematic to computational biologists as using the same cell line in a different growth medium can prove to wetlab scientistis. Singularity is a runtime container that has been developed to address this issue. Designed for the HPC (High Performance Computing) clusters with many shared users, common at many universities and research labs, these containers enable reproducable computing environments by packing the entire environment into a single file, which can be shared with others as easily as sharing a document or spreadsheet.
-
-democratized the ability to both version control and easily share source code, reproducable research
-
-This repository provides a demo for how to use git and [singularity](https://github.com/gmkurtzer/singularity) to make your research more portable and reproducible.
+Repositories like Github, Bitbucket, and Gitlab have made writing and distributing research code a possibility for everyone. This advancement in democratizing code has spread much more quickly among researchers than the partner advancment required for true reproducability, which is a ability to distribute the computing environment necessary to faithfully execute the instructions. Given the diversity of projects that are conducted on shared HPC environments at many universities and laboratories, it's an impossible task for the managers of these clusters to manage and install the software necessary to run them all. The dependency libraries of software necessary to simulate models for the engineering teams may conflict with the dependencies of the sequencing analysis pipelines run by life scientists, and these both may conflict with the software needed by the computer science teams, yet they all work on the university or laboratory cluster. Package managers like Home/Linuxbrew and Anaconda have made it far easier for researchers to access software, but as most package managers tend to prioritize current releases over past releases, getting the proper configuration to reproduce a code execution remains a non-trivial practice. Singularity is a runtime container developed specifically for the shared-computing clusters of universities and laboratories that enables users to share completely mobile computing environments as easily as they share documents and image files. Singularity containers are stripped-down linux operating systems that can be loaded with software and configured exactly as desired. As long as another researcher as Singularity installed, they can run your code against the same version of software in the same computing environment as you ran the code against. I herein present an example of how to use Singularity to build an environment. I also present sample code and data such that you can reproduce a simple analysis, exactly as I performed it. If you find the exercise of reproducing my analysis from just a few lines of code at the command line, then I hope you consider using Singularity in your own research to make your work reproducable to others.
 
 # TL;DR
 
@@ -17,29 +11,36 @@ wget {image}
 ./reproduce_project.sh
 ```
 
-# Introduction
+# What is Singularity?
 
-Reproducibility is core value of all scientific work, but getting it right is difficult. Using git, mercurial, SVN, or other kinds of version control software is a great start. Not only do these tools encourage useful practices such as versioning, development branches when exploring new features, and documentation via commit logs, they also make collaborative coding easier because multiple people can work on their own instances of the code independantly, and merge changes when they are finished. Web services such as github, gitlab, and bitbucket provide great tools for hosting your code repositories, which not only means you have a remote backup in case you lose your local copy, but these services also provide a very easy method by which you can share your code with collaborators or other researchers who would like to reproduce your work. All it takes is a `git clone` or, if they don't have git installed, they can download a compressed .zip file. However, even if someone has all of your code, there are many reasons they may not be able to reproduce your results. Some reasons are straightforward. A common issue for many researchers in academia or industry is that they do not have the admin-level permissions needed to install the software on their system. Another common issue is that the original author and the end-user may be running different versions of the same software, or the compute cluster the end user has access to many be running a different distribution of linux that requires a different set of installation instructions. One way around this is to run your analysis within a virtual machine (VM) that has all of the necessary software installed. This VM can then be distributed. VM's are great, but they are isolated from the machine they are run on, have a great computational cost and software overhead, and lead to much larger files that need to be managed and maintained. A new computing paradigm coined "containers" are essentially lighweight VMs that strip out much of the software bloat and computional overhead of full VMs, while also allowing a more natural flow between the isolated run-time environment of the container and the "host" system that the container is run on. Several instances of containers have started to gain traction, with the most widely-known implementation being [Docker](https://www.docker.com/). While Docker is a wonderful environment and has a strong user base with enterprise support (e.g. runs on AWS and Google Cloud), there are security issues that have prevented Docker from being the de-facto container adopted by researchers, who are more likely to have access to a shared computing cluster than they are to have access to a private cloud computing environment. [singularity](https://github.com/gmkurtzer/singularity) was developed with this audience in mind, and provides many features that system admins who maintain these computing resources require, such as encapsulation of the environment, no user contextual changes or root escalation allowed, no root owned daemon processes. Together, this means that you can ship a fully-functional container with all of your required software, exactly as you used it, and anyone else with singularity installed can run your code using that software. This project will serve as an example of how to setup a singularity container with several pieces of software commonly used by life-science researchers. I will demonstrate how to modify your code to utilize your 'container-ized' computing environment, and I will provide a set of scripts and an image so you can try out an example!
+Singularity is a feature complete linux operating system, along with any files and software you want, wrapped into a single file that can be easily moved from computer to computer and reliably executed and interacted with via the Singularity runtime engine. Because it only has the aspects of the operating system required to execute code via the command line, they are leaner than full-fledged virtual machines, that can also replicate things like a disk drive and graphical user interfaces.
 
-# As an end user looking to reproduce an analysis, what do I need to do?
+# What is Singularity not?
 
-The advantages of using singularity really shine for the end user. Once you have downloaded a singularity image, you can run the software installed on the container as if it were installed on the host computer. A nice way to conceptualize a container is as extension of your computer, rather than some isolated item on your computer. It's as if you could plug in a USB drive that came preloaded with all of the software you needed, and you can call the software programs and have it work immediately without needing to worry about installing each program 1 by 1 or worrying about dependency issues (software that your software requires to run; like how java-based applications require you to already have java installed). That's because unlike a USB drive or other drive that depends on the operating system of your computer, singularity containers have all of the operating system components they need to run so you can avoid all of the headaches of installing everything one by one. You also don't have to worry about accidentally breaking anything in the container, because the critical components inside of the container are protected by read-write permissions the same way that the core operating system components on your host computer are. For example, a general user on a shared computing cluster at a university is unlikely to have permissions to edit the `/bin` directory. They might not even be able to look to see what is inside. Those same restrictions and rules apply to whatever is inside of the container. Anything you run that exists inside of the container has the same limits on the host computer as the user does. If you are not able to edit a folder, then neither is the container. But if you have a folder in which you would like to run an analysis, and you generate files in the process of running that analysis, whatever you execute inside of the container can create, remove, and edit those files with the same permissions as yourself.
+Singularity requires some understanding of how operating systems work in order to effectively use it and understand how it works. Singularity will generate an operating system inside of the image file, also refered to as a "container", and Singularity will ensure that the same code will be executed the same way when executed against that container. However, just as you may experience installation issues on your local computer, you may experience installations inside of the container. This is not necessarily a problem with the container, and is more likely an issue that the software you are attempting to install may not have been tested and troubleshooted against your particular linux flavor.
 
-example
+# How do I interact with a container?
+
+**example**
+
+if you would normally run a command as:
 ```bash
-# if you would normally run a command as
 CMD --flag1 --flag2 argument1 argument2 ...
-# to run that command from within the singularity container
-# you can simply pre-prend the appropriate singularity command
+```
+to run that command from within the singularity container you can simply pre-prend the appropriate singularity command
+```bash
 singularity exec my_singularity_container.img CMD --flag1 --flag2 argument1 argument2 ...
 ```
 
-show me a real example
-```
-# python3 is not installed on the local system
+**show me a real example**
+
+Here, python3 is not installed on the host system, and cannot be run
+```bash
 vagrant@jessie:~$ python3
 -bash: python3: command not found
-# but it is installed inside of the container
+```
+but this computer has singularity installed, and a container that has python3 installed
+```bash
 vagrant@jessie:~$ singularity exec test.img python3
 Python 3.5.2 |Anaconda 4.1.1 (64-bit)| (default, Jul  2 2016, 17:53:06)
 [GCC 4.4.7 20120313 (Red Hat 4.4.7-1)] on linux
@@ -47,91 +48,141 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
-# OK, I'm interested. How do I build a singularity image to use with my own project?
+# How do I build a singularity image to use with my own project?
 
-Because containers interact so closely with the host system, installing singularity and building singularity images require root and/or sudo level permissions. While many users of shared computing clusters are unlikely to have these permission levels, they are likely to have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the next section. If you have a Windows OS or an Apple OS, you'll need to get a linux distribution running. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have root access on your local machine (windows mac or linux), check with the system admin to see if they'd be willing to set up a virtual machine for you.
+Because containers interact so closely with the host system, installing singularity and building singularity images require root and/or sudo level permissions. While many users of shared computing clusters are unlikely to have these permission levels, they are likely to have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the appropriately named **start here if linux user with root/admin/sudo priviliges**. If you have a Windows OS or an Apple OS, or even a linux OS without root/admin/sudo priviliges, you'll need to get a linux virtual machine running where you do have root permissions. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have root access on your local machine, ask a system admin for assistance.
 
-How I did it: starting from a mac with homebrew installed
+**starting from a mac with homebrew installed**
 ```bash
-# get necessary software
 brew tap caskroom/cask
-
-# install virtualbox 5.0.24
-
 brew cask install vagrant
-# make a folder to host the vagrant VM information
-mkdir singularity-vm
-# move into it
-cd singularity-vm
+# brew cask install virtualbox
+```
+Quick aside here: this implementation doesn't work with the new VirtualBox 5.1, and thus I've had to bail on the current (as of July 16, 2016) virtualbox cask install. Go to [VirtualBox's old build page](https://www.virtualbox.org/wiki/Download_Old_Builds_5_0) and install the appropriate version for your system
+```bash
+mkdir singularity-vm && cd singularity-vm
 # generate a virtual machine
-vagrant init ubuntu/trusty64; vagrant up --provider virtualbox
-# edit vagrant file to have 4gb memory
-# uncomment the following lines
-# config.vm.provider "virtualbox" do |vb|
-# vb.memory = "1024"
-# end
-# & change memory to = "4096"
+vagrant init ubuntu/trusty64; vagrant up --provider virtualbox && vagrant halt
+```
+Now we've initalized a lightweight virtual machine via a combination of vagrant and virtualbox. The virtual machine has some preset defaults that, in my experience, I've had to adjust. First and foremost the initial memory allocation. I'm unsure if the default is 1Gb RAM or less, but I only found success when bumping the memory allocation up to 4Gb.
 
-vagrant halt && vagrant up && vagrant ssh
+```bash
+vi Vagrantfile
+```
+
+Find the code block that looks like this
+```
+# config.vm.provider "virtualbox" do |vb|
+#   # Display the VirtualBox GUI when booting the machine
+#   vb.gui = true
+#
+#   # Customize the amount of memory on the VM:
+#   vb.memory = "1024"
+# end
+```
+
+and uncomment the code block and the memory line, setting the memory to 4Gb
+```
+config.vm.provider "virtualbox" do |vb|
+#   # Display the VirtualBox GUI when booting the machine
+#   vb.gui = true
+#
+#   # Customize the amount of memory on the VM:
+  vb.memory = "4096"
+end
+```
+
+now, restart the virtual machine and ssh into it
+```bash
+vagrant up && vagrant ssh
+```
+You are now a linux user with root/admin/sudo priviliges
+
+
+**start here if linux user with root/admin/sudo priviliges**
+
+Here we will install Singularity starting from an Ubuntu 14.04 LTS "Trusty" 64-bit base installation
+```bash
 sudo apt-get install -y build-essential git vim autoconf libtool curl debootstrap
-# clone the singularity software from github
 git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./autogen.sh && ./configure --prefix=/usr/local && make && sudo make install
 ```
 
+now we want to create a singularity container, load it with an operating system, and install our reproducable computing environment onto it.
 
-
-# I've got a linux machine with singularity installed. How do I build an image
-
+first, we need to allocate the file. Here `--size` represents the maximum size that the container is allowed to take on.
 ```bash
-# This will create an image with a MAXIMUM size of 8Gb
-# adjust to your needs
-# if you run out of space, you can update the maximum via
-# singularity expand --size {Mib to expand by} your_image.img
-sudo singularity create -s 24000 test.img
-# This will set up a basic ubuntu image inside of the container
+sudo singularity create --size 24000 test.img
+```
+now we will preload a Ubuntu 14.04 LTS "Trusty" 64-bit base install
+```bash
 sudo singularity bootstrap test.img $HOME/singularity/examples/ubuntu.def
-# this will enter into a bash shell in the container
-# -w means allow user write permissions on the container
-# -w requires sudo privileges, and the container is not writable
-# by default
-# --contain means restrict the filesystem to only include
-# the filesystem of the container. i.e. don't accidentally write to host
+```
+and now, we have a container! but it doesn't have much loaded onto it. let's enter into a bash shell that is running inside of the container. by default, containers have the ability to read and write data to the filesystem of the host, yet containers themselves are immutable. here, we will launch our shell session with the `--contain` flag, which blocks our ability to interact with the hosting computer, and the `--writable` flag such that we can modify the contents of the container
+```bash
 sudo singularity shell -w --contain test.img
 ```
 
 Now you should be inside of the image. Feel free to jump around the file system to learn your way around.
 
 
+As mentioned in the introduction, Linuxbrew and Anaconda are two great package managers that greatly simplify the process of installing and managing software. The default software available via apt-get is often out of date compared to those available via either Linuxbrew and Anaconda, and additionally, both of these package managers have recipes to install a wide-variety of software useful for my particular domain.
 
-
-
-
+By default, when entering a container, you enter into it and stay in the same directory on the host where you started from. Run `pwd` and notice the `(unreachable)` prepension to the path. Let's change to the user directory of our current user inside of the container, which is `root`
 ```bash
 cd /root
-# singularity containers
+```
+
+First, I will add two directories that I founded I need to add to actually get my singularity container to work on a remote system. On the cluster I work on, all of the labs have environments that are setup for their group as so
+```
+/scratch/PI/{PI_name}/"All lab data and projects go here"
+/share/PI/{PI_name}/"All lab software and executables, and some reference files, go here"
+```
+The base directories for these paths, `/scratch` & `/share` are not standard linux directories, and are not found on the container. I had to add them to the container in order to get the container to resolve paths when I tried to use the container on the cluster
+```bash
 mkdir /scratch /share
-apt-get update && apt-get install -y build-essential curl git python-setuptools ruby nettle-dev
+```
+
+Now we install required system dependencies for other software. Software required for your case may be different
+```bash
+apt-get update && apt-get install -y build-essential curl wget git python-setuptools ruby nettle-dev
+```
+and now we install linuxbrew, and open it for editing by all users
+```bash
 rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local && chmod -R 777 /usr/local
-# add user to install brew things with, because it complains if you install as root
-
-
-
-useradd -m user && su user && cd /home/user
+```
+and install my other favorite package manager and it's full python3 scientific computing environment, Anaconda
+```bash
+mkdir /Software && cd /Software
+# anaconda and linuxbrew expect non-root usage, so make temporary user
+useradd -m user && su user
+wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh && \
+bash Anaconda3-4.1.0-Linux-x86_64.sh -b -p /Software/anaconda3 && \
+rm Anaconda3-4.1.0-Linux-x86_64.sh
+```
+and make these new package managers available via our executable path
+```bash
+PATH="/Software/anaconda3/bin:/usr/local/sbin:/usr/local/bin:/bin:/sbin:/usr/sbin:/usr/bin"
+```
+now our recipe packed package maangers are available for us to install the latest and greatest bioinformatics software tools. If you have never reviewed their offerings, I recommend you check out their offerings here -> [homebrew-science](https://github.com/Homebrew/homebrew-science) [bioconda channel of anaconda](https://github.com/bioconda/bioconda-recipes/tree/master/recipes)
+```bash
+cd /home/user
 brew install --force-bottle openssl open-mpi
 brew install curl automake cmake curl git libtool parallel pigz wget
 brew tap homebrew/science
 brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate \
 fastq-tools fastqc gmap-gsnap hmmer2 htslib jellyfish kallisto last lighter novoalign openblas picard-tools \
 plink r samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
-exit
-cd / && rm /environment && wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/e3baaabf9b95e65e765b9231d1594325/raw/9d8391b29fac7d0ed7b84442e1b3ebe2d3df3a36/environment
-chmod -R 775 /usr/local
-# blat dependency mysql takes 30 minutes to build
-# consider dropping
 
-
-# back to root
-mkdir /Software
+conda config --add channels r
+conda config --add channels bioconda
+conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
+conda install --channel https://conda.anaconda.org/conda-forge tensorflow
+pip install keras
+conda install -y -c r r
+conda install -y --channel bioconda cufflinks cutadapt freebayes rsem rtg-tools sailfish salmon sambamba star plink2 trinity
+```
+now, I'll install Julia from source via git and github, as an example of how to manually install software not available via the package managers. Anything you need that isn't covered, go ahead and add it in here.
+```bash
 cd /Software
 git clone git://github.com/JuliaLang/julia.git
 cd julia
@@ -141,35 +192,29 @@ echo "USE_SYSTEM_GMP=1" >> Make.user
 echo "USE_SYSTEM_MPFR=1" >> Make.user
 make
 ln -s /Software/julia/julia /usr/local/bin
-
-# wget --no-check-certificate https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_64.tar.gz
-# tar xvzf julia-0.4.6-linux-x86_64.tar.gz && rm julia-0.4.6-linux-x86_64.tar.gz && ln -s /Software/julia-*/bin/julia /usr/local/bin
-# rmdir /home/vagrant/.julia
-
-# in future releases, I'll be able to just add these to the $PATH
-# rather than obliterating the system defaults
-cd /Software
-wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh && \
-bash Anaconda3-4.1.0-Linux-x86_64.sh -b -p /Software/anaconda3 && \
-rm Anaconda3-4.1.0-Linux-x86_64.sh
-PATH="/Software/anaconda3/bin:/usr/local/sbin:/usr/local/bin:/bin:/sbin:/usr/sbin:/usr/bin"
-
-conda config --add channels r
-conda config --add channels bioconda
-conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
-conda install --channel https://conda.anaconda.org/conda-forge tensorflow
-pip install keras
-conda install -y -c r r
-conda install -y --channel bioconda cufflinks cutadapt freebayes rsem rtg-tools sailfish salmon sambamba star plink2 trinity
-
+```
+And now that we've got our system fully loaded with the software we want, let's make our extensions to `$PATH` to include the software installed by linuxbrew and anaconda permanent. You can do this too by modifying the `/environment` file in your container (**version >= 2.1**). I've got one saved on github in a gist that has the path updates needed for this container.
+```bash
+exit # back to root
+cd / && rm /environment && wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/e3baaabf9b95e65e765b9231d1594325/raw/9d8391b29fac7d0ed7b84442e1b3ebe2d3df3a36/environment
+```
+Now that linuxbrew is all set with software, let's remove the global ability to modify it's contents
+```bash
+chmod -R 775 /usr/local
+```
+exit the container to the host linux
+```bash
 exit
-exit?
+```
+another tool I use that cannot be installed via either package manager due to licensing restrictions is gatk. load the compressed download of gatk into the folder where you will launch the container shell. then we will jump back into the container and link it to our anaconda path, and hop back out of the container.
+```bash
 sudo singularity shell -w test.img
 gatk-register /home/vagrant/GenomeAnalysisTK-3.6.tar.bz2
 exit
 ```
+you're all done, you've built a great base-image for computational genomics! adjust these installation steps and software installed to your needs. you may have noticed that I installed lots of bioinformatics command line tools, and all of the packages I want for python, but not for R or Julia. Why? I found that because R and Julia both cooperate very nicely with installing their packages outside of the container, you can ship around a base language installation and have the first line of your analysis code download the necessary libraries. Anaconda has a method to do this with the python packages, however it did not work when I tried it.
 ```bash
-R
+singularity exec test.img R
 install.packages( c("dplyr", "tidyr", "stringr", "lubridate", "ggplot2 ", "Hmisc", "caret", "randomForest", "survival", "parallel", "shiny", "glmnet", "datatable", "devtools", "Rcpp", "reshape2", "colorspace", "RColorBrewer", "plyr"))
 source("https://bioconductor.org/biocLite.R")
 biocLite()
@@ -178,19 +223,15 @@ quit()
 ```
 
 ```bash
-julia
-# install julia packages outside of the container
-# is there a way to install if not installed? require?
+singularity exec test.img julia
 pkgs = [ "DataFrames", "FreqTables", "Distributions", "GLM", "HypothesisTests", "Nettle", "IJulia", "RCall", "NormalizeQuantiles", "Plots", "PyPlot", "GR", "BenchmarkTools", "MLBase", "NullableArrays" ]
 map(Pkg.add, pkgs)
 map(Pkg.build, pkgs)
 using DataFrames, FreqTables, Distributions, GLM, HypothesisTests, Nettle, IJulia, RCall, NormalizeQuantiles, Plots, GR, BenchmarkTools, MLBase, NullableArrays, PyPlot
 ```
 
-todo
-poretools marginalign
-
-```
+and, in progress, a method to return the version number of every piece of software installed on the container.
+```bash
 conda list | tail -n+3 | awk '{print $1, $2}' > temp.info
 brew list --versions >> temp.info
 
