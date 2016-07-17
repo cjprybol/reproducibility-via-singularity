@@ -15,7 +15,7 @@ wget {image}
 
 # What does that code do?
 
-I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will quantify the expression of transcripts in an RNA sequencing experiment that is downloaded from a data repository. You could make an entire thesis project just as reproducable with more code and software inside of the container!
+I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will quantify the expression of transcripts in an RNA sequencing experiment that is downloaded from a data repository. You could make an entire thesis project just as reproducable!
 
 # What is Singularity?
 
