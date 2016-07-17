@@ -1,4 +1,10 @@
 # reproducibility-via-singularity
+Code repositories like SourceForge, Github, BitBucket, and Gitlab have made reproducable research a possibility for everyone. But trying to reproduce the same results, even when using the exact same code, when run on a different computer or computing environment can prove as fruitless as trying to reproduce the same biological phenomena in the same cell line when using a completely different growth medium. It's an intractible problem
+
+can often prove as problematic to computational biologists as using the same cell line in a different growth medium can prove to wetlab scientistis. Singularity is a runtime container that has been developed to address this issue. Designed for the HPC (High Performance Computing) clusters with many shared users, common at many universities and research labs, these containers enable reproducable computing environments by packing the entire environment into a single file, which can be shared with others as easily as sharing a document or spreadsheet.
+
+democratized the ability to both version control and easily share source code, reproducable research
+
 This repository provides a demo for how to use git and [singularity](https://github.com/gmkurtzer/singularity) to make your research more portable and reproducible.
 
 # TL;DR
