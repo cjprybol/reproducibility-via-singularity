@@ -49,33 +49,30 @@ How I did it: starting from a mac with homebrew installed
 ```bash
 # get necessary software
 brew tap caskroom/cask
-brew cask install virtualbox
+
+# install virtualbox 5.0.24
+
 brew cask install vagrant
 # make a folder to host the vagrant VM information
 mkdir singularity-vm
 # move into it
 cd singularity-vm
 # generate a virtual machine
-vagrant init ubuntu/trusty64
-# launch the machine and ssh into it
-# NOTE: --provider virtualbox is only required the first time
-# you launch the virtual machine
-vagrant up --provider virtualbox && vagrant ssh
-# get necessary software installed inside of the VM
-sudo apt-get update
-sudo apt-get -y install build-essential git vim autoconf libtool curl debootstrap
+vagrant init ubuntu/trusty64; vagrant up --provider virtualbox
+# edit vagrant file to have 4gb memory
+# uncomment the following lines
+# config.vm.provider "virtualbox" do |vb|
+# vb.memory = "1024"
+# end
+# & change memory to = "4096"
+
+vagrant halt && vagrant up && vagrant ssh
+sudo apt-get install -y build-essential git vim autoconf libtool curl debootstrap
 # clone the singularity software from github
-git clone https://github.com/gmkurtzer/singularity.git
-# move into the singularity folder
-cd singularity
-# run setup scripts as specified in singularity docs
-./autogen.sh
-./configure --prefix=/usr/local
-make
-sudo make install
-# test your installation!
-bash test.sh
+git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./autogen.sh && ./configure --prefix=/usr/local && make && sudo make install
 ```
+
+
 
 # I've got a linux machine with singularity installed. How do I build an image
 
@@ -84,11 +81,9 @@ bash test.sh
 # adjust to your needs
 # if you run out of space, you can update the maximum via
 # singularity expand --size {Mib to expand by} your_image.img
-sudo singularity create -s 8000 test.img
-
+sudo singularity create -s 24000 test.img
 # This will set up a basic ubuntu image inside of the container
 sudo singularity bootstrap test.img $HOME/singularity/examples/ubuntu.def
-
 # this will enter into a bash shell in the container
 # -w means allow user write permissions on the container
 # -w requires sudo privileges, and the container is not writable
@@ -101,63 +96,100 @@ sudo singularity shell -w --contain test.img
 Now you should be inside of the image. Feel free to jump around the file system to learn your way around.
 
 
-Here I will show you an example of how I install several core things that I like to use in my research. I will install Linuxbrew and then use Linuxbrew to install a few pieces of bioinformatics software and the language R. I will then install a piece of software from github, a precompiled version of Julia, and the Anaconda distribution of Python version 3. **AT THE TIME OF WRITING, THERE IS NOT YET A WAY TO EXTEND THE `$PATH` OF THE CONTAINER, AND THUS I AM INSTALLING LINUXBREW TO `/usr/local`, SYMLINKING TO DIRECTORIES IN THE DEFAULT PATH, AND REPLACING SYSTEM DEFAULTS. IN SINGULARITY 2.1 THERE SHOULD BE THE ABILITY TO EXPAND THE `$PATH` OF THE IMAGE, IN WHICH CASE I WILL ADJUST THIS ACCORDINGLY**
-
-
-
 
 
 
 
 ```bash
-cd $HOME
+cd /root
 # singularity containers
-mkdir /scratch
-mkdir /share
-apt-get update && apt-get install -y build-essential curl git ruby python-setuptools man sudo wget cmake automake libtool parallel pigz
-rm -r /usr/local
-git clone https://github.com/Linuxbrew/brew.git /usr/local
-# make it accessible to everyone
-chmod -R 777 /usr/local
+mkdir /scratch /share
+apt-get update && apt-get install -y build-essential curl git python-setuptools ruby nettle-dev
+rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local && chmod -R 777 /usr/local
 # add user to install brew things with, because it complains if you install as root
-useradd -m user
-# set password for user
-# echo 'user:password'|chpasswd
-# give sudo privileges to user
-# usermod -aG sudo user
-# change to user
-su user
-cd $HOME
-brew install --force-bottle openssl
-brew install curl
+
+
+
+useradd -m user && su user && cd /home/user
+brew install --force-bottle openssl open-mpi
+brew install curl automake cmake curl git libtool parallel pigz wget
 brew tap homebrew/science
-# use homebrew R because it's more up to date
-brew install bash bedtools bowtie fastqc htslib lighter kallisto r samtools trimmomatic vcftools
+brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate \
+fastq-tools fastqc gmap-gsnap hmmer2 htslib jellyfish kallisto last lighter novoalign openblas picard-tools \
+plink r samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
+exit
+cd / && rm /environment && wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/e3baaabf9b95e65e765b9231d1594325/raw/9d8391b29fac7d0ed7b84442e1b3ebe2d3df3a36/environment
+chmod -R 775 /usr/local
+# blat dependency mysql takes 30 minutes to build
+# consider dropping
+
 
 # back to root
-exit
-mkdir /SingularitySoftware
-cd /SingularitySoftware
-wget https://github.com/trinityrnaseq/trinityrnaseq/archive/v2.2.0.zip
-unzip v2.2.0.zip
-cd trinityrnaseq-2.2.0
+mkdir /Software
+cd /Software
+git clone git://github.com/JuliaLang/julia.git
+cd julia
+git checkout release-0.4
+touch Make.user
+echo "USE_SYSTEM_GMP=1" >> Make.user
+echo "USE_SYSTEM_MPFR=1" >> Make.user
 make
-ln -s /SingularitySoftware/trinityrnaseq-2.2.0/Trinity /usr/local/bin
-cd /SingularitySoftware
-wget --no-check-certificate https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_64.tar.gz
-tar xvzf julia-0.4.6-linux-x86_64.tar.gz
-rm julia-0.4.6-linux-x86_64.tar.gz
-ln -s /SingularitySoftware/julia-*/bin/julia /usr/local/bin
+ln -s /Software/julia/julia /usr/local/bin
 
+# wget --no-check-certificate https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_64.tar.gz
+# tar xvzf julia-0.4.6-linux-x86_64.tar.gz && rm julia-0.4.6-linux-x86_64.tar.gz && ln -s /Software/julia-*/bin/julia /usr/local/bin
+# rmdir /home/vagrant/.julia
 
 # in future releases, I'll be able to just add these to the $PATH
 # rather than obliterating the system defaults
-rm /bin/bash
-ln -s /usr/local/bin/bash /bin/bash
-wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh
-bash Anaconda3-4.1.0-Linux-x86_64.sh -b -p /SingularitySoftware/anaconda3
+cd /Software
+wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh && \
+bash Anaconda3-4.1.0-Linux-x86_64.sh -b -p /Software/anaconda3 && \
 rm Anaconda3-4.1.0-Linux-x86_64.sh
-rm /SingularitySoftware/anaconda3/bin/python
-mv /SingularitySoftware/anaconda3/bin/pip /SingularitySoftware/anaconda3/bin/pip3
-ln -s /SingularitySoftware/anaconda3/bin/* /usr/local/bin
+PATH="/Software/anaconda3/bin:/usr/local/sbin:/usr/local/bin:/bin:/sbin:/usr/sbin:/usr/bin"
+
+conda config --add channels r
+conda config --add channels bioconda
+conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
+conda install --channel https://conda.anaconda.org/conda-forge tensorflow
+pip install keras
+conda install -y -c r r
+conda install -y --channel bioconda cufflinks cutadapt freebayes rsem rtg-tools sailfish salmon sambamba star plink2 trinity
+
+exit
+exit?
+sudo singularity shell -w test.img
+gatk-register /home/vagrant/GenomeAnalysisTK-3.6.tar.bz2
+exit
+```
+```bash
+R
+install.packages( c("dplyr", "tidyr", "stringr", "lubridate", "ggplot2 ", "Hmisc", "caret", "randomForest", "survival", "parallel", "shiny", "glmnet", "datatable", "devtools", "Rcpp", "reshape2", "colorspace", "RColorBrewer", "plyr"))
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+biocLite(c("affy", "affyio", "annotate", "biobase", "biocgenerics", "biocinstaller", "biocparallel", "biocstyle", "biomart", "biostrings", "deseq", "deseq2", "edger", "iranges", "limma", "preprocesscore", "rhdf5", "rsamtools", "s4vectors", "variantannotation", "pheatmap", "ChIPpeakAnno"))
+quit()
+```
+
+```bash
+julia
+# install julia packages outside of the container
+# is there a way to install if not installed? require?
+pkgs = [ "DataFrames", "FreqTables", "Distributions", "GLM", "HypothesisTests", "Nettle", "IJulia", "RCall", "NormalizeQuantiles", "Plots", "PyPlot", "GR", "BenchmarkTools", "MLBase", "NullableArrays" ]
+map(Pkg.add, pkgs)
+map(Pkg.build, pkgs)
+using DataFrames, FreqTables, Distributions, GLM, HypothesisTests, Nettle, IJulia, RCall, NormalizeQuantiles, Plots, GR, BenchmarkTools, MLBase, NullableArrays, PyPlot
+```
+
+todo
+poretools marginalign
+
+```
+conda list | tail -n+3 | awk '{print $1, $2}' > temp.info
+brew list --versions >> temp.info
+
+julia --version >> temp.info
+anything else I add via git
+
+column -t temp.info | sort -u
 ```
