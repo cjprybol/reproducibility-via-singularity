@@ -1,0 +1,20 @@
+DistType "debian"
+MirrorURL "http://us.archive.ubuntu.com/ubuntu/"
+OSVersion "trusty"
+
+Setup
+Bootstrap
+
+RunCmd cd /root
+RunCmd mkdir /scratch /share
+RunCmd apt-get update && apt-get install -y build-essential curl git python-setuptools ruby
+RunCmd rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local && chmod -R 777 /usr/local
+RunCmd useradd -m user && su user
+RunCmd brew install --force-bottle openssl
+RunCmd brew install curl wget
+RunCmd brew tap homebrew/science
+RunCmd brew install kallisto
+RunCmd exit
+RunCmd chmod -R 775 /usr/local
+
+Cleanup
