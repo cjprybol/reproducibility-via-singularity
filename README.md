@@ -7,8 +7,8 @@ Universities and research laboratories often conduct their work on shared HPC cl
 
 Run this code on a linux-based operating system with singularity installed and in the `$PATH`
 ```bash
-git clone {this repo}
-cd {this repo}
+git clone https://github.com/cjprybol/reproducibility-via-singularity.git
+cd reproducibility-via-singularity
 wget {image}
 ./reproduce_project.sh
 ```
@@ -115,7 +115,7 @@ git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./au
 
 We want to create a singularity container, load it with an operating system, and install our reproducable computing environment onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size that the container is allowed to take on.
+First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on.
 ```bash
 sudo singularity create --size 24000 test.img
 ```
@@ -144,7 +144,7 @@ First, I will add two directories that I founded I need to add to actually get m
 /scratch/PI/{PI_name}/"All lab data and projects go here"
 /share/PI/{PI_name}/"All lab software and executables, and some reference files, go here"
 ```
-The base directories for these paths, `/scratch` & `/share` are not standard linux directories, and are not found on the container. I had to add them to the container in order to get the container to resolve paths when I tried to use the container on the cluster. **If you experience a similar issue, submit a pull request or issue with the default paths on your cluster. If there are other common directories used on other HPC clusters, I'll add them here**
+The base directories for these paths, `/scratch` & `/share` are not standard linux directories, and are not found on the container. I had to add them to the container in order to get the container to resolve paths when I tried to use the container on the cluster. **If you experience a similar issue, let me know. If there are other common directories used on other HPC clusters, I'll consider adding them here**
 ```bash
 mkdir /scratch /share
 ```
@@ -187,9 +187,10 @@ Now let's use our package managers to quickly and easily install and configure s
 ```bash
 cd /home/user
 brew install --force-bottle openssl open-mpi
-brew install curl automake cmake curl git libtool parallel pigz wget
+brew install curl automake cmake git libtool parallel pigz wget
 brew tap homebrew/science
 brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib jellyfish kallisto last lighter novoalign openblas picard-tools plink r samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
+
 ```
 
 **Anaconda**
@@ -201,6 +202,7 @@ conda install --channel https://conda.anaconda.org/conda-forge tensorflow
 pip install keras
 conda install -y -c r r
 conda install -y --channel bioconda cufflinks cutadapt freebayes rsem rtg-tools sailfish salmon sambamba star plink2 trinity
+conda clean -y --all
 ```
 
 I'll install Julia from source via GitHub, as an example of how to manually install software not available via the package managers, as well as a plug for the language (which I recommend you try out!). Feel free to add your own custom recipes for installing software here, to configure a container that meets your needs.
@@ -232,7 +234,7 @@ Exit the container to the host linux
 exit
 ```
 
-Another tool I use that cannot be installed via either package manager due to licensing restrictions is gatk. I've downloaded the gatk installer to the same directory where my container is. By entering the container again without the `--contain` flag, we allow the container to copy the installer and install it with Anaconda.
+Another tool I use that cannot be installed via either package manager due to licensing restrictions is [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). I've downloaded the GATK installer to the same directory where my container is. By entering the container again without the `--contain` flag, we allow the container to interact with the host system, and copy GATK into Anaconda
 ```bash
 sudo singularity shell -w test.img
 gatk-register /home/vagrant/GenomeAnalysisTK-3.6.tar.bz2
