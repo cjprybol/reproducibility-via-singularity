@@ -237,7 +237,7 @@ We've got our system fully loaded with the software we want, but our `$PATH` upd
 cd / && rm /environment && wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/e3baaabf9b95e65e765b9231d1594325/raw/9d8391b29fac7d0ed7b84442e1b3ebe2d3df3a36/environment
 ```
 
-We'll download one more pre-written script that will list all software installed with Linuxbrew and Anaconda, as well as the Julia version. It will sort the list and return to us an A-Z list of installed software with the version number for everything! Scroll to the end of this README to see the command to call the script
+We'll download one more pre-written script that will list all software installed with Linuxbrew and Anaconda, as well as the Julia version. It will sort the list and return to us an A-Z list of installed software with the version number for everything! Go [here](https://github.com/cjprybol/reproducibility-via-singularity/blob/master/README.md#how-do-i-get-the-version-numbers-of-installed-software) to see how to call it
 ```bash
 wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/13a95c9df3f1307b6e62bebe2a7e0a11/raw/114e9700ce8923e12ac9a31f383d03082ce4d2af/singularity
 chmod 775 singularity
