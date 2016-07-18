@@ -9,13 +9,17 @@ Run this code on a linux-based operating system with singularity installed and i
 ```bash
 git clone git@github.com:cjprybol/reproducibility-via-singularity.git
 cd reproducibility-via-singularity
-wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/i108j365ewur9cudcbehmd5aij9df2gu.img -O demo.img
+wget https://stanfordmedicine.box.com/shared/static/i108j365ewur9cudcbehmd5aij9df2gu.img -O demo.img
 ./reproduce_project.sh
 ```
 
 # What does that code do?
 
-I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will quantify the expression of transcripts in an RNA sequencing experiment that is downloaded from a data repository. You could make an entire thesis project just as reproducable!
+I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will download 1 sample of paired-end RNA sequencing reads, and quantify transcript isoform abundances in the sample. Run `less Kallisto/abundance.tsv` to see the results!
+
+This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducable research can be, and should be, be as simple as running 4 lines of code. This container only contains a few executables, and `reproduce_project.sh` only contains a few instructions. However, the container and the master execution script can both exponentially increase in complexity in terms of what they accomplish without needing to change any bit of those 4 lines of code.
+
+The complete set of inputs (data and code) and their corresponding outputs (computed results, summary stats, graphs, and anything else needed to support a claim) are made available to anyone with Git and Singularity installed and the resources to run the analysis. Requiring little more effort for others than the wait required to run the analysis, this simplicity of reproducability lowers the barrier for others to investigate your work. Together, this encourages responsible research conduct as well as increases the rate of information and knowledge transfer.
 
 # What is Singularity?
 
