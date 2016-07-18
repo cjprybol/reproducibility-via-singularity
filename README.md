@@ -9,7 +9,7 @@ Universities and research laboratories often conduct their work on shared HPC cl
 
 Run this code on a linux-based operating system with singularity installed and in the `$PATH`
 ```bash
-git clone git@github.com:cjprybol/reproducibility-via-singularity.git
+git clone https://github.com/cjprybol/reproducibility-via-singularity.git
 cd reproducibility-via-singularity
 wget https://stanfordmedicine.box.com/shared/static/i108j365ewur9cudcbehmd5aij9df2gu.img -O demo.img
 ./reproduce_project.sh
