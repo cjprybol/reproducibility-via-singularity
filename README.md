@@ -94,7 +94,8 @@ config.vm.provider "virtualbox" do |vb|
 #   vb.gui = true
 #
 #   # Customize the amount of memory on the VM:
-  vb.memory = "4096"
+  vb.memory = "8192"
+  vb.cpus = 2
 end
 ```
 
