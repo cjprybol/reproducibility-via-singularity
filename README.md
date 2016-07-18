@@ -28,7 +28,7 @@ This is a contrived example, designed to run quickly and efficiently to demonstr
 
 time to run < 10 minutes on a modern laptop with decent download rates (10 Mb/s?)
 
-Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducability lowers the barrier for others to investigate your work. Together, this encourages responsible research conduct and increases the rate of knowledge transfer.
+Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducability lowers the barrier for others to investigate your work. This encourages responsible research conduct and increases the rate of knowledge transfer.
 
 # What is Singularity?
 
@@ -36,7 +36,7 @@ A Singularity container is a complete linux kernel capable of executing code and
 
 # What is Singularity not?
 
-A magic, drag and drop, point and click solution. Singularity requires some understanding of how operating systems work in order to effectively use it and understand it. That being said, it's also very well designed, and should be intuitive for anyone who has set up a computing environment on their personal computer, a cluster, a VM, or a cloud service. Singularity will generate an operating system inside of the image file, or "container". Singularity will ensure that whatever you install in the container will execute the same on any computer with the Singularity installed. You simply load the container with software and configure it as you would set up any other basic linux installation.
+A magic, drag and drop, point and click solution. Singularity requires some understanding of how operating systems work in order to effectively use it and understand it. That being said, it's also very well designed, and should be intuitive for anyone who has set up a computing environment on their personal computer, a cluster, a VM, or a cloud service. Singularity will generate an operating system inside of the image file, or "container". Singularity will ensure that whatever you install in the container will execute the same on any computer with Singularity installed. You simply load the container with software and configure it as you would set up any other basic linux installation.
 
 Containers require sudo/root/admin priviliges to modify and edit. This design feature makes Singularity containers incompatible with software that is programmed to download files to, or edit files within, the same directory (or sub-directories) where the the software is installed, as those directories will be within the immutable container. This design strategy is used by many annotation libraries that download data from public databases. However, if these libraries allow the option to write to a directory on the host, such as the users `$HOME` directory, or a directory specified by the user, than this will not be a problem. Another approach would be to simply pre-download data and pre-generate files, although this may result in container files that are too large to effectively share.
 
