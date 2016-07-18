@@ -1,9 +1,9 @@
-# Make your research more reproducable with [Singularity](http://singularity.lbl.gov)
-Services like [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org), and [GitLab](https://about.gitlab.com/) have democratized access to affordable (or free!) tools that reinforce reproducability in research, via the code repositories that these services offer. These services make it easier to backup, version control, collaborate on, and distribute code (or any other text-based file). These features make it easier for researchers to write and maintain high-quality code. These features also increase the chance that someone else will review the code for errors or bugs. These reviews can be done by some combination of reading and executing the code. Unfortunately, unless the code is run on the exact same computer, while logged in as the same user, getting the same code to run the same way can be a research project in and of itself.
+# Make your research more reproducible with [Singularity](http://singularity.lbl.gov)
+Services like [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org), and [GitLab](https://about.gitlab.com/) have democratized access to affordable (or free!) tools that reinforce reproducibility in research, via the code repositories that these services offer. These services make it easier to backup, version control, collaborate on, and distribute code (or any other text-based file). These features make it easier for researchers to write and maintain high-quality code. These features also increase the chance that someone else will review the code for errors or bugs. These reviews can be done by some combination of reading and executing the code. Unfortunately, unless the code is run on the exact same computer, while logged in as the same user, getting the same code to run the same way can be a research project in and of itself.
 
 
 # Why Singularity?
-Universities and research laboratories often conduct their work on shared HPC clusters. These clusters are all set up on slightly different configurations of hardware and operating system software. Trying to recreate an environment to re-run code exactly as it was executed on another cluster, an environment where all of the C pointers align in the same way and the Java versions sync up, is beyond the abilities, free time, and account priviliges of most researchers who may want to try to reproduce your results. Singularity is an implementation of a "container", and an engine to run those containers, that allows researchers to isolate the environment needed to produce a result away from the resources and code that is already available. This means that your colleague at University X can run the analysis exactly the same way on their cluster as you are running it on your cluster at University Y, and all it requires is sharing a git repository and a container image.
+Universities and research laboratories often conduct their work on shared HPC clusters. These clusters are all set up on slightly different configurations of hardware and operating system software. Trying to recreate an environment to re-run code exactly as it was executed on another cluster, an environment where all of the C pointers align in the same way and the Java versions sync up, is beyond the abilities, free time, and account privileges of most researchers who may want to try to reproduce your results. Singularity is an implementation of a "container", and an engine to run those containers, that allows researchers to isolate the environment needed to produce a result away from the resources and code that is already available. This means that your colleague at University X can run the analysis exactly the same way on their cluster as you are running it on your cluster at University Y, and all it requires is sharing a git repository and a container image.
 
 # TL;DR
 
@@ -19,7 +19,7 @@ wget https://stanfordmedicine.box.com/shared/static/i108j365ewur9cudcbehmd5aij9d
 
 I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will download 1 sample of paired-end RNA sequencing reads, and quantify transcript isoform abundances in the sample. Run `less Kallisto/abundance.tsv` to see the results!
 
-This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducable research can be, and should be, be as simple as running 4 code instructions. However, by extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects. 
+This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducible research can be, and should be, be as simple as running 4 code instructions. However, by extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects.
 
 **Software Requirements**
   - RAM ~ 8Gb
@@ -28,7 +28,7 @@ This is a contrived example, designed to run quickly and efficiently to demonstr
 
 time to run < 10 minutes on a modern laptop with decent download rates (10 Mb/s?)
 
-Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducability lowers the barrier for others to investigate your work. This encourages responsible research conduct and increases the rate of knowledge transfer.
+Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducibility lowers the barrier for others to investigate your work. This encourages responsible research conduct and increases the rate of knowledge transfer.
 
 # What is Singularity?
 
@@ -38,7 +38,7 @@ A Singularity container is a complete linux kernel capable of executing code and
 
 A magic, drag and drop, point and click solution. Singularity requires some understanding of how operating systems work in order to effectively use it and understand it. That being said, it's also very well designed, and should be intuitive for anyone who has set up a computing environment on their personal computer, a cluster, a VM, or a cloud service. Singularity will generate an operating system inside of the image file, or "container". Singularity will ensure that whatever you install in the container will execute the same on any computer with Singularity installed. You simply load the container with software and configure it as you would set up any other basic linux installation.
 
-Containers require sudo/root/admin priviliges to modify and edit. This design feature makes Singularity containers incompatible with software that is programmed to download files to, or edit files within, the same directory (or sub-directories) where the the software is installed, as those directories will be within the immutable container. This design strategy is used by many annotation libraries that download data from public databases. However, if these libraries allow the option to write to a directory on the host, such as the users `$HOME` directory, or a directory specified by the user, than this will not be a problem. Another approach would be to simply pre-download data and pre-generate files, although this may result in container files that are too large to effectively share.
+Containers require sudo/root/admin privileges to modify and edit. This design feature makes Singularity containers incompatible with software that is programmed to download files to, or edit files within, the same directory (or sub-directories) where the the software is installed, as those directories will be within the immutable container. This design strategy is used by many annotation libraries that download data from public databases. However, if these libraries allow the option to write to a directory on the host, such as the users `$HOME` directory, or a directory specified by the user, than this will not be a problem. Another approach would be to simply pre-download data and pre-generate files, although this may result in container files that are too large to effectively share.
 
 # How do I interact with a container?
 
@@ -73,7 +73,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 # How do I build a singularity image to use with my own project?
 
-Because containers interact so closely with the host system, installing Singularity, and building Singularity images requires root/sudo/admin level permissions. While many users of shared computing clusters are unlikely to have these permission level on the clusters where they intend to run the analysis, they may have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the section **Start here if linux user with root/sudo/admin priviliges**. If you have a Windows OS or an Apple OS (with our without root/sudo/admin), or a linux OS without root/sudo/admin, you'll need to get a linux virtual machine running where you do have root/sudo/admin permissions. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have root access on your local machine, ask a system admin for assistance.
+Because containers interact so closely with the host system, installing Singularity, and building Singularity images requires root/sudo/admin level permissions. While many users of shared computing clusters are unlikely to have these permission level on the clusters where they intend to run the analysis, they may have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the section **Start here if linux user with root/sudo/admin privileges**. If you have a Windows OS or an Apple OS (with our without root/sudo/admin), or a linux OS without root/sudo/admin, you'll need to get a linux virtual machine running where you do have root/sudo/admin permissions. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have root access on your local machine, ask a system admin for assistance.
 
 # Starting from a mac with [Homebrew](http://brew.sh/) installed
 ```bash
@@ -120,10 +120,10 @@ Restart the virtual machine and ssh into it
 ```bash
 vagrant up && vagrant ssh
 ```
-You are now a linux user with root/sudo/admin priviliges
+You are now a linux user with root/sudo/admin privileges
 
 
-# Start here if linux user with root/sudo/admin priviliges
+# Start here if linux user with root/sudo/admin privileges
 
 Here we will install Singularity starting from an Ubuntu 14.04 LTS "Trusty" 64-bit base installation
 ```bash
@@ -133,7 +133,7 @@ git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./au
 
 We want to create a singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a maximum of 16Gb (final image size should be 9.8Gb). **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the iamge with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
+First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a maximum of 16Gb (final image size should be 9.8Gb). **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
 sudo singularity create --size 16000 test.img
 ```
@@ -153,7 +153,7 @@ Now you should be inside of the image. Feel free to jump around the file system 
 
 [Linuxbrew](http://linuxbrew.sh/) and [Anaconda](https://www.continuum.io/downloads) are two great package managers that greatly simplify the process of installing and managing software. The default software available via apt-get is often out of date compared to those available via either Linuxbrew and Anaconda, and additionally, both of these package managers have recipes to install a wide-variety of software useful for researchers.
 
-By default, when entering a container, you enter into it and stay in the same directory on the host where you started from. Run `pwd` and notice the `(unreachable)` prepension to the path. Our current directory is immutable because we have both remained in a directory on the host computer, but also specified that we want to `--contain` our actions to only the contents of the container.
+By default, when entering a container, you enter into it and stay in the same directory on the host where you started from. Run `pwd` and notice the `(unreachable)` pre-pension to the path. Our current directory is immutable because we have both remained in a directory on the host computer, but also specified that we want to `--contain` our actions to only the contents of the container.
 
 Let's change to the user directory of our current user inside of the container, which is `root`, so we have a mutable space that can generate temporary files needed to install software.
 ```bash
