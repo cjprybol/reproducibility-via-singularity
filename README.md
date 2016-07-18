@@ -9,7 +9,7 @@ Run this code on a linux-based operating system with singularity installed and i
 ```bash
 git clone git@github.com:cjprybol/reproducibility-via-singularity.git
 cd reproducibility-via-singularity
-wget {image}
+wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/i108j365ewur9cudcbehmd5aij9df2gu.img -O demo.img
 ./reproduce_project.sh
 ```
 
