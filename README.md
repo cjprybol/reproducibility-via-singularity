@@ -21,7 +21,7 @@ I encourage you to read and execute the `reproduce_project.sh` file and see for 
 
 This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducible research can be, and should be, be as simple as running 4 code instructions. However, by extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects.
 
-**Software Requirements**
+**Hardware Requirements**
   - RAM ~ 8Gb
   - CPU = 1
   - available disk space ~ 3 Gb
