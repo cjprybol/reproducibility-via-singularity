@@ -131,9 +131,9 @@ sudo apt-get install -y build-essential git vim autoconf libtool curl debootstra
 git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./autogen.sh && ./configure --prefix=/usr/local && make && sudo make install
 ```
 
-We want to create a singularity container, load it with an operating system, and install our reproducable computing environment onto it.
+We want to create a singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on.
+First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a generous maximum of 24Gb. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the iamge with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
 sudo singularity create --size 24000 test.img
 ```
@@ -145,14 +145,16 @@ sudo singularity bootstrap test.img $HOME/singularity/examples/ubuntu.def
 
 We have a container! But it doesn't have much loaded onto it. Let's enter into a bash shell that is running inside of the container. By default, containers have the ability to read and write data to the filesystem of the host, yet containers themselves are immutable. Here, we will launch our shell session with the `--contain` flag, which blocks our ability to interact with the hosting computer, and the `--writable` flag such that we can modify the contents of the container
 ```bash
-sudo singularity shell -w --contain test.img
+sudo singularity shell --writable --contain test.img
 ```
 
 Now you should be inside of the image. Feel free to jump around the file system to learn your way around.
 
 [Linuxbrew](http://linuxbrew.sh/) and [Anaconda](https://www.continuum.io/downloads) are two great package managers that greatly simplify the process of installing and managing software. The default software available via apt-get is often out of date compared to those available via either Linuxbrew and Anaconda, and additionally, both of these package managers have recipes to install a wide-variety of software useful for researchers.
 
-By default, when entering a container, you enter into it and stay in the same directory on the host where you started from. Run `pwd` and notice the `(unreachable)` prepension to the path. Let's change to the user directory of our current user inside of the container, which is `root`
+By default, when entering a container, you enter into it and stay in the same directory on the host where you started from. Run `pwd` and notice the `(unreachable)` prepension to the path. Our current directory is immutable because we have both remained in a directory on the host computer, but also specified that we want to `--contain` our actions to only the contents of the container.
+
+Let's change to the user directory of our current user inside of the container, which is `root`, so we have a mutable space that can generate temporary files needed to install software.
 ```bash
 cd /root
 ```
@@ -169,12 +171,14 @@ mkdir /scratch /share
 
 Here we install required system dependencies for other software. Software required for your case may be different
 ```bash
-apt-get update && apt-get install -y build-essential curl wget git python-setuptools ruby nettle-dev
+apt-get update && apt-get install -y build-essential curl wget git python-setuptools ruby nettle-dev && apt-get clean
 ```
 
-Install Linuxbrew, and open it for editing by all users (temporarily)
+Install Linuxbrew
+<!--, and open it for editing by all users (temporarily)-->
 ```bash
-rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local && chmod -R 777 /usr/local
+# rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local && chmod -R 777 /usr/local
+rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local
 ```
 
 Make a new directory for installing additional software
@@ -182,16 +186,14 @@ Make a new directory for installing additional software
 mkdir /Software && cd /Software
 ```
 
-Linuxbrew expects non-root usage, so make temporary user. This will ensure any software installed is executable without root/sudo/admin permissions outside of the container as well.
-```bash
-useradd -m user && su user
-```
+<!--Linuxbrew expects non-root usage, so make temporary user. This will ensure any software installed is executable without root/sudo/admin permissions outside of the container as well.-->
+<!--```bash-->
+<!--useradd -m user && su user-->
+<!--```-->
 
 Install Anaconda
 ```bash
-wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh && \
-bash Anaconda3-4.1.0-Linux-x86_64.sh -b -p /Software/anaconda3 && \
-rm Anaconda3-4.1.0-Linux-x86_64.sh
+wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh && bash Anaconda3-4.1.0-Linux-x86_64.sh -b -p /Software/anaconda3 && rm Anaconda3-4.1.0-Linux-x86_64.sh
 ```
 
 Add the new software to the `$PATH`
@@ -203,12 +205,12 @@ Now let's use our package managers to quickly and easily install and configure s
 
 **Linuxbrew**
 ```bash
-cd /home/user
+# cd /home/user
 brew install --force-bottle openssl open-mpi
 brew install curl automake cmake git libtool parallel pigz wget
 brew tap homebrew/science
 brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib jellyfish kallisto last lighter novoalign openblas picard-tools plink r samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
-
+rm -ri $(brew --cache)
 ```
 
 **Anaconda**
@@ -238,14 +240,14 @@ ln -s /Software/julia/julia /usr/local/bin
 
 We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone. Alternatively, you can also specify the full path when calling executables inside of the container. In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. I have a pre-prepared `/environment` file that I saved to a gist for easy access.
 ```bash
-exit # back to root
+# exit # back to root
 cd / && rm /environment && wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/e3baaabf9b95e65e765b9231d1594325/raw/9d8391b29fac7d0ed7b84442e1b3ebe2d3df3a36/environment
 ```
 
-Now that linuxbrew is all set with software, let's remove the global ability to modify it's contents
-```bash
-chmod -R 775 /usr/local
-```
+<!--Now that linuxbrew is all set with software, let's remove the global ability to modify it's contents-->
+<!--```bash-->
+<!--chmod -R 775 /usr/local-->
+<!--```-->
 
 Exit the container to the host linux
 ```bash
@@ -278,8 +280,6 @@ quit(save="no")
 singularity exec test.img julia
 pkgs = [ "DataFrames", "FreqTables", "Distributions", "GLM", "HypothesisTests", "Nettle", "IJulia", "RCall", "NormalizeQuantiles", "Plots", "PyPlot", "GR", "BenchmarkTools", "MLBase", "NullableArrays" ]
 map(Pkg.add, pkgs)
-map(Pkg.build, pkgs)
-using DataFrames, FreqTables, Distributions, GLM, HypothesisTests, Nettle, IJulia, RCall, NormalizeQuantiles, Plots, GR, BenchmarkTools, MLBase, NullableArrays, PyPlot
 ```
 
 # How do I get the version numbers of installed software?
@@ -294,6 +294,10 @@ quit(save="no")
 julia
 Pkg.installed()
 exit()
+```
+
+```bash
+singularity run test.img
 ```
 
 # Do I have to manually build a container by hand each time I want to do this?
