@@ -24,9 +24,9 @@ This is a contrived example, designed to run quickly and efficiently to demonstr
 **Software Requirements**
   - RAM ~ 8Gb
   - CPU = 1
-  - available disk space: ~3 Gb
+  - available disk space ~ 3 Gb
 
-time to run > 10 minutes on a modern laptop with decent download speeds
+time to run < 10 minutes on a modern laptop with decent download rates (10 Mb/s?)
 
 Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducability lowers the barrier for others to investigate your work. Together, this encourages responsible research conduct and increases the rate of knowledge transfer.
 
@@ -104,7 +104,7 @@ Find the code block that looks like this
 # end
 ```
 
-Uncomment the code block and the memory line, setting the memory to 4Gb
+Uncomment the code block and the memory line, setting the memory to 8Gb and throwing in another core for good measure
 ```
 config.vm.provider "virtualbox" do |vb|
 #   # Display the VirtualBox GUI when booting the machine
@@ -142,8 +142,9 @@ We will preload a Ubuntu 14.04 LTS "Trusty" 64-bit base install
 ```bash
 sudo singularity bootstrap test.img $HOME/singularity/examples/ubuntu.def
 ```
+Congratulations, you've made a container!
 
-We have a container! But it doesn't have much loaded onto it. Let's enter into a bash shell that is running inside of the container. By default, containers have the ability to read and write data to the filesystem of the host, yet containers themselves are immutable. Here, we will launch our shell session with the `--contain` flag, which blocks our ability to interact with the hosting computer, and the `--writable` flag such that we can modify the contents of the container
+We have a container, but it doesn't have much software loaded onto it. Let's enter into a bash shell that is running inside of the container. By default, containers have the ability to read and write data to the filesystem of the host, yet containers themselves are immutable. Here, we will launch our shell session with the `--contain` flag, which blocks our ability to interact with the hosting computer, and the `--writable` flag such that we can modify the contents of the container
 ```bash
 sudo singularity shell --writable --contain test.img
 ```
@@ -175,7 +176,6 @@ apt-get update && apt-get install -y build-essential curl wget git python-setupt
 ```
 
 Install Linuxbrew
-<!--, and open it for editing by all users (temporarily)-->
 ```bash
 # rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local && chmod -R 777 /usr/local
 rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local
@@ -185,11 +185,6 @@ Make a new directory for installing additional software
 ```bash
 mkdir /Software && cd /Software
 ```
-
-<!--Linuxbrew expects non-root usage, so make temporary user. This will ensure any software installed is executable without root/sudo/admin permissions outside of the container as well.-->
-<!--```bash-->
-<!--useradd -m user && su user-->
-<!--```-->
 
 Install Anaconda
 ```bash
@@ -205,12 +200,11 @@ Now let's use our package managers to quickly and easily install and configure s
 
 **Linuxbrew**
 ```bash
-# cd /home/user
 brew install --force-bottle openssl open-mpi
 brew install curl automake cmake git libtool parallel pigz wget
 brew tap homebrew/science
-brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib jellyfish kallisto last lighter novoalign openblas picard-tools plink r samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
-rm -ri $(brew --cache)
+brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib jellyfish kallisto last lighter novoalign openblas picard-tools plink samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
+rm -r $(brew --cache)
 ```
 
 **Anaconda**
@@ -218,9 +212,9 @@ rm -ri $(brew --cache)
 conda config --add channels r
 conda config --add channels bioconda
 conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
-conda install --channel https://conda.anaconda.org/conda-forge tensorflow
+conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow
 pip install keras
-conda install -y -c r r
+conda install -y --channel r r
 conda install -y --channel bioconda cufflinks cutadapt freebayes rsem rtg-tools sailfish salmon sambamba star plink2 trinity
 conda clean -y --all
 ```
@@ -240,7 +234,6 @@ ln -s /Software/julia/julia /usr/local/bin
 
 We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone. Alternatively, you can also specify the full path when calling executables inside of the container. In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. I have a pre-prepared `/environment` file that I saved to a gist for easy access.
 ```bash
-# exit # back to root
 cd / && rm /environment && wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/e3baaabf9b95e65e765b9231d1594325/raw/9d8391b29fac7d0ed7b84442e1b3ebe2d3df3a36/environment
 ```
 
