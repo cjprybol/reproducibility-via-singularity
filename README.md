@@ -133,9 +133,9 @@ git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./au
 
 We want to create a singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a generous maximum of 24Gb. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the iamge with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
+First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a maximum of 16Gb (final image size should be 9.8Gb). **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the iamge with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
-sudo singularity create --size 24000 test.img
+sudo singularity create --size 16000 test.img
 ```
 
 We will preload a Ubuntu 14.04 LTS "Trusty" 64-bit base install
@@ -219,7 +219,7 @@ conda install -y --channel bioconda cufflinks cutadapt freebayes rsem rtg-tools 
 conda clean -y --all
 ```
 
-I'll install Julia from source via GitHub, as an example of how to manually install software not available via the package managers, as well as a plug for the language (which I recommend you try out!). Add your own custom recipes for installing software here and configure a system that meets your needs.
+I'll install [Julia](http://julialang.org/) from source via GitHub, as an example of how to manually install software not available via the package managers, as well as a plug for the language (which I recommend you try out!). Add your own custom recipes for installing software here and configure a system that meets your needs.
 ```bash
 cd /Software
 git clone git://github.com/JuliaLang/julia.git
