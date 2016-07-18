@@ -235,12 +235,8 @@ ln -s /Software/julia/julia /usr/local/bin
 We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone. Alternatively, you can also specify the full path when calling executables inside of the container. In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. I have a pre-prepared `/environment` file that I saved to a gist for easy access.
 ```bash
 cd / && rm /environment && wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/e3baaabf9b95e65e765b9231d1594325/raw/9d8391b29fac7d0ed7b84442e1b3ebe2d3df3a36/environment
+wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/13a95c9df3f1307b6e62bebe2a7e0a11/raw/5328c0d2178a51e9f5d05ed113321bd6cf2d2521/singularity
 ```
-
-<!--Now that linuxbrew is all set with software, let's remove the global ability to modify it's contents-->
-<!--```bash-->
-<!--chmod -R 775 /usr/local-->
-<!--```-->
 
 Exit the container to the host linux
 ```bash
@@ -277,20 +273,23 @@ map(Pkg.add, pkgs)
 
 # How do I get the version numbers of installed software?
 ```bash
-conda list | tail -n+3 | awk '{print $1, $2}' > temp.info
-brew list --versions >> temp.info
-julia --version | awk '{print $1, $3}' >> temp.info
-column -t temp.info | sort -u
-R
-installed.packages(fields = c("Package", "Version"))[,c("Package", "Version")]
-quit(save="no")
-julia
-Pkg.installed()
-exit()
+singularity run test.img
 ```
 
+# What about R and Julia Packages?
+
+**R**
 ```bash
-singularity run test.img
+singularity exec test.img R
+installed.packages(fields = c("Package", "Version"))[,c("Package", "Version")]
+quit(save="no")
+```
+
+**Julia**
+```bash
+singularity exec test.img julia
+Pkg.installed()
+exit()
 ```
 
 # Do I have to manually build a container by hand each time I want to do this?
