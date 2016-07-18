@@ -299,5 +299,5 @@ Pkg.installed()
 exit()
 ```
 
-# Do I have to manually build a container by hand each time I want to do this?
+# Do I have to manually build a container each time I want to do this?
 No! But I do recommend the interactive method when trying to install software for the first time, since it'll be easier to troubleshoot any issues. But once you have a reliable installation recipe ready, checkout [the documentation](http://singularity.lbl.gov/#bootstrap) for how to create a definition file for bootstrapping ready-to-go containers!
