@@ -177,7 +177,6 @@ apt-get update && apt-get install -y build-essential curl wget git python-setupt
 
 Install Linuxbrew
 ```bash
-# rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local && chmod -R 777 /usr/local
 rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local
 ```
 
