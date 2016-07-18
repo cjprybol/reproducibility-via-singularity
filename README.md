@@ -19,9 +19,16 @@ wget https://stanfordmedicine.box.com/shared/static/i108j365ewur9cudcbehmd5aij9d
 
 I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will download 1 sample of paired-end RNA sequencing reads, and quantify transcript isoform abundances in the sample. Run `less Kallisto/abundance.tsv` to see the results!
 
-This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducable research can be, and should be, be as simple as running 4 lines of code. This container only contains a few executables, and `reproduce_project.sh` only contains a few instructions. It should only require a few Gb of disk space, ~8Gb of RAM, and a few minutes of time on a modern laptop. However, the container and the master execution script can both exponentially increase in complexity and resources required without adding any more complexity to the 4 lines required to reproduce it from scratch.
+This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducable research can be, and should be, be as simple as running 4 code instructions. However, by extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects. 
 
-The complete set of inputs (data and code) and their corresponding outputs (computed results, summary stats, graphs, and anything else needed to support an idea) are made available to anyone with Git and Singularity installed, and sufficient resources to run the analysis. Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducability lowers the barrier for others to investigate your work. Together, this encourages responsible research conduct and increases the rate of knowledge transfer.
+**Software Requirements**
+  - RAM ~ 8Gb
+  - CPU = 1
+  - available disk space: ~3 Gb
+
+time to run > 10 minutes on a modern laptop with decent download speeds
+
+Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducability lowers the barrier for others to investigate your work. Together, this encourages responsible research conduct and increases the rate of knowledge transfer.
 
 # What is Singularity?
 
@@ -29,9 +36,9 @@ A Singularity container is a complete linux kernel capable of executing code and
 
 # What is Singularity not?
 
-A magic, drag and drop, point and click solution. Singularity requires some understanding of how operating systems work in order to effectively use it and understand it. That being said, it's also very well designed, and should be intuitive for anyone who has fiddled around with setting up computing environments on their personal computer, in a cluster,a VM, or cloud service. Singularity will do the hard work of generating an operating system inside of the image file, also refered to as a "container". Singularity will also ensure that whatever you get installed on that container will execute the same on any computer with the Singularity runtime engine installed. You simply have to install the software to a plain vanilla linux distro of your choosing, which will all live inside the container file.
+A magic, drag and drop, point and click solution. Singularity requires some understanding of how operating systems work in order to effectively use it and understand it. That being said, it's also very well designed, and should be intuitive for anyone who has set up a computing environment on their personal computer, a cluster, a VM, or a cloud service. Singularity will generate an operating system inside of the image file, or "container". Singularity will ensure that whatever you install in the container will execute the same on any computer with the Singularity installed. You simply load the container with software and configure it as you would set up any other basic linux installation.
 
-Another consideration is that containers require sudo/root/admin priviliges to modify and edit. This design feature makes Singularity containers incompatible with software that was programmed to download files to, or edit files within, the same directory (or sub-directories) where the the software is installed, as those directories will be within the immutable container. This design strategy is used by many annotation libraries that download data from public databases. However, if these libraries allow the option to write to a directory on the host, such as the users `$HOME` directory, or a directory specified by the user, than this will not be a problem. Another approach would be to simply pre-download data and pre-generate files, although this may result in container files that are too large to effectively share.
+Containers require sudo/root/admin priviliges to modify and edit. This design feature makes Singularity containers incompatible with software that is programmed to download files to, or edit files within, the same directory (or sub-directories) where the the software is installed, as those directories will be within the immutable container. This design strategy is used by many annotation libraries that download data from public databases. However, if these libraries allow the option to write to a directory on the host, such as the users `$HOME` directory, or a directory specified by the user, than this will not be a problem. Another approach would be to simply pre-download data and pre-generate files, although this may result in container files that are too large to effectively share.
 
 # How do I interact with a container?
 
@@ -41,7 +48,8 @@ If you would normally run a command as:
 ```bash
 CMD --flag1 --flag2 argument1 argument2 ...
 ```
-To run that command from within the singularity container you can simply pre-prend the appropriate singularity command
+
+That command can be executed by the software inside of the container, instead of by the host software, by prepending the appropriate command
 ```bash
 singularity exec my_singularity_container.img CMD --flag1 --flag2 argument1 argument2 ...
 ```
@@ -53,7 +61,8 @@ Here, python3 is not installed on the host system, and cannot be run
 vagrant@jessie:~$ python3
 -bash: python3: command not found
 ```
-But this computer has singularity installed, and a container that has python3 installed
+
+But python3 is installed inside of a container present in the current directory
 ```bash
 vagrant@jessie:~$ singularity exec test.img python3
 Python 3.5.2 |Anaconda 4.1.1 (64-bit)| (default, Jul  2 2016, 17:53:06)
@@ -64,7 +73,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 # How do I build a singularity image to use with my own project?
 
-Because containers interact so closely with the host system, installing singularity and building singularity images require root/sudo/admin level permissions. While many users of shared computing clusters are unlikely to have these permission levels, they may have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the section **Start here if linux user with root/sudo/admin priviliges**. If you have a Windows OS or an Apple OS (with our without root/sudo/admin), or a linux OS without root/sudo/admin, you'll need to get a linux virtual machine running where you do have root/sudo/admin permissions. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have root access on your local machine, ask a system admin for assistance.
+Because containers interact so closely with the host system, installing Singularity, and building Singularity images requires root/sudo/admin level permissions. While many users of shared computing clusters are unlikely to have these permission level on the clusters where they intend to run the analysis, they may have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the section **Start here if linux user with root/sudo/admin priviliges**. If you have a Windows OS or an Apple OS (with our without root/sudo/admin), or a linux OS without root/sudo/admin, you'll need to get a linux virtual machine running where you do have root/sudo/admin permissions. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have root access on your local machine, ask a system admin for assistance.
 
 # Starting from a mac with [Homebrew](http://brew.sh/) installed
 ```bash
@@ -72,13 +81,13 @@ brew tap caskroom/cask
 brew cask install vagrant
 # brew cask install virtualbox
 ```
-**Quick aside**: this implementation doesn't work with the new VirtualBox 5.1, and thus I've had to bail on the current (as of July 16, 2016) virtualbox cask install. Go to [VirtualBox's old build page](https://www.virtualbox.org/wiki/Download_Old_Builds_5_0) and install the appropriate version for your system
+**Quick Fix**: These instructions don't work with the new VirtualBox 5.1 `brew cask` install, and thus I've had to bail on the current (as of July 16, 2016) cask. Go to [VirtualBox's old build page](https://www.virtualbox.org/wiki/Download_Old_Builds_5_0) and install the appropriate version for your system. Or try the `brew cask` method and let me know that it works again and I'll update these instructions.
 ```bash
 mkdir singularity-vm && cd singularity-vm
 # generate a virtual machine
 vagrant init ubuntu/trusty64; vagrant up --provider virtualbox && vagrant halt
 ```
-Now we've initalized a lightweight virtual machine via a combination of vagrant and virtualbox. The virtual machine has some preset defaults that, in my experience, I've had to adjust. First and foremost the initial memory allocation. I'm unsure of what the default is, but I only found success when bumping the memory allocation up to 4Gb.
+Now we have a lightweight virtual machine implemented with vagrant and virtualbox. The virtual machine has some preset defaults that were too restrictive for running this demo. The default memory allocation is was unable to execute the code, however I was able to run the demo after setting the memory allocation to 8Gb.
 
 ```bash
 vi Vagrantfile
