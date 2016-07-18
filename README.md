@@ -269,6 +269,7 @@ quit(save="no")
 singularity exec test.img julia
 pkgs = [ "DataFrames", "FreqTables", "Distributions", "GLM", "HypothesisTests", "Nettle", "IJulia", "RCall", "NormalizeQuantiles", "Plots", "PyPlot", "GR", "BenchmarkTools", "MLBase", "NullableArrays" ]
 map(Pkg.add, pkgs)
+exit()
 ```
 
 # How do I get the version numbers of installed software?
