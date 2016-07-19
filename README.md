@@ -241,7 +241,7 @@ ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin/rtg
 
 RTG requires to know whether or not we want to accept automatic usage logging. RTG may try to write to the container for logging, which will fail, so say no
 ```bash
-Singularity.test.img> # rtg
+Singularity.test.img> rtg
 RTG has a facility to automatically send basic usage information to Real
 Time Genomics. This does not contain confidential information such as
 command-line parameters or dataset contents.
