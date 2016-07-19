@@ -8,15 +8,15 @@ Universities and research laboratories often conduct their work on shared HPC cl
 # TL;DR
 
 **Hardware Requirements for this example**
-  - RAM ~ 8Gb
+  - RAM ~ 4Gb
   - CPU = 1
-  - available disk space ~ 3 Gb
+  - available disk space ~ 1 Gb
 
 Run this code on a linux-based operating system with singularity installed and in the `$PATH`
 ```bash
 git clone https://github.com/cjprybol/reproducibility-via-singularity.git
 cd reproducibility-via-singularity
-wget https://stanfordmedicine.box.com/shared/static/i108j365ewur9cudcbehmd5aij9df2gu.img -O demo.img
+wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/fbuap57hb3ywl7f741t1x4mcq9akznl4.img -O demo.img
 ./reproduce_project.sh
 ```
 
