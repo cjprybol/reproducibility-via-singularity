@@ -104,15 +104,14 @@ Find the code block that looks like this
 # end
 ```
 
-Uncomment the code block and the memory line, setting the memory to 8Gb and throwing in another core for good measure
+Uncomment the code block and the memory line, setting the memory to 4Gb
 ```
 config.vm.provider "virtualbox" do |vb|
 #   # Display the VirtualBox GUI when booting the machine
 #   vb.gui = true
 #
 #   # Customize the amount of memory on the VM:
-  vb.memory = "8192"
-  vb.cpus = 2
+  vb.memory = "4096"
 end
 ```
 
