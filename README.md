@@ -7,6 +7,11 @@ Universities and research laboratories often conduct their work on shared HPC cl
 
 # TL;DR
 
+**Hardware Requirements**
+  - RAM ~ 8Gb
+  - CPU = 1
+  - available disk space ~ 3 Gb
+
 Run this code on a linux-based operating system with singularity installed and in the `$PATH`
 ```bash
 git clone https://github.com/cjprybol/reproducibility-via-singularity.git
@@ -15,18 +20,13 @@ wget https://stanfordmedicine.box.com/shared/static/i108j365ewur9cudcbehmd5aij9d
 ./reproduce_project.sh
 ```
 
+time to run < 10 minutes on a modern laptop with decent download rates (10 Mb/s?)
+
 # What does that code do?
 
 I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will download 1 sample of paired-end RNA sequencing reads, and quantify transcript isoform abundances in the sample. Run `less Kallisto/abundance.tsv` to see the results!
 
 This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducible research can be, and should be, be as simple as running 4 code instructions. However, by extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects.
-
-**Hardware Requirements**
-  - RAM ~ 8Gb
-  - CPU = 1
-  - available disk space ~ 3 Gb
-
-time to run < 10 minutes on a modern laptop with decent download rates (10 Mb/s?)
 
 Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducibility lowers the barrier for others to investigate your work. This encourages responsible research conduct and increases the rate of knowledge transfer.
 
