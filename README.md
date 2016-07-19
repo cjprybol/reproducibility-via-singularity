@@ -7,7 +7,7 @@ Universities and research laboratories often conduct their work on shared HPC cl
 
 # TL;DR
 
-**Hardware Requirements**
+**Hardware Requirements for this example**
   - RAM ~ 8Gb
   - CPU = 1
   - available disk space ~ 3 Gb
