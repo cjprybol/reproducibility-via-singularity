@@ -214,7 +214,7 @@ conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
 conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow
 pip install keras
 conda install -y --channel r r
-conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes impute2 pindel plink2 rsem rtg-tools sailfish salmon sambamba star trinity
+conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 pindel plink2 rsem sailfish salmon sambamba star trinity
 conda clean -y --all
 ```
 
@@ -222,13 +222,31 @@ I'll install [Julia](http://julialang.org/) from source via GitHub, as an exampl
 ```bash
 cd /Software
 git clone git://github.com/JuliaLang/julia.git
-cd julia
-git checkout release-0.4
+cd julia && git checkout release-0.4
 touch Make.user
 echo "USE_SYSTEM_GMP=1" >> Make.user
 echo "USE_SYSTEM_MPFR=1" >> Make.user
 make
 ln -s /Software/julia/julia /usr/local/bin
+```
+
+Install RTG core
+```bash
+cd /Software
+wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip
+unzip rtg-core-non-commercial-3.6.2-linux-x64.zip
+rm rtg-core-non-commercial-3.6.2-linux-x64.zip
+ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin/rtg
+```
+
+RTG requires to know whether or not we want to accept automatic usage logging. RTG may try to write to the container for logging, which will fail, so say no
+```bash
+Singularity.test.img> # rtg
+RTG has a facility to automatically send basic usage information to Real
+Time Genomics. This does not contain confidential information such as
+command-line parameters or dataset contents.
+
+Would you like to enable automatic usage logging (y/n)? y
 ```
 
 We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone. Alternatively, you can also specify the full path when calling executables inside of the container. In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. I have a pre-prepared `/environment` file that I saved to a gist for easy access.
@@ -238,7 +256,7 @@ cd / && rm /environment && wget --no-check-certificate https://gist.githubuserco
 
 We'll download one more pre-written script that will list all software installed with Linuxbrew and Anaconda, as well as the Julia version. It will sort the list and return to us an A-Z list of installed software with the version number for everything! Go [here](https://github.com/cjprybol/reproducibility-via-singularity/blob/master/README.md#how-do-i-get-the-version-numbers-of-installed-software) to see how to call it
 ```bash
-wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/13a95c9df3f1307b6e62bebe2a7e0a11/raw/114e9700ce8923e12ac9a31f383d03082ce4d2af/singularity
+wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/13a95c9df3f1307b6e62bebe2a7e0a11/raw/3c2b32eb1587807429d014ed9c8d4602f5eb96ab/singularity
 chmod 775 singularity
 ```
 
@@ -250,10 +268,8 @@ exit
 Another tool I use that cannot be installed via either package manager due to licensing restrictions is [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). I've downloaded the GATK installer to the same directory where my container is. By entering the container again without the `--contain` flag, we allow the container to interact with the host system, and copy GATK into Anaconda
 ```bash
 sudo singularity shell --writable test.img
-conda install -y --channel bioconda gatk
 gatk-register /home/vagrant/GenomeAnalysisTK-3.6.tar.bz2
 rm GenomeAnalysisTK-3.6.tar.bz2
-exit
 ```
 
 You're all done, you've built a great base-image for computational genomics! Adjust these installation steps to your needs.
