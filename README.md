@@ -133,7 +133,7 @@ git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./au
 
 We want to create a singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a maximum of 16Gb (final image size should be 9.8Gb). **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
+First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a maximum of 16Gb. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
 sudo singularity create --size 16000 test.img
 ```
@@ -202,7 +202,7 @@ Now let's use our package managers to quickly and easily install and configure s
 brew install --force-bottle openssl open-mpi
 brew install curl automake cmake git libtool parallel pigz wget
 brew tap homebrew/science
-brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib jellyfish kallisto last lighter novoalign openblas picard-tools plink samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
+brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib igv jellyfish kallisto last lighter novoalign openblas picard-tools plink samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
 rm -r $(brew --cache)
 ```
 
@@ -214,7 +214,7 @@ conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
 conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow
 pip install keras
 conda install -y --channel r r
-conda install -y --channel bioconda cufflinks cutadapt freebayes rsem rtg-tools sailfish salmon sambamba star plink2 trinity
+conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes impute2 pindel plink2 rsem rtg-tools sailfish salmon sambamba star trinity
 conda clean -y --all
 ```
 
