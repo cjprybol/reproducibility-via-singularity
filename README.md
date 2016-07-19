@@ -202,7 +202,7 @@ Now let's use our package managers to quickly and easily install and configure s
 brew install --force-bottle openssl open-mpi
 brew install curl automake cmake git libtool parallel pigz wget
 brew tap homebrew/science
-brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib jellyfish kallisto last lighter novoalign openblas picard-tools plink samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
+brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa cramtools exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib impute2 jellyfish kallisto last lighter novoalign openblas picard-tools pindel plink samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
 rm -r $(brew --cache)
 ```
 
