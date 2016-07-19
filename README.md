@@ -20,7 +20,7 @@ wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/fbuap
 ./reproduce_project.sh
 ```
 
-time to run < 10 minutes on a modern laptop with decent download rates (10 Mb/s?)
+time to run < 5 minutes on a modern laptop with decent download rates (10 Mb/s?)
 
 # What does that code do?
 
