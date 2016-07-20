@@ -196,7 +196,7 @@ PATH="/usr/local/sbin:/usr/local/bin:/Software/anaconda3/bin:/bin:/sbin:/usr/sbi
 
 Now let's use our package managers to quickly and easily install and configure software into the container. You can review their full offerings here -> [Homebrew-science](https://github.com/Homebrew/homebrew-science) & [Bioconda channel of anaconda](https://github.com/bioconda/bioconda-recipes/tree/master/recipes)
 
-**Linuxbrew**
+Linuxbrew
 ```bash
 brew install --force-bottle openssl open-mpi
 brew install curl automake cmake git libtool parallel pigz wget
@@ -205,7 +205,7 @@ brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa
 rm -r $(brew --cache)
 ```
 
-**Anaconda**
+Anaconda
 ```bash
 conda config --add channels r
 conda config --add channels bioconda
@@ -217,7 +217,7 @@ conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk 
 conda clean -y --all
 ```
 
-**Setup R packages**
+Setup R packages
 ```bash
 wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/03ed055be66e2e304d4dc63bb40dd5c0/raw/523c172450938d7dc17637f7bf91deb084a17587/install_packages.R && chmod 775 install_packages.R && ./install_packages.R
 rm install_packages.R
