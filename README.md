@@ -222,7 +222,7 @@ conda clean -y --all
 
 Setup R packages
 ```bash
-wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/03ed055be66e2e304d4dc63bb40dd5c0/raw/7ec35d5d4f457a4554860a34e203ec0939d3a68d/install_packages.R && chmod 775 install_packages.R && ./install_packages.R
+wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/install_packages.R && chmod 775 install_packages.R && ./install_packages.R
 rm install_packages.R
 ```
 
