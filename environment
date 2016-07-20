@@ -1,0 +1,6 @@
+if test -z "$SINGULARITY_INIT"; then
+    PATH=.:/usr/local/sbin:/usr/local/bin:/Software/anaconda3/bin:/bin:/sbin:/usr/sbin:/usr/bin:
+    PS1="Singularity.$SINGULARITY_CONTAINER> $PS1"
+    SINGULARITY_INIT=1
+    export PATH PS1 SINGULARITY_INIT
+fi
