@@ -264,7 +264,7 @@ cd / && rm /environment && wget --no-check-certificate https://raw.githubusercon
 
 We'll download one more pre-written script that will list all software installed with Linuxbrew and Anaconda, as well as the Julia version. It will sort the list and return to us an A-Z list of installed software with the version number for everything! Go [here](https://github.com/cjprybol/reproducibility-via-singularity/blob/master/README.md#how-do-i-get-the-version-numbers-of-installed-software) to see how to call it
 ```bash
-wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/13a95c9df3f1307b6e62bebe2a7e0a11/raw/3c2b32eb1587807429d014ed9c8d4602f5eb96ab/singularity
+wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/singularity
 chmod 775 singularity
 ```
 
@@ -278,6 +278,7 @@ Another tool I use that cannot be installed via either package manager due to li
 sudo singularity shell --writable test.img
 gatk-register /home/vagrant/GenomeAnalysisTK-3.6.tar.bz2
 rm GenomeAnalysisTK-3.6.tar.bz2
+exit
 ```
 
 You're all done, you've built a great base-image for computational genomics! Adjust these installation steps to your needs.
