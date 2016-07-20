@@ -259,7 +259,7 @@ Would you like to enable automatic usage logging (y/n)? n
 
 We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone. Alternatively, you can also specify the full path when calling executables inside of the container. In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. I have a pre-prepared `/environment` file that I saved to a gist for easy access.
 ```bash
-cd / && rm /environment && wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/e3baaabf9b95e65e765b9231d1594325/raw/e06e16f8a7049bb4051f45daca7d5767fc9de2ed/environment
+cd / && rm /environment && wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
 ```
 
 We'll download one more pre-written script that will list all software installed with Linuxbrew and Anaconda, as well as the Julia version. It will sort the list and return to us an A-Z list of installed software with the version number for everything! Go [here](https://github.com/cjprybol/reproducibility-via-singularity/blob/master/README.md#how-do-i-get-the-version-numbers-of-installed-software) to see how to call it
