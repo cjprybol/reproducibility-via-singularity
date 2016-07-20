@@ -201,7 +201,7 @@ Linuxbrew
 brew install --force-bottle openssl open-mpi
 brew install curl automake cmake git libtool parallel pigz wget
 brew tap homebrew/science
-brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib igv jellyfish kallisto last lighter novoalign openblas picard-tools plink r samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
+brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer htslib igv jellyfish kallisto last lighter novoalign openblas picard-tools plink r samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
 rm -r $(brew --cache)
 ```
 
