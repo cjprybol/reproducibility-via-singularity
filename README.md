@@ -7,7 +7,7 @@ Universities and research laboratories often conduct their work on shared HPC cl
 
 # TL;DR
 
-**Hardware Requirements for this example**
+**Hardware requirements for this example**
   - RAM ~ 4Gb
   - CPU = 1
   - available disk space ~ 1 Gb
@@ -81,7 +81,7 @@ brew tap caskroom/cask
 brew cask install vagrant
 # brew cask install virtualbox
 ```
-**Quick Fix**: These instructions don't work with the new VirtualBox 5.1 `brew cask` install, and thus I've had to bail on the current (as of July 16, 2016) cask. Go to [VirtualBox's old build page](https://www.virtualbox.org/wiki/Download_Old_Builds_5_0) and install the appropriate version for your system. Or try the `brew cask` method and let me know that it works again and I'll update these instructions.
+**Quick fix**: These instructions don't work with the new VirtualBox 5.1 `brew cask` install, and thus I've had to bail on the current (as of July 16, 2016) cask. Go to [VirtualBox's old build page](https://www.virtualbox.org/wiki/Download_Old_Builds_5_0) and install the appropriate version for your system. Or try the `brew cask` method and let me know that it works again and I'll update these instructions.
 ```bash
 mkdir singularity-vm && cd singularity-vm
 # generate a virtual machine
@@ -217,7 +217,7 @@ conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk 
 conda clean -y --all
 ```
 
-**Setup R Packages**
+**Setup R packages**
 ```bash
 wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/03ed055be66e2e304d4dc63bb40dd5c0/raw/523c172450938d7dc17637f7bf91deb084a17587/install_packages.R && chmod 775 install_packages.R && ./install_packages.R
 rm install_packages.R
