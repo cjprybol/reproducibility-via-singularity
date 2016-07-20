@@ -213,7 +213,8 @@ conda config --add channels r
 conda config --add channels bioconda
 conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
 conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow
-pip install keras
+# linuxbrew is in path BEFORE anaconda, so must call pip for anaconda python3 by full path
+/Software/anaconda3/bin/pip install keras
 conda install -y --channel r r
 conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 pindel plink2 rsem sailfish salmon sambamba star trinity
 conda clean -y --all
