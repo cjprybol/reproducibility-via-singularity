@@ -201,7 +201,7 @@ Now let's use our package managers to quickly and easily install and configure s
 brew install --force-bottle openssl open-mpi
 brew install curl automake cmake git libtool parallel pigz wget
 brew tap homebrew/science
-brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib igv jellyfish kallisto last lighter novoalign openblas picard-tools plink samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
+brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer2 htslib igv jellyfish kallisto last lighter novoalign openblas picard-tools plink r samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
 rm -r $(brew --cache)
 ```
 
@@ -215,6 +215,12 @@ pip install keras
 conda install -y --channel r r
 conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 pindel plink2 rsem sailfish salmon sambamba star trinity
 conda clean -y --all
+```
+
+**Setup R Packages**
+```bash
+wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/03ed055be66e2e304d4dc63bb40dd5c0/raw/523c172450938d7dc17637f7bf91deb084a17587/install_packages.R && chmod 775 install_packages.R && ./install_packages.R
+install_packages.R
 ```
 
 I'll install [Julia](http://julialang.org/) from source via GitHub, as an example of how to manually install software not available via the package managers, as well as a plug for the language (which I recommend you try out!). Add your own custom recipes for installing software here and configure a system that meets your needs.
@@ -272,28 +278,6 @@ rm GenomeAnalysisTK-3.6.tar.bz2
 ```
 
 You're all done, you've built a great base-image for computational genomics! Adjust these installation steps to your needs.
-
-You may have noticed that I installed lots of bioinformatics tools and Python packages, but no packages at all for R or Julia. Why? and How can we install packages to R and Julia if we can't modify the contents of the container? By trial and error I discovered that R is happy to install packages **either** inside of the container **or** outside of the container, but it has trouble when the package library is split between both the container and the host. I think it's easier to just let R install packages to the user's `$HOME` directory, but I hope to update this guide with a more robust solution soon that includes pre-installed R packages. Julia performs pre-compilation the first time a user loads a package, and it should be fine to install julia libraries inside of the container so long as they are completely pre-compiled before use outside of the container. I will also update this guide with examples of how to do that when I have it working.
-
-Anaconda provides a method to copy it's package library onto the host that would enable the user to extend the available Python packages, however it did not work for me when I tried it. You can try yourself by just trying to install a package with `singularity exec container.img conda install {your package}`. Given Anaconda's package library is so complete, I wasn't very worried about locking the package set inside of the container, but you're welcome to skip installing packages during the container initialization and let the end-user create a personal python package database, just remember to provide the code to do so!
-
-**Load R packages**
-```bash
-singularity exec test.img R
-install.packages( c("dplyr", "tidyr", "stringr", "lubridate", "ggplot2 ", "Hmisc", "caret", "randomForest", "survival", "parallel", "shiny", "glmnet", "datatable", "devtools", "Rcpp", "reshape2", "colorspace", "RColorBrewer", "plyr"))
-source("https://bioconductor.org/biocLite.R")
-biocLite()
-biocLite(c("affy", "affyio", "annotate", "biobase", "biocgenerics", "biocinstaller", "biocparallel", "biocstyle", "biomart", "biostrings", "deseq", "deseq2", "edger", "iranges", "limma", "preprocesscore", "rhdf5", "rsamtools", "s4vectors", "variantannotation", "pheatmap", "ChIPpeakAnno"))
-quit(save="no")
-```
-
-**Load Julia packages**
-```bash
-singularity exec test.img julia
-pkgs = [ "DataFrames", "FreqTables", "Distributions", "GLM", "HypothesisTests", "Nettle", "IJulia", "RCall", "NormalizeQuantiles", "Plots", "PyPlot", "GR", "BenchmarkTools", "MLBase", "NullableArrays" ]
-map(Pkg.add, pkgs)
-exit()
-```
 
 # How do I get the version numbers of installed software?
 ```bash
