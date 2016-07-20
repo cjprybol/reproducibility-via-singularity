@@ -207,6 +207,8 @@ rm -r $(brew --cache)
 
 Anaconda
 ```bash
+conda update conda
+conda update anaconda
 conda config --add channels r
 conda config --add channels bioconda
 conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
