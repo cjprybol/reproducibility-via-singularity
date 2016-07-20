@@ -238,7 +238,7 @@ make
 ln -s /Software/julia/julia /usr/local/bin
 ```
 
-Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially, you'll either have to buy a license or skip this installation.
+Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
 ```bash
 cd /Software
 wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip
@@ -247,7 +247,7 @@ rm rtg-core-non-commercial-3.6.2-linux-x64.zip
 ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin/rtg
 ```
 
-RTG requires to know whether or not we want to accept automatic usage logging. RTG may try to write to the container for logging, which will fail, so say no
+The first time you run RTG, it will ask whether or not it can perform logging to help the developers improve the software. Because we intend to run the container without sudo and not in `--writable` mode, any attempts RTG makes to save log files to disk will probably fail, so just say no.
 ```bash
 Singularity.test.img> rtg
 RTG has a facility to automatically send basic usage information to Real
