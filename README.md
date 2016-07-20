@@ -220,7 +220,7 @@ conda clean -y --all
 **Setup R Packages**
 ```bash
 wget --no-check-certificate https://gist.githubusercontent.com/cjprybol/03ed055be66e2e304d4dc63bb40dd5c0/raw/523c172450938d7dc17637f7bf91deb084a17587/install_packages.R && chmod 775 install_packages.R && ./install_packages.R
-install_packages.R
+rm install_packages.R
 ```
 
 I'll install [Julia](http://julialang.org/) from source via GitHub, as an example of how to manually install software not available via the package managers, as well as a plug for the language (which I recommend you try out!). Add your own custom recipes for installing software here and configure a system that meets your needs.
