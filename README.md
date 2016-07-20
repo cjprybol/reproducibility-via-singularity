@@ -238,7 +238,7 @@ make
 ln -s /Software/julia/julia /usr/local/bin
 ```
 
-Install RTG core
+Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially, you'll either have to buy a license or skip this installation.
 ```bash
 cd /Software
 wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip
@@ -305,3 +305,8 @@ exit()
 
 # Do I have to manually build a container each time I want to do this?
 No! But I do recommend the interactive method when trying to install software for the first time, since it'll be easier to troubleshoot any issues. But once you have a reliable installation recipe ready, checkout [the documentation](http://singularity.lbl.gov/#bootstrap) for how to create a definition file for bootstrapping ready-to-go containers!
+
+# Contributions
+Thank you to everyone who has contributed!
+- @gmkurtzer: building Singularity, and feedback on examples and document contents
+- @dwaggott: providing a great list of R packages, and an example of how to install R packages from the command line via an R script
