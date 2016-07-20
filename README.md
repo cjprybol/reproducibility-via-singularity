@@ -132,9 +132,9 @@ git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./au
 
 We want to create a singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a maximum of 16Gb. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
+First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a maximum of 15Gb. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
-sudo singularity create --size 16000 test.img
+sudo singularity create --size 15000 test.img
 ```
 
 We will preload a Ubuntu 14.04 LTS "Trusty" 64-bit base install
