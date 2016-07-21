@@ -311,3 +311,4 @@ No! But I do recommend the interactive method when trying to install software fo
 Thank you to everyone who has contributed!
 - @gmkurtzer: building Singularity, and feedback on examples and document contents
 - @dwaggott: providing a great list of R packages, and an example of how to install R packages from the command line via an R script
+- @kprybol: another extensive list of useful R packages, and an explanation of R's package system (and it's use of Suggests, Depends, Imports, LinkingTo, and Enhances)
