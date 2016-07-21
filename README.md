@@ -174,14 +174,14 @@ Here we install required system dependencies for other software. Software requir
 apt-get update && apt-get install -y build-essential curl wget git python-setuptools ruby nettle-dev ed && apt-get clean
 ```
 
-Install Linuxbrew
-```bash
-rm -r /usr/local && git clone https://github.com/Linuxbrew/brew.git /usr/local
-```
-
 Make a new directory for installing additional software
 ```bash
 mkdir /Software && cd /Software
+```
+
+Install Linuxbrew
+```bash
+git clone https://github.com/Linuxbrew/brew.git /Software/.linuxbrew
 ```
 
 Install Anaconda
@@ -191,33 +191,27 @@ wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh && bash An
 
 Add the new software to the `$PATH`
 ```bash
-PATH="/usr/local/sbin:/usr/local/bin:/Software/anaconda3/bin:/bin:/sbin:/usr/sbin:/usr/bin"
+PATH="/Software/.linuxbrew/bin:/Software/anaconda3/bin:$PATH"
 ```
 
 Now let's use our package managers to quickly and easily install and configure software into the container. You can review their full offerings here -> [Homebrew-science](https://github.com/Homebrew/homebrew-science) & [Bioconda channel of anaconda](https://github.com/bioconda/bioconda-recipes/tree/master/recipes)
 
 Linuxbrew
 ```bash
-brew install --force-bottle openssl open-mpi
-brew install curl automake cmake git libtool parallel pigz wget
-brew tap homebrew/science
-brew install abyss art bamtools bcftools beagle bedtools bowtie bowtie2 blat bwa exonerate fastq-tools fastqc gmap-gsnap hmmer htslib igv jellyfish kallisto last lighter novoalign openblas picard-tools plink r samtools snap-aligner snpeff soapdenovo tophat trimmomatic varscan vcflib vcfanno vcftools velvet
+brew install --force-bottle open-mpi && brew install automake cmake curl git libtool parallel pigz wget
+brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish kallisto last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcfanno vcftools velvet
 rm -r $(brew --cache)
 ```
 
 Anaconda
 ```bash
-conda update -y conda
-conda update -y anaconda
-conda config --add channels r
-conda config --add channels bioconda
+conda update -y conda && conda update -y anaconda
+conda config --add channels r && conda config --add channels bioconda
 conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
 conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow
 # linuxbrew is in path BEFORE anaconda, so must call pip for anaconda python3 by full path
 /Software/anaconda3/bin/pip install keras
-conda install -y --channel r r
-conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 pindel plink2 rsem sailfish salmon sambamba star trinity
-conda clean -y --all
+conda install -y --channel r r && conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 pindel plink2 rsem sailfish salmon sambamba star trinity && conda clean -y --all
 ```
 
 Setup R packages
