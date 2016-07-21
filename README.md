@@ -222,7 +222,6 @@ rm install_packages.R
 
 I'll install [Julia](http://julialang.org/) from source via GitHub, as an example of how to manually install software not available via the package managers, as well as a plug for the language (which I recommend you try out!). Add your own custom recipes for installing software here and configure a system that meets your needs.
 ```bash
-cd /Software
 git clone git://github.com/JuliaLang/julia.git
 cd julia && git checkout release-0.4
 touch Make.user
@@ -234,10 +233,8 @@ ln -s /Software/julia/julia /usr/local/bin
 
 Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
 ```bash
-cd /Software
-wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip
-unzip rtg-core-non-commercial-3.6.2-linux-x64.zip
-rm rtg-core-non-commercial-3.6.2-linux-x64.zip
+cd /Software && wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip
+unzip rtg-core-non-commercial-3.6.2-linux-x64.zip && rm rtg-core-non-commercial-3.6.2-linux-x64.zip
 ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin/rtg
 ```
 
