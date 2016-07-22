@@ -171,7 +171,7 @@ mkdir /scratch /share
 
 Here we install required system dependencies for other software. Software required for your case may be different
 ```bash
-apt-get update && apt-get install -y build-essential curl wget gfortran git python-setuptools ruby nettle-dev ed && apt-get clean
+apt-get update && apt-get install -y build-essential cmake curl wget gfortran git python-setuptools ruby nettle-dev ed && apt-get clean
 ```
 
 Make a new directory for installing additional software
