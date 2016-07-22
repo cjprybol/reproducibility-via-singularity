@@ -222,12 +222,7 @@ rm install_packages.R
 
 I'll install [Julia](http://julialang.org/) from source via GitHub, as an example of how to manually install software not available via the package managers, as well as a plug for the language (which I recommend you try out!). Add your own custom recipes for installing software here and configure a system that meets your needs.
 ```bash
-git clone git://github.com/JuliaLang/julia.git
-cd julia && git checkout release-0.4
-touch Make.user
-echo "USE_SYSTEM_GMP=1" >> Make.user
-echo "USE_SYSTEM_MPFR=1" >> Make.user
-make
+git clone git://github.com/JuliaLang/julia.git && cd julia && git checkout release-0.4 && touch Make.user && echo "USE_SYSTEM_GMP=1" >> Make.user && echo "USE_SYSTEM_MPFR=1" >> Make.user && make
 ln -s /Software/julia/julia /usr/local/bin
 ```
 
@@ -235,7 +230,7 @@ Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** Thi
 ```bash
 cd /Software && wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip
 unzip rtg-core-non-commercial-3.6.2-linux-x64.zip && rm rtg-core-non-commercial-3.6.2-linux-x64.zip
-ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin/rtg
+ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin
 ```
 
 The first time you run RTG, it will ask whether or not it can perform logging to help the developers improve the software. Because we intend to run the container without sudo and not in `--writable` mode, any attempts RTG makes to save log files to disk will probably fail, so just say no.
