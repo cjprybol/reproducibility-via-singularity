@@ -711,6 +711,7 @@ argparse                1.0.1        R_package
 assertthat              0.1          R_package
 AssotesteR              0.1-10       R_package
 AUC                     0.3.0        R_package
+base                    3.3.1        R_package
 base64enc               0.1-3        R_package
 BayesX                  0.2-9        R_package
 BB                      2014.10-1    R_package
@@ -763,6 +764,7 @@ codetools               0.2-14       R_package
 coin                    1.1-2        R_package
 colorspace              1.2-6        R_package
 combinat                0.0-8        R_package
+compiler                3.3.1        R_package
 ConsensusClusterPlus    1.36.0       R_package
 corpcor                 1.6.8        R_package
 covr                    2.1.0        R_package
@@ -771,6 +773,7 @@ Cubist                  0.0.18       R_package
 curl                    0.9.7        R_package
 DAAG                    1.22         R_package
 DatABEL                 0.9-6        R_package
+datasets                3.3.1        R_package
 data.table              1.9.6        R_package
 DBI                     0.4-1        R_package
 deepSNV                 1.18.1       R_package
@@ -866,6 +869,9 @@ GO.db                   3.3.0        R_package
 googleVis               0.6.0        R_package
 gplots                  3.0.1        R_package
 graph                   1.50.0       R_package
+graphics                3.3.1        R_package
+grDevices               3.3.1        R_package
+grid                    3.3.1        R_package
 gridBase                0.4-7        R_package
 gridExtra               2.2.1        R_package
 gss                     2.1-5        R_package
@@ -905,6 +911,7 @@ its                     1.1.8        R_package
 jpeg                    0.1-8        R_package
 jsonlite                1.0          R_package
 kernlab                 0.9-24       R_package
+KernSmooth              2.23-15      R_package
 KFAS                    1.2.3        R_package
 kknn                    1.3.1        R_package
 klaR                    0.6-12       R_package
@@ -954,6 +961,8 @@ mda                     0.4-8        R_package
 memoise                 1.0.0        R_package
 MEMSS                   0.9-2        R_package
 MetABEL                 0.2-0        R_package
+methods                 3.3.1        R_package
+mgcv                    1.8-12       R_package
 mhsmm                   0.4.14       R_package
 mice                    2.25         R_package
 microbenchmark          1.4-2.1      R_package
@@ -980,9 +989,11 @@ munsell                 0.4.3        R_package
 mvtnorm                 1.0-5        R_package
 network                 1.13.0       R_package
 networkDynamic          0.9.0        R_package
+nlme                    3.1-128      R_package
 nloptr                  1.0.4        R_package
 NMF                     0.20.6       R_package
 NMFN                    2.0          R_package
+nnet                    7.3-12       R_package
 nnls                    1.4          R_package
 numDeriv                2014.2-1     R_package
 nws                     1.7.0.1      R_package
@@ -998,6 +1009,7 @@ orcutt                  1.1          R_package
 ordinal                 2015.6-28    R_package
 packrat                 0.4.7-1      R_package
 pamr                    1.55         R_package
+parallel                3.3.1        R_package
 party                   1.0-25       R_package
 partykit                1.1-0        R_package
 pbapply                 1.2-1        R_package
@@ -1073,6 +1085,7 @@ robustbase              0.92-6       R_package
 ROCR                    1.0-7        R_package
 R.oo                    1.20.0       R_package
 roxygen2                5.0.1        R_package
+rpart                   4.1-10       R_package
 rPython                 0.0-6        R_package
 R.rsp                   0.30.0       R_package
 Rsamtools               1.24.0       R_package
@@ -1113,9 +1126,11 @@ snow                    0.4-1        R_package
 sp                      1.2-3        R_package
 spam                    1.3-0        R_package
 SparseM                 1.7          R_package
+spatial                 7.3-11       R_package
 spdep                   0.6-5        R_package
 speedglm                0.3-1        R_package
 sphet                   1.6          R_package
+splines                 3.3.1        R_package
 splm                    1.3-7        R_package
 spls                    2.2-1        R_package
 sqldf                   0.4-10       R_package
@@ -1125,6 +1140,8 @@ StanHeaders             2.10.0-2     R_package
 statmod                 1.4.24       R_package
 statnet                 2016.4       R_package
 statnet.common          3.3.0        R_package
+stats                   3.3.1        R_package
+stats4                  3.3.1        R_package
 stringdist              0.9.4.1      R_package
 stringi                 1.1.1        R_package
 stringr                 1.0.0        R_package
@@ -1134,6 +1151,7 @@ SummarizedExperiment    1.2.3        R_package
 superpc                 1.09         R_package
 SuppDists               1.1-9.2      R_package
 survcomp                1.22.0       R_package
+survival                2.39-4       R_package
 survival                2.39-5       R_package
 survivalROC             1.0.3        R_package
 survMisc                0.5.3        R_package
@@ -1142,6 +1160,7 @@ svTools                 0.9-4        R_package
 svUnit                  0.7-12       R_package
 synchronicity           1.1.9.1      R_package
 tables                  0.7.79       R_package
+tcltk                   3.3.1        R_package
 TeachingDemos           2.10         R_package
 tergm                   3.4.0        R_package
 testit                  0.5          R_package
@@ -1156,11 +1175,13 @@ timeDate                3012.100     R_package
 timeSeries              3022.101.2   R_package
 tis                     1.30         R_package
 tnam                    1.6.2        R_package
+tools                   3.3.1        R_package
 tripack                 1.3-7        R_package
 trust                   0.1-7        R_package
 tseries                 0.10-35      R_package
 ucminf                  1.1-3        R_package
 urca                    1.2-9        R_package
+utils                   3.3.1        R_package
 VariABEL                0.9-2.1      R_package
 VariantAnnotation       1.18.5       R_package
 vars                    1.5-2        R_package
@@ -1177,43 +1198,14 @@ withr                   1.0.2        R_package
 xergm                   1.7.3        R_package
 xergm.common            1.7.4        R_package
 xgboost                 0.4-4        R_package
-XML                     3.98-1.4     R_package
 xml2                    1.0.0        R_package
+XML                     3.98-1.4     R_package
 xtable                  1.8-2        R_package
 xts                     0.9-7        R_package
 XVector                 0.12.0       R_package
 yaml                    2.1.13       R_package
 zlibbioc                1.18.0       R_package
 zoo                     1.7-13       R_package
-base                    3.3.1        R_package
-boot                    1.3-18       R_package
-class                   7.3-14       R_package
-cluster                 2.0.4        R_package
-codetools               0.2-14       R_package
-compiler                3.3.1        R_package
-datasets                3.3.1        R_package
-foreign                 0.8-66       R_package
-graphics                3.3.1        R_package
-grDevices               3.3.1        R_package
-grid                    3.3.1        R_package
-KernSmooth              2.23-15      R_package
-lattice                 0.20-33      R_package
-MASS                    7.3-45       R_package
-Matrix                  1.2-6        R_package
-methods                 3.3.1        R_package
-mgcv                    1.8-12       R_package
-nlme                    3.1-128      R_package
-nnet                    7.3-12       R_package
-parallel                3.3.1        R_package
-rpart                   4.1-10       R_package
-spatial                 7.3-11       R_package
-splines                 3.3.1        R_package
-stats                   3.3.1        R_package
-stats4                  3.3.1        R_package
-survival                2.39-4       R_package
-tcltk                   3.3.1        R_package
-tools                   3.3.1        R_package
-utils                   3.3.1        R_package
 ```
 
 # Do I have to manually build a container each time I want to do this?
