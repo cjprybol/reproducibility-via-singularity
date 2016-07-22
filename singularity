@@ -1,7 +1,7 @@
 #!/bin/bash
-conda list | tail -n+3 | awk '{print $1, $2}' > temp.info
-brew list --versions >> temp.info
-julia --version | awk '{print $1, $3}' >> temp.info
-rtg version | head -1 | awk '{print $2, $5}' >> temp.info
-column -t temp.info | sort -u
+conda list | tail -n+3 | awk '{print $1, $2, "Anaconda"}' > temp.info
+brew list --versions | awk '{print $0, "Homebrew"}'>> temp.info
+julia --version | awk '{print $1, $3, "User_Install"}' >> temp.info
+rtg version | head -1 | awk '{print $2, $5, "User_Install"}' >> temp.info
+column -t temp.info | sort -u --ignore-case
 rm temp.info
