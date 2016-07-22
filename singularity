@@ -6,4 +6,4 @@ rtg version | head -1 | awk '{print $2, $5, "User_Install"}' >> temp.info
 column -t temp.info | sort -u --ignore-case
 rm temp.info
 printf "\n"
-R -e 'installed.packages(fields = c("Package", "Version"))[,c("Package", "Version")]' | tail -n+22 | grep -v '^>' | awk '{print $1, $3, "R_package"}' | perl -pe 's/"//g' | column -t
+R -e 'installed.packages(fields = c("Package", "Version"))[,c("Package", "Version")]' | tail -n+22 | grep -v '^>' | awk '{print $1, $3, "R_package"}' | perl -pe 's/"//g' | sort -u --ignore-case | column -t
