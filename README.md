@@ -248,7 +248,7 @@ We've got our system fully loaded with the software we want, but our `$PATH` upd
 cd / && rm /environment && wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
 ```
 
-We'll download one more pre-written script that will list all software installed with Linuxbrew and Anaconda, as well as the Julia version. It will sort the list and return to us an A-Z list of installed software with the version number for everything! Go [here](https://github.com/cjprybol/reproducibility-via-singularity/blob/master/README.md#how-do-i-get-the-version-numbers-of-installed-software) to see how to call it
+We'll download one more pre-written script that will list all software installed with version numbers. Note that if you install any software manually from source that is not included in this example, you'll need to update the script to include that software in the list.
 ```bash
 wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/singularity
 chmod 775 singularity
@@ -269,7 +269,7 @@ exit
 
 You're all done, you've built a great base-image for computational genomics! Adjust these installation steps to your needs.
 
-# How do I get the version numbers of installed software?
+# How do I see the full list of available software with version numbers?
 ```bash
 singularity run test.img
 ```
