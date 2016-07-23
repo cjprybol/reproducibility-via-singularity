@@ -3,14 +3,14 @@ Services like [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org),
 
 
 # Why Singularity?
-Universities and research laboratories often conduct their work on shared HPC clusters. These clusters are all set up on slightly different configurations of hardware and operating system software. Trying to recreate an environment to re-run code exactly as it was executed on another cluster, an environment where all of the C pointers align in the same way and the Java versions sync up, is beyond the abilities, free time, and account privileges of most researchers who may want to try to reproduce your results. Singularity is an implementation of a "container", and an engine to run those containers, that allows researchers to isolate the environment needed to produce a result away from the resources and code that is already available. This means that your colleague at University X can run the analysis exactly the same way on their cluster as you are running it on your cluster at University Y, and all it requires is sharing a git repository and a container image.
+Universities and research laboratories often conduct their work on shared HPC clusters. These clusters are all set up on slightly different configurations of hardware and operating system software. Trying to recreate an environment to re-run code exactly as it was executed on another cluster, an environment where all of the C pointers align the Java versions sync, up is beyond the abilities, free time, and account privileges of most researchers who may want to try to reproduce your results. Singularity is an implementation of a "container", and an engine to run those containers. Containers allow researchers to isolate the software environment needed to produce a result away from the configuration and operating system of the computer that the analysis will be run on. This means that your colleague at University X can run the analysis exactly the same way on their cluster as you are running it on your cluster at University Y, and all it requires is sharing a git repository (code) and a container image (software).
 
 # TL;DR
 
 **Hardware requirements for this example**
-  - RAM ~ 4Gb
+  - RAM ~ 4 GB
   - CPU = 1
-  - available disk space ~ 1 Gb
+  - available disk space ~ 1 GB
 
 Run this code on a linux-based operating system with singularity installed and in the `$PATH`
 ```bash
@@ -20,25 +20,25 @@ wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/fbuap
 ./reproduce_project.sh
 ```
 
-time to run < 5 minutes on a modern laptop with decent download rates (10 Mb/s?)
+**Time to run** < 5 minutes on a modern laptop with ~ 10 MB/s download rates
 
 # What does that code do?
 
-I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will download 1 sample of paired-end RNA sequencing reads, and quantify transcript isoform abundances in the sample. Run `less Kallisto/abundance.tsv` to see the results!
+I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will download 1 sample of paired-end RNA sequencing reads, and quantify transcript isoform abundances in the sample. You can examine the results by running the command `less Kallisto/abundance.tsv` from inside the project directory!
 
 This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducible research can be, and should be, be as simple as running 4 code instructions. However, by extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects.
 
-Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducibility lowers the barrier for others to investigate your work. This encourages responsible research conduct and increases the rate of knowledge transfer.
+Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducibility lowers the barrier for others to investigate your work. This encourages responsible research conduct and promotes increased rates of knowledge transfer.
 
 # What is Singularity?
 
-A Singularity container is a complete linux kernel capable of executing code and running software. Because the container is a singe file, it can be easily moved to another computer with Singularity and run in exactly the same way. The Singularity engine on each cluster handles the translation to the unique hardware and OS configurations of each cluster.
+A Singularity container is a complete linux kernel capable of executing code and running software. Because the container is a single file, it can be easily moved between computers with Singularity and run in exactly the same way. The Singularity engine on each cluster handles the translation to cluster-specific machine code, ensuring that your code produces the same output, regardless of the underlying configuration. You simply need to install software into the container, and configure it as you would any other linux-based operating system.
 
 # What is Singularity not?
 
-A magic, drag and drop, point and click solution. Singularity requires some understanding of how operating systems work in order to effectively use it and understand it. That being said, it's also very well designed, and should be intuitive for anyone who has set up a computing environment on their personal computer, a cluster, a VM, or a cloud service. Singularity will generate an operating system inside of the image file, or "container". Singularity will ensure that whatever you install in the container will execute the same on any computer with Singularity installed. You simply load the container with software and configure it as you would set up any other basic linux installation.
+A magic, drag and drop, point and click solution. Singularity requires some understanding of how operating systems work in order to effectively use it and understand it. That being said, it's also very well designed, and should be intuitive for anyone who has set up a computing environment on their personal computer, a cluster, a virtual machine, or a cloud service.
 
-Containers require sudo/root/admin privileges to modify and edit. This means that when creating containers, users must take care to note whether or not the software installed inside of the container will try to download or edit files that exist inside of the directory structure of the container during use. If a container is shipped without those files pre-downloaded and pre-initialized, end users without sudo permission will experience errors as the software fails to write to disk. For most situations, the strategy is simply to do the work of preloading the data! But for some use cases, such as when the software works by first downloading large databases that can range anywhere from several dozen Gb to several dozen Tb, preloading that much information and sharing it via containers may be an impractical strategy. Many pieces of software that work in this way are configurable to write, edit, and save files to a user-specified directory. If that is the case, you should be able to get around this issue by configuring the software to use a directory outside of the container.
+Containers require sudo/root privileges to modify and edit. This means that when creating containers, users must take care to note whether or not the software installed inside of the container will try to download or edit files that exist inside of the directory structure of the container. If a container is shipped without those files pre-downloaded and pre-initialized, end users without sudo/root permissions will experience errors as the software fails to modify files inside of the container. For most situations, the strategy is simply to preload the data! But for some use cases, such as when using software that downloads large databases (> 100GB) for data annotation purposes, you may wish to explore the configuration options of that software. If the software can download data to a directory that will exist *OUTSIDE* of the container, then users only need to worry about sharing containers that may range in size from a few hundred MB to several GB (the disk size of the software), rather than massive images that could easily blossom to sizes larger than a TB.
 
 # How do I interact with a container?
 
@@ -53,6 +53,8 @@ That command can be executed by the software inside of the container, instead of
 ```bash
 singularity exec my_singularity_container.img CMD --flag1 --flag2 argument1 argument2 ...
 ```
+
+You can also chain commands together using same shell syntax you are already used to, such as `|` pipes and `&&` operators
 
 **Show me a real example**
 
@@ -73,7 +75,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 # How do I build a singularity image to use with my own project?
 
-Because containers interact so closely with the host system, installing Singularity, and building Singularity images requires root/sudo/admin level permissions. While many users of shared computing clusters are unlikely to have these permission levels on the clusters where they intend to run the analysis, they may have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the section [Start here if linux user with root/sudo/admin privileges](https://github.com/cjprybol/reproducibility-via-singularity/blob/master/README.md#start-here-if-linux-user-with-rootsudoadmin-privileges). If you have a Windows OS or an Apple OS (with or without root/sudo/admin), or a linux OS without root/sudo/admin, you'll need to get a linux virtual machine running where you do have root/sudo/admin permissions. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have root access on your local machine, ask a system admin for assistance.
+Because containers interact so closely with the host system, installing Singularity, and building Singularity images requires sudo/root level permissions. While many users of shared computing clusters are unlikely to have these permission levels on the clusters where they intend to run the analysis, they may have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the section [Start here if linux user with sudo/root privileges](https://github.com/cjprybol/reproducibility-via-singularity/blob/master/README.md#start-here-if-linux-user-with-rootsudo-privileges). If you have a Windows OS or an Apple OS (with OR without sudo/root), or a linux OS without sudo/root, you'll need to get acesss to a linux machine where you do have sudo/root permissions. For most, the easiest way to do so is to launch a virtual machine that runs inside of your personal computer. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have the admin permissions to setup a virtual machine on your computer, ask a system administrator for assistance.
 
 # Starting from a mac with [Homebrew](http://brew.sh/) installed
 ```bash
@@ -87,7 +89,7 @@ mkdir singularity-vm && cd singularity-vm
 # generate a virtual machine
 vagrant init ubuntu/trusty64; vagrant up --provider virtualbox && vagrant halt
 ```
-Now we have a lightweight virtual machine implemented with vagrant and virtualbox. The virtual machine has some preset defaults that were too restrictive for running this demo. The default memory allocation is was unable to execute the code, however I was able to run the demo after setting the memory allocation to 8Gb.
+Now we have a virtual machine implemented with vagrant and virtualbox. The virtual machine has some preset defaults that were too restrictive for running this demo. The default memory allocation is was unable to execute the code, however I was able to run the demo after setting the memory allocation to 4GB.
 
 ```bash
 vi Vagrantfile
@@ -104,7 +106,7 @@ Find the code block that looks like this
 # end
 ```
 
-Uncomment the code block and the memory line, setting the memory to 4Gb
+Uncomment the code block and the memory line, setting the memory to 4GB
 ```
 config.vm.provider "virtualbox" do |vb|
 #   # Display the VirtualBox GUI when booting the machine
@@ -119,10 +121,10 @@ Restart the virtual machine and ssh into it
 ```bash
 vagrant up && vagrant ssh
 ```
-You are now a linux user with root/sudo/admin privileges
+You are now a linux user with sudo/root privileges!
 
 
-# Start here if linux user with root/sudo/admin privileges
+# Start here if linux user with sudo/root privileges
 
 Here we will install Singularity starting from an Ubuntu 14.04 LTS "Trusty" 64-bit base installation
 ```bash
@@ -132,7 +134,7 @@ git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./au
 
 We want to create a singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size (in Mb) that the container is allowed to take on. This container is allowed to take on a maximum of 15Gb. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
+First, we need to allocate the file. Here `--size` represents the maximum size (in MiB) that the container is allowed to take on. This container is allowed to take on a maximum of 15GiB. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
 sudo singularity create --size 15000 test.img
 ```
@@ -150,26 +152,26 @@ sudo singularity shell --writable --contain test.img
 
 Now you should be inside of the image. Feel free to jump around the file system to learn your way around.
 
-[Linuxbrew](http://linuxbrew.sh/) and [Anaconda](https://www.continuum.io/downloads) are two great package managers that greatly simplify the process of installing and managing software. The default software available via apt-get is often out of date compared to those available via either Linuxbrew and Anaconda, and additionally, both of these package managers have recipes to install a wide-variety of software useful for researchers.
+[Linuxbrew](http://linuxbrew.sh/) and [Anaconda](https://www.continuum.io/downloads) are two great package managers that simplify the process of installing and managing software. The default software available via apt-get is often out of date compared to those available via either Linuxbrew and Anaconda, and additionally, both of these package managers have recipes to install a wide-variety of software useful for researchers.
 
-By default, when entering a container, you enter into it and stay in the same directory on the host where you started from. Run `pwd` and notice the `(unreachable)` pre-pension to the path. Our current directory is immutable because we have both remained in a directory on the host computer, but also specified that we want to `--contain` our actions to only the contents of the container.
+By default, when entering into a shell session within a container, you stay in the same directory on the host where you started from. Run `pwd` and notice the `(unreachable)` pre-pension to the path. Our current directory is immutable because we have both remained in a directory on the host computer, but also specified that we want to `--contain` our actions to only interact with the contents of the container.
 
-Let's change to the user directory of our current user inside of the container, which is `root`, so we have a mutable space that can generate temporary files needed to install software.
+Let's change to the user directory of our current user, which is `root`, inside of the container so we have a mutable space that allows for temporary file generation.
 ```bash
 cd /root
 ```
 
-First, I will add two directories that I founded I need to add to actually get my singularity container to work on a remote system. On the cluster I work on, all of the labs have environments that are setup for their group as so
+First, I will add two directories that I found I needed to add to get my singularity container to work on my University's cluster. On this cluster, the lab spaces are setup as follows:
 ```
 /scratch/PI/{PI_name}/"All lab data and projects go here"
 /share/PI/{PI_name}/"All lab software and executables, and some reference files, go here"
 ```
-The base directories for these paths, `/scratch` & `/share` are not standard linux directories, and are not found on the container. I had to add them to the container in order to get the container to resolve paths when I tried to use the container on the cluster. **If you experience a similar issue, let me know. If there are other common directories used on other HPC clusters, I'll consider adding them here**
+The base directories for these paths, `/scratch` & `/share` are not standard linux directories, and are not found on the container. I had to add them to the container in order to get the container to resolve paths when I tried to use the container on the cluster. **If you experience a similar issue, let me know. If there are other common directories used on other HPC clusters, I'll add them here**
 ```bash
 mkdir /scratch /share
 ```
 
-Here we install required system dependencies for other software. Software required for your case may be different
+Here we install required system dependencies for other software. The dependencies necessary to install the software you require may be different.
 ```bash
 apt-get update && apt-get install -y build-essential cmake curl wget git python-setuptools ruby nettle-dev ed && apt-get clean
 ```
@@ -194,7 +196,7 @@ Add the new software to the `$PATH`
 PATH="/Software/.linuxbrew/bin:/Software/anaconda3/bin:$PATH"
 ```
 
-Now let's use our package managers to quickly and easily install and configure software into the container. You can review their full offerings here -> [Homebrew-science](https://github.com/Homebrew/homebrew-science) & [Bioconda channel of anaconda](https://github.com/bioconda/bioconda-recipes/tree/master/recipes)
+Now let's use our package managers to quickly and easily install and configure software into the container. You can review many additional software offerings here -> [Homebrew-science](https://github.com/Homebrew/homebrew-science) & [Bioconda channel of anaconda](https://github.com/bioconda/bioconda-recipes/tree/master/recipes), although these channels are just the tip of the iceberg for what's available!
 
 Linuxbrew
 ```bash
@@ -220,7 +222,7 @@ wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproduci
 rm install_packages.R
 ```
 
-I'll install [Julia](http://julialang.org/) from source via GitHub, as an example of how to manually install software not available via the package managers, as well as a plug for the language (which I recommend you try out!). Add your own custom recipes for installing software here and configure a system that meets your needs.
+I'll install [Julia](http://julialang.org/) (a great scientific computing language) from source via GitHub, as an example of how to manually install software not available via the package managers. Add your own custom recipes for installing software here, and configure a system that meets your needs.
 ```bash
 git clone git://github.com/JuliaLang/julia.git && cd julia && git checkout release-0.4 && touch Make.user && echo "USE_SYSTEM_GMP=1" >> Make.user && echo "USE_SYSTEM_MPFR=1" >> Make.user && make
 ln -s /Software/julia/julia /usr/local/bin
@@ -232,7 +234,7 @@ cd /Software && wget --no-check-certificate https://github.com/RealTimeGenomics/
 ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin
 ```
 
-The first time you run RTG, it will ask whether or not it can perform logging to help the developers improve the software. Because we intend to run the container without sudo and not in `--writable` mode, any attempts RTG makes to save log files to disk will probably fail, so just say no.
+Here is our first example of a configuration step that needs to be performed **BEFORE** trying to use the container without sudo/root permissions on the cluster. The first time you run RTG, it will ask whether or not it can perform logging to help the developers improve the software. Because we intend to run the container without sudo and not in `--writable` mode, any attempts RTG makes to save log files to disk will fail, so say no. RTG will save your answer to a config file inside of the directory where RTG is installed, so if you try this without using the `--writable` flag, it will fail.
 ```bash
 Singularity.test.img> rtg
 RTG has a facility to automatically send basic usage information to Real
@@ -242,7 +244,7 @@ command-line parameters or dataset contents.
 Would you like to enable automatic usage logging (y/n)? n
 ```
 
-We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone. Alternatively, you can also specify the full path when calling executables inside of the container. In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container.
+We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone (e.g. calling `python3`, rather than `/Software/anaconda3/bin/python3`). In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. This functionality is not present in earlier versions of Singularity.
 ```bash
 cd / && rm /environment && wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
 ```
@@ -257,7 +259,7 @@ Exit the container to the host linux
 exit
 ```
 
-Another tool I use that cannot be installed via either package manager due to licensing restrictions is [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). I've downloaded the GATK installer to the same directory where my container is. By entering the container again without the `--contain` flag, we allow the container to interact with the host system, and copy GATK into Anaconda
+Another tool I use that cannot be installed programmatically due to licensing restrictions is [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). You'll need to make an account and accept some terms of agreement before you can access the software. I've downloaded the GATK installer to the same directory on the host computer where my container is. By entering the container again without the `--contain` flag, we allow the container to interact with the host system, and copy GATK into Anaconda. However, if you download the file and then host it on a personal server, you can automate this step with a `wget` or `curl` command too! This step will install gatk into our Anaconda software library, so you can download and link your file immediately after the last `conda install` step.
 ```bash
 sudo singularity shell --writable test.img
 gatk-register /home/vagrant/GenomeAnalysisTK-3.6.tar.bz2
