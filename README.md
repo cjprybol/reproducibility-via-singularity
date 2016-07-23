@@ -12,7 +12,7 @@ Universities and research laboratories often conduct their work on shared HPC cl
   - CPU = 1
   - available disk space ~ 1 GB
 
-Run this code on a linux-based operating system with singularity installed and in the `$PATH`
+Run this code on a linux-based operating system with Singularity installed and in the `$PATH`
 ```bash
 git clone https://github.com/cjprybol/reproducibility-via-singularity.git
 cd reproducibility-via-singularity
@@ -73,9 +73,9 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
-# How do I build a singularity image to use with my own project?
+# How do I build a Singularity image to use with my own project?
 
-Because containers interact so closely with the host system, installing Singularity, and building Singularity images requires sudo/root level permissions. While many users of shared computing clusters are unlikely to have these permission levels on the clusters where they intend to run the analysis, they may have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the section [Start here if linux user with sudo/root privileges](https://github.com/cjprybol/reproducibility-via-singularity/blob/master/README.md#start-here-if-linux-user-with-rootsudo-privileges). If you have a Windows OS or an Apple OS (with OR without sudo/root), or a linux OS without sudo/root, you'll need to get access to a linux machine where you do have sudo/root permissions. For most, the easiest way to do so is to launch a virtual machine that runs inside of your personal computer. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have the admin permissions to setup a virtual machine on your computer, ask a system administrator for assistance.
+Because containers interact so closely with the host system, installing Singularity, and building Singularity images requires sudo/root level permissions. While many users of shared computing clusters are unlikely to have these permission levels on the clusters where they intend to run the analysis, they may have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the section [Start here if linux user with sudo/root privileges](https://github.com/cjprybol/reproducibility-via-singularity#start-here-if-linux-user-with-sudoroot-privileges). If you have a Windows OS or an Apple OS (with OR without sudo/root), or a linux OS without sudo/root, you'll need to get access to a linux machine where you do have sudo/root permissions. For most, the easiest way to do so is to launch a virtual machine that runs inside of your personal computer. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have the admin permissions to setup a virtual machine on your computer, ask a system administrator for assistance.
 
 # Starting from a mac with [Homebrew](http://brew.sh/) installed
 ```bash
@@ -132,7 +132,7 @@ sudo apt-get install -y build-essential git vim autoconf libtool curl debootstra
 git clone https://github.com/gmkurtzer/singularity.git && cd singularity && ./autogen.sh && ./configure --prefix=/usr/local && make && sudo make install
 ```
 
-We want to create a singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
+We want to create a Singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
 First, we need to allocate the file. Here `--size` represents the maximum size (in MiB) that the container is allowed to take on. This container is allowed to take on a maximum of 15GiB. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
@@ -161,7 +161,7 @@ Let's change to the user directory of our current user, which is `root`, inside 
 cd /root
 ```
 
-First, I will add two directories that I found I needed to add to get my singularity container to work on my University's cluster. On this cluster, the lab spaces are setup as follows:
+First, I will add two directories that I found I needed to add to get my Singularity container to work on my University's cluster. On this cluster, the lab spaces are setup as follows:
 ```
 /scratch/PI/{PI_name}/"All lab data and projects go here"
 /share/PI/{PI_name}/"All lab software and executables, and some reference files, go here"
