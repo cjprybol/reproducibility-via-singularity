@@ -54,7 +54,7 @@ That command can be executed by the software inside of the container, instead of
 singularity exec my_singularity_container.img CMD --flag1 --flag2 argument1 argument2 ...
 ```
 
-You can also chain commands together using same shell syntax you are already used to, such as `|` pipes and `&&` operators
+You can also chain commands together using standard shell syntax you are already used to, such as `|` pipes and `&&` operators
 
 **Show me a real example**
 
