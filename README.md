@@ -222,10 +222,9 @@ wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproduci
 rm install_packages.R
 ```
 
-I'll install [Julia](http://julialang.org/) (a great scientific computing language) from source via GitHub, as an example of how to manually install software not available via the package managers. Add your own custom recipes for installing software here, and configure a system that meets your needs.
+Install [Julia](http://julialang.org/)
 ```bash
-git clone git://github.com/JuliaLang/julia.git && cd julia && git checkout release-0.4 && touch Make.user && echo "USE_SYSTEM_GMP=1" >> Make.user && echo "USE_SYSTEM_MPFR=1" >> Make.user && make
-ln -s /Software/julia/julia /usr/local/bin
+wget https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_64.tar.gz && tar xfz julia-0.4.6-linux-x86_64.tar.gz && rm julia-0.4.6-linux-x86_64.tar.gz && ln -s /Software/julia-*/bin/julia /usr/local/bin/julia
 ```
 
 Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
