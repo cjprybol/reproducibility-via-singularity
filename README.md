@@ -415,7 +415,7 @@ jinja2                  2.8           Anaconda
 jpeg                    8d            Anaconda
 jpeg                    8d            Homebrew
 jsonschema              2.5.1         Anaconda
-julia                   0.4.7-pre     User_Install
+julia                   0.4.6         User_Install
 jupyter                 1.0.0         Anaconda
 jupyter_client          4.3.0         Anaconda
 jupyter_console         4.1.1         Anaconda
