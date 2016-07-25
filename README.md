@@ -1210,6 +1210,21 @@ zoo                     1.7-13       R_package
 # Do I have to manually build a container each time I want to do this?
 No! But I do recommend the interactive method when trying to install software for the first time, since it'll be easier to troubleshoot any issues. But once you have a reliable installation recipe ready, checkout [the documentation](http://singularity.lbl.gov/#bootstrap) for how to create a definition file for bootstrapping ready-to-go containers!
 
+# Can I run Jupyter notebooks on remote servers with this?
+
+This will start a notebook on the remote server
+```
+singularity exec test.img jupyter notebook --no-browser --ip \*
+```
+
+And on your local computer
+```
+ssh -NL localhost:9999:${remote-node}:8888 your_username@your_domain.com
+```
+
+Then just go to the url `localhost:9999` in your web browser
+
+
 # Contributions
 Thank you to everyone who has contributed!
 - [gmkurtzer](https://github.com/gmkurtzer): building Singularity, and feedback on examples and document contents
