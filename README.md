@@ -169,9 +169,9 @@ First, I will add two directories that I found I needed to add to get my Singula
 /scratch/PI/{PI_name}/"All lab data and projects go here"
 /share/PI/{PI_name}/"All lab software and executables, and some reference files, go here"
 ```
-The base directories for these paths, `/scratch` & `/share` are not standard linux directories, and are not found on the container. I had to add them to the container in order to get the container to resolve paths when I tried to use the container on the cluster. **If you experience a similar issue, let me know. If there are other common directories used on other HPC clusters, I'll add them here**
+The base directories for these paths, `/scratch` & `/share` are not standard linux directories, and are not found on the container. I had to add them to the container in order to get the container to resolve paths when I tried to use the container on the cluster. `/local-scratch` was added to suppress a warning `WARNING: Non existant 'bind point' in container: '/local-scratch'` **If you experience a similar issue, let me know. If there are other common directories used on other HPC clusters, I'll add them here**
 ```bash
-mkdir /scratch /share
+mkdir /scratch /share /local-scratch
 ```
 
 Here we install required system dependencies for other software. The dependencies necessary to install the software you require may be different.
