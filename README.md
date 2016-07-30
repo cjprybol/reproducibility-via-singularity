@@ -204,7 +204,7 @@ Now let's use our package managers to quickly and easily install and configure s
 Linuxbrew
 ```bash
 brew install --force-bottle open-mpi && brew install automake cmake curl git libtool parallel pigz wget
-brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish kallisto last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcfanno vcftools velvet
+brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcfanno vcftools velvet
 rm -r $(brew --cache)
 ```
 
@@ -216,7 +216,7 @@ conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano
 conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow
 # linuxbrew is in path BEFORE anaconda, so must call pip for anaconda python3 by full path
 /Software/anaconda3/bin/pip install keras
-conda install -y --channel r r && conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 pindel plink2 rsem sailfish salmon sambamba star trinity && conda clean -y --all
+conda install -y --channel r r && conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 kallisto pindel plink2 rsem sailfish salmon sambamba star trinity && conda clean -y --all
 ```
 
 Setup R packages
@@ -423,7 +423,7 @@ jupyter                 1.0.0         Anaconda
 jupyter_client          4.3.0         Anaconda
 jupyter_console         4.1.1         Anaconda
 jupyter_core            4.1.0         Anaconda
-kallisto                0.42.5        Homebrew
+kallisto                0.43.0        Anaconda
 kbproto                 1.0.7         Homebrew
 Keras                   1.0.6         Anaconda
 last                    581           Homebrew
