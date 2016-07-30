@@ -313,7 +313,7 @@ bottleneck              1.0.0         Anaconda
 bowtie                  1.1.2_1       Homebrew
 bowtie                  1.1.2         Anaconda
 bowtie2                 2.2.9         Homebrew
-bwa                     0.7.13        Homebrew
+bwa                     0.7.15        Homebrew
 bzip2                   1.0.6_1       Homebrew
 bzip2                   1.0.6         Anaconda
 cairo                   1.12.18       Anaconda
@@ -324,11 +324,11 @@ cloudpickle             0.2.1         Anaconda
 clustal-omega           1.2.1         Homebrew
 clustal-w               2.1           Homebrew
 clyent                  1.2.2         Anaconda
-cmake                   3.6.0         Homebrew
+cmake                   3.6.1         Homebrew
 collectl                4.0.4         Anaconda
 colorama                0.3.7         Anaconda
 compositeproto          0.4.2         Homebrew
-conda                   4.1.9         Anaconda
+conda                   4.1.11        Anaconda
 conda-build             1.21.2        Anaconda
 conda-env               2.5.2         Anaconda
 configobj               5.0.6         Anaconda
@@ -337,7 +337,7 @@ cramtools               3.0.b127      Anaconda
 cryptography            1.4           Anaconda
 cufflinks               2.2.1         Anaconda
 curl                    7.49.0        Anaconda
-curl                    7.49.1        Homebrew
+curl                    7.50.0        Homebrew
 cutadapt                1.10          Anaconda
 cycler                  0.10.0        Anaconda
 cython                  0.24          Anaconda
@@ -407,10 +407,10 @@ ipython_genutils        0.1.0         Anaconda
 ipywidgets              4.1.1         Anaconda
 isl                     0.15          Homebrew
 itsdangerous            0.24          Anaconda
-java-jdk                8.0.45        Anaconda
+java-jdk                8.0.92        Anaconda
 jbig                    2.1           Anaconda
 jdcal                   1.2           Anaconda
-jdk                     1.8.0-60      Homebrew
+jdk                     1.8.0-102     Homebrew
 jedi                    0.9.0         Anaconda
 jellyfish               2.2.3         Anaconda
 jellyfish               2.2.4         Homebrew
@@ -438,7 +438,7 @@ libfs                   1.0.7         Homebrew
 libgcc                  4.8.5         Anaconda
 libgfortran             3.0.0         Anaconda
 libice                  1.0.9         Homebrew
-libidn                  1.32          Homebrew
+libidn                  1.33          Homebrew
 libmagic                5.28          Homebrew
 libmpc                  1.0.3         Homebrew
 libpciaccess            0.13.4        Homebrew
@@ -446,7 +446,7 @@ libpng                  1.6.22        Anaconda
 libpng                  1.6.23        Homebrew
 libsm                   1.2.2         Homebrew
 libsodium               1.0.10        Anaconda
-libtiff                 4.0.6_1       Homebrew
+libtiff                 4.0.6_2       Homebrew
 libtiff                 4.0.6         Anaconda
 libtool                 2.4.6_1       Homebrew
 libx11                  1.6.3         Homebrew
@@ -522,7 +522,7 @@ openssl                 1.0.2h        Anaconda
 pandas                  0.18.1        Anaconda
 pango                   1.36.8        Anaconda
 parafly                 r2013_01_21   Anaconda
-parallel                20160622      Homebrew
+parallel                20160722      Homebrew
 partd                   0.3.4         Anaconda
 patchelf                0.9_1         Homebrew
 patchelf                0.9           Anaconda
@@ -553,6 +553,7 @@ plink                   1.07          Homebrew
 plink2                  1.90b3.35     Anaconda
 ply                     3.8           Anaconda
 presentproto            1.0           Homebrew
+protobuf                3.0.0b2       Anaconda
 psutil                  4.3.0         Anaconda
 ptyprocess              0.5.1         Anaconda
 py                      1.4.31        Anaconda
@@ -572,7 +573,7 @@ pyqt                    4.11.4        Anaconda
 pysam                   0.9.0         Anaconda
 pytables                3.2.2         Anaconda
 pytest                  2.9.2         Anaconda
-python                  2.7.12        Homebrew
+python                  2.7.12_1      Homebrew
 python                  3.5.2         Anaconda
 python-dateutil         2.5.3         Anaconda
 python-igraph           0.7.1.post6   Anaconda
@@ -583,7 +584,7 @@ pyzmq                   15.2.0        Anaconda
 qt                      4.8.7         Anaconda
 qtconsole               4.2.1         Anaconda
 qtpy                    1.0.2         Anaconda
-r                       3.3.1_1       Homebrew
+r                       3.3.1_2       Homebrew
 r                       3.3.1         Anaconda
 randrproto              1.5.0         Homebrew
 r-base                  3.3.1         Anaconda
@@ -650,6 +651,7 @@ sympy                   1.0           Anaconda
 szip                    2.1           Homebrew
 tbb                     4.4_20150728  Anaconda
 tbb                     4.4-20160128  Homebrew
+tensorflow              0.9.0         Anaconda
 terminado               0.6           Anaconda
 texinfo                 6.1           Homebrew
 theano                  0.7.0         Anaconda
@@ -696,7 +698,7 @@ zeromq                  4.1.4         Anaconda
 zlib                    1.2.8         Anaconda
 zlib                    1.2.8         Homebrew
 
-abind                   1.4-3        R_package
+abind                   1.4-5        R_package
 acepack                 1.3-3.3      R_package
 aCGH                    1.50.0       R_package
 adabag                  4.1          R_package
@@ -772,7 +774,7 @@ corpcor                 1.6.8        R_package
 covr                    2.1.0        R_package
 crayon                  1.3.2        R_package
 Cubist                  0.0.18       R_package
-curl                    0.9.7        R_package
+curl                    1.1          R_package
 DAAG                    1.22         R_package
 DatABEL                 0.9-6        R_package
 datasets                3.3.1        R_package
@@ -849,7 +851,7 @@ geneplotter             1.50.0       R_package
 genetics                1.3.8.1      R_package
 GenomeInfoDb            1.8.3        R_package
 GenomicAlignments       1.8.4        R_package
-GenomicFeatures         1.24.4       R_package
+GenomicFeatures         1.24.5       R_package
 GenomicRanges           1.24.2       R_package
 geosphere               1.5-5        R_package
 GEOsubmission           1.24.0       R_package
@@ -861,7 +863,7 @@ ggplot2                 2.1.0        R_package
 ggplot2movies           0.0.1        R_package
 ggrepel                 0.5          R_package
 ggthemes                3.2.0        R_package
-ggvis                   0.4.2        R_package
+ggvis                   0.4.3        R_package
 git2r                   0.15.0       R_package
 glmnet                  2.0-5        R_package
 gmailr                  0.7.1        R_package
@@ -895,7 +897,7 @@ htmltools               0.3.5        R_package
 htmlwidgets             0.6          R_package
 httpuv                  1.3.3        R_package
 httr                    1.2.1        R_package
-hunspell                1.4.2        R_package
+hunspell                1.4.3        R_package
 ibdreg                  0.2.5        R_package
 idr                     1.2          R_package
 igraph                  1.0.1        R_package
@@ -907,6 +909,7 @@ ipred                   0.9-5        R_package
 IRanges                 2.6.1        R_package
 irlba                   2.0.0        R_package
 Iso                     0.0-17       R_package
+ISwR                    2.0-7        R_package
 iterators               1.0.8        R_package
 itertools               0.1-3        R_package
 its                     1.1.8        R_package
@@ -914,7 +917,7 @@ jpeg                    0.1-8        R_package
 jsonlite                1.0          R_package
 kernlab                 0.9-24       R_package
 KernSmooth              2.23-15      R_package
-KFAS                    1.2.3        R_package
+KFAS                    1.2.4        R_package
 kknn                    1.3.1        R_package
 klaR                    0.6-12       R_package
 km.ci                   0.5-2        R_package
@@ -933,7 +936,7 @@ lazyeval                0.2.0        R_package
 LearnBayes              2.15         R_package
 lfda                    1.1.1        R_package
 lfe                     2.5-1998     R_package
-limma                   3.28.16      R_package
+limma                   3.28.17      R_package
 linprog                 0.9-2        R_package
 lintr                   1.0.0        R_package
 lme4                    1.1-12       R_package
@@ -948,7 +951,7 @@ magrittr                1.5          R_package
 mail                    1.0          R_package
 mapdata                 2.2-6        R_package
 mapproj                 1.2-4        R_package
-maps                    3.1.0        R_package
+maps                    3.1.1        R_package
 maptools                0.8-39       R_package
 markdown                0.7.7        R_package
 MASS                    7.3-45       R_package
@@ -1025,7 +1028,7 @@ PKPDmodels              0.3.2        R_package
 plm                     1.5-12       R_package
 plotly                  3.6.0        R_package
 plotmo                  3.1.4        R_package
-plotrix                 3.6-2        R_package
+plotrix                 3.6-3        R_package
 pls                     2.5-0        R_package
 plyr                    1.8.4        R_package
 png                     0.1-7        R_package
@@ -1058,7 +1061,7 @@ R.cache                 0.12.0       R_package
 Rcgmin                  2013-2.21    R_package
 RColorBrewer            1.1-2        R_package
 Rcpp                    0.12.6       R_package
-RcppArmadillo           0.7.100.3.1  R_package
+RcppArmadillo           0.7.200.2.0  R_package
 RcppEigen               0.3.2.8.1    R_package
 RCurl                   1.95-4.8     R_package
 regioneR                1.4.2        R_package
@@ -1068,7 +1071,7 @@ reporttools             1.1.2        R_package
 reshape                 0.8.5        R_package
 reshape2                1.4.1        R_package
 rex                     1.1.1        R_package
-rFerns                  2.0.1        R_package
+rFerns                  2.0.2        R_package
 RH2                     0.2.3        R_package
 rhdf5                   2.16.0       R_package
 Rhtslib                 1.4.3        R_package
@@ -1097,10 +1100,10 @@ Rserve                  1.7-3        R_package
 RSiena                  1.1-232      R_package
 RSpectra                0.12-0       R_package
 RSQLite                 1.0.0        R_package
-rstan                   2.10.1       R_package
+rstan                   2.11.1       R_package
 rstanarm                2.10.1       R_package
 rstudioapi              0.6          R_package
-rtracklayer             1.32.1       R_package
+rtracklayer             1.32.2       R_package
 RUnit                   0.4.31       R_package
 R.utils                 2.3.0        R_package
 rversions               1.0.2        R_package
@@ -1138,7 +1141,7 @@ spls                    2.2-1        R_package
 sqldf                   0.4-10       R_package
 stabledist              0.7-0        R_package
 stabs                   0.5-1        R_package
-StanHeaders             2.10.0-2     R_package
+StanHeaders             2.11.0       R_package
 statmod                 1.4.24       R_package
 statnet                 2016.4       R_package
 statnet.common          3.3.0        R_package
@@ -1148,7 +1151,7 @@ stringdist              0.9.4.1      R_package
 stringi                 1.1.1        R_package
 stringr                 1.0.0        R_package
 strucchange             1.5-1        R_package
-subselect               0.12-5       R_package
+subselect               0.12-6       R_package
 SummarizedExperiment    1.2.3        R_package
 superpc                 1.09         R_package
 SuppDists               1.1-9.2      R_package
@@ -1185,7 +1188,7 @@ ucminf                  1.1-3        R_package
 urca                    1.2-9        R_package
 utils                   3.3.1        R_package
 VariABEL                0.9-2.1      R_package
-VariantAnnotation       1.18.5       R_package
+VariantAnnotation       1.18.6       R_package
 vars                    1.5-2        R_package
 vcd                     1.4-1        R_package
 vegan                   2.4-0        R_package
@@ -1204,7 +1207,7 @@ xml2                    1.0.0        R_package
 XML                     3.98-1.4     R_package
 xtable                  1.8-2        R_package
 xts                     0.9-7        R_package
-XVector                 0.12.0       R_package
+XVector                 0.12.1       R_package
 yaml                    2.1.13       R_package
 zlibbioc                1.18.0       R_package
 zoo                     1.7-13       R_package
