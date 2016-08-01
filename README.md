@@ -203,20 +203,12 @@ Now let's use our package managers to quickly and easily install and configure s
 
 Linuxbrew
 ```bash
-brew install --force-bottle open-mpi && brew install automake bash cmake curl git libtool parallel pigz wget && \
-brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcfanno vcftools velvet && \
-rm -r $(brew --cache)
+brew install --force-bottle open-mpi && brew install automake bash cmake curl git libtool parallel pigz wget && ln -sf /Software/.linuxbrew/bin/bash /bin/bash && brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcfanno vcftools velvet && rm -r $(brew --cache)
 ```
 
 Anaconda
 ```bash
-conda update -y conda && conda update -y anaconda && \
-conda config --add channels r && conda config --add channels bioconda && \
-conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano && \
-conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow && \
-# linuxbrew is in path BEFORE anaconda, so must call pip for anaconda python3 by full path
-/Software/anaconda3/bin/pip install keras && \
-conda install -y --channel r r && conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 kallisto pindel plink2 rsem sailfish salmon sambamba star trinity && conda clean -y --all
+conda update -y conda && conda update -y anaconda && conda config --add channels r && conda config --add channels bioconda && conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano && conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow && /Software/anaconda3/bin/pip install keras && conda install -y --channel r r && conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 kallisto pindel plink2 rsem sailfish salmon sambamba star trinity && conda clean -y --all
 ```
 
 Setup R packages
@@ -231,10 +223,10 @@ wget https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_
 
 Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
 ```bash
-cd /Software && wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip && unzip && \ rtg-core-non-commercial-3.6.2-linux-x64.zip && rm rtg-core-non-commercial-3.6.2-linux-x64.zip && ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin
+cd /Software && wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip && unzip rtg-core-non-commercial-3.6.2-linux-x64.zip && rm rtg-core-non-commercial-3.6.2-linux-x64.zip && ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin
 ```
 
-Here is our first example of a configuration step that needs to be performed **BEFORE** trying to use the container without sudo/root permissions on the cluster. The first time you run RTG, it will ask whether or not it can perform logging to help the developers improve the software. Because we intend to run the container without sudo and not in `--writable` mode, any attempts RTG makes to save log files to disk will fail, so say no. RTG will save your answer to a config file inside of the directory where RTG is installed, so if you try this without using the `--writable` flag, it will fail.
+Here is an example of a configuration step that needs to be performed **BEFORE** trying to use the container without sudo/root permissions on the cluster. The first time you run RTG, it will ask whether or not it can perform logging to help the developers improve the software. Because we intend to run the container without sudo and not in `--writable` mode, any attempts RTG makes to save log files to disk will fail, so say no. RTG will save your answer to a config file inside of the directory where RTG is installed, so if you try this without using the `--writable` flag, it will fail.
 ```bash
 Singularity.test.img> rtg
 RTG has a facility to automatically send basic usage information to Real
@@ -249,25 +241,20 @@ We've got our system fully loaded with the software we want, but our `$PATH` upd
 cd / && rm /environment && wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
 ```
 
+Here we will install the [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). GATK is license restriced, and you can acquire a copy by going to website and accepting the terms of agreement (and purchase a license, if you're working commercially). If you have the option to host your copy on a private FTP server, you can save yourself a few steps by downloading your copy directly into the container with `wget`, which is how I decided to install it.
+
+```bash
+wget <ftp address for your copy>
+gatk-register GenomeAnalysisTK-3.6.tar.bz2
+rm GenomeAnalysisTK-3.6.tar.bz2
+```
+
 We'll download one more pre-written script that will list all software installed with version numbers. Note that if you install any software manually from source that is not included in this example, you'll need to update the script to include that software in the list.
 ```bash
 wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/singularity && chmod 775 singularity
 ```
 
-Exit the container to the host linux
-```bash
-exit
-```
-
-Another tool I use that cannot be installed programmatically due to licensing restrictions is [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). You'll need to make an account and accept some terms of agreement before you can access the software. I've downloaded the GATK installer to the same directory on the host computer where my container is. By entering the container again without the `--contain` flag, we allow the container to interact with the host system, and copy GATK into Anaconda. However, if you download the file and then host it on a personal server, you can automate this step with a `wget` or `curl` command too! This step will install gatk into our Anaconda software library, so you can download and link your file immediately after the last `conda install` step.
-```bash
-sudo singularity shell --writable test.img
-gatk-register /home/vagrant/GenomeAnalysisTK-3.6.tar.bz2
-rm GenomeAnalysisTK-3.6.tar.bz2
-exit
-```
-
-You're all done, you've built a great base-image for computational genomics! Adjust these installation steps to your needs.
+You're all done! I've tried to cover a wide array of software, but invariably this list won't cover the needs of every user, so go ahead and adjust these installation steps to your needs.
 
 # How do I see the full list of available software with version numbers?
 ```bash
