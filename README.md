@@ -199,11 +199,11 @@ Add the new software to the `$PATH`
 PATH="/Software/.linuxbrew/bin:/Software/anaconda3/bin:$PATH"
 ```
 
-Now let's use our package managers to quickly and easily install and configure software into the container. You can review many additional software offerings here -> [Homebrew-science](https://github.com/Homebrew/homebrew-science) & [Bioconda channel of anaconda](https://github.com/bioconda/bioconda-recipes/tree/master/recipes), although these channels are just the tip of the iceberg for what's available!
+With each package manager, we will install a few essential and commonly used libraries, and then extend the library of available software by loading additional channels. We will tap into the [Homebrew-science](https://github.com/Homebrew/homebrew-science) channel as well as the [Bioconda channel of anaconda](https://github.com/bioconda/bioconda-recipes/tree/master/recipes). There are other channels available for both package managers as well, with installation recipes for software specific to other domains of research.
 
 Linuxbrew
 ```bash
-brew install --force-bottle open-mpi && brew install automake bash cmake curl git libtool parallel pigz wget && ln -sf /Software/.linuxbrew/bin/bash /bin/bash && brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && rm -r $(brew --cache)
+brew install --force-bottle open-mpi && brew install automake cmake curl git libtool parallel pigz wget && brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && rm -r $(brew --cache)
 ```
 
 Anaconda
@@ -241,7 +241,7 @@ We've got our system fully loaded with the software we want, but our `$PATH` upd
 cd / && rm /environment && wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
 ```
 
-Here we will install the [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). GATK is license restriced, and you can acquire a copy by going to website and accepting the terms of agreement (and purchase a license, if you're working commercially). If you have the option to host your copy on a private FTP server, you can save yourself a few steps by downloading your copy directly into the container with `wget`, which is how I decided to install it.
+Here we will install the [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). GATK is license restriced, and you can acquire a copy by going to website and accepting the terms of agreement (and purchase a license, if you're working commercially). If you have the option to host your copy on a private FTP server, you can save yourself a few steps by downloading your copy directly into the container with `wget`.
 
 ```bash
 wget <ftp address for your copy>
@@ -249,12 +249,12 @@ gatk-register GenomeAnalysisTK-3.6.tar.bz2
 rm GenomeAnalysisTK-3.6.tar.bz2
 ```
 
-We'll download one more pre-written script that will list all software installed with version numbers. Note that if you install any software manually from source that is not included in this example, you'll need to update the script to include that software in the list.
+We'll download another script that will list all software installed with version numbers. Note that if you install any software manually from source that is not included in this example, you'll need to update the script to include that software in the list.
 ```bash
 wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/singularity && chmod 775 singularity
 ```
 
-You're all done! I've tried to cover a wide array of software, but invariably this list won't cover the needs of every user, so go ahead and adjust these installation steps to your needs.
+That's it! I've tried to cover a wide array of software, but this list won't cover the needs of every user, so go ahead and adjust these installation steps to your needs.
 
 # How do I see the full list of available software with version numbers?
 ```bash
