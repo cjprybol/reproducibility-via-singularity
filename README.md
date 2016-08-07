@@ -203,7 +203,7 @@ Now let's use our package managers to quickly and easily install and configure s
 
 Linuxbrew
 ```bash
-brew install --force-bottle open-mpi && brew install automake bash cmake curl git libtool parallel pigz wget && ln -sf /Software/.linuxbrew/bin/bash /bin/bash && brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && rm -r $(brew --cache)
+brew install --force-bottle open-mpi && brew install automake cmake curl git libtool parallel pigz wget && brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && rm -r $(brew --cache)
 ```
 
 Anaconda
