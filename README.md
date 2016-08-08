@@ -2,13 +2,15 @@
 
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
 Services like [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org), and [GitLab](https://about.gitlab.com/) have democratized access to affordable (or free!) tools that reinforce reproducibility in research, via the code repositories that these services offer. These services make it easier to backup, version control, collaborate on, and distribute code (or any other text-based file). These features make it easier for researchers to write and maintain high-quality code. These features also increase the chance that someone else will review the code for errors or bugs. These reviews can be done by some combination of reading and executing the code. Unfortunately, unless the code is run on the exact same computer, while logged in as the same user, getting the same code to run the same way can be a research project in and of itself.
 
 
-# Why Singularity?
+## Why Singularity?
 Universities and research laboratories often conduct their work on shared HPC clusters. These clusters are all set up on slightly different configurations of hardware and operating system software. Trying to recreate an environment to re-run code exactly as it was executed on another cluster, an environment where all of the C pointers align the Java versions sync, up is beyond the abilities, free time, and account privileges of most researchers who may want to try to reproduce your results. Singularity is an implementation of a "container", and an engine to run those containers. Containers allow researchers to isolate the software environment needed to produce a result away from the configuration and operating system of the computer that the analysis will be run on. This means that your colleague at University X can run the analysis exactly the same way on their cluster as you are running it on your cluster at University Y, and all it requires is sharing a git repository (code) and a container image (software).
 
-# TL;DR
+## TL;DR
 
 **Hardware requirements for this example**
   - RAM ~ 4 GB
@@ -25,7 +27,7 @@ wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/fbuap
 
 **Time to run** < 5 minutes on a modern laptop with ~ 10 MB/s download rates
 
-# What does that code do?
+## What does that code do?
 
 I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will download 1 sample of paired-end RNA sequencing reads, and quantify transcript isoform abundances in the sample. You can examine the results by running the command `less Kallisto/abundance.tsv` from inside the project directory!
 
@@ -33,17 +35,17 @@ This is a contrived example, designed to run quickly and efficiently to demonstr
 
 Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducibility lowers the barrier for others to investigate your work. This encourages responsible research conduct and promotes increased rates of knowledge transfer.
 
-# What is Singularity?
+## What is Singularity?
 
 A Singularity container is a complete linux kernel capable of executing code and running software. Because the container is a single file, it can be easily moved between computers with Singularity and run in exactly the same way. The Singularity engine on each cluster handles the translation to cluster-specific machine code, ensuring that your code produces the same output, regardless of the underlying configuration. You simply need to install software into the container, and configure it as you would any other linux-based operating system.
 
-# What is Singularity not?
+## What is Singularity not?
 
 A magic, drag and drop, point and click solution. Singularity requires some understanding of how operating systems work in order to effectively use it and understand it. That being said, it's also very well designed, and should be intuitive for anyone who has set up a computing environment on their personal computer, a cluster, a virtual machine, or a cloud service.
 
 Containers require sudo/root privileges to modify and edit. This means that when creating containers, users must take care to note whether or not the software installed inside of the container will try to download or edit files that exist inside of the directory structure of the container. If a container is shipped without those files pre-downloaded and pre-initialized, end users without sudo/root permissions will experience errors as the software fails to modify files inside of the container. For most situations, the strategy is simply to preload the data! But for some use cases, such as when using software that downloads large databases (> 100GB) for data annotation purposes, you may wish to explore the configuration options of that software. If the software can download data to a directory that will exist *OUTSIDE* of the container, then users only need to worry about sharing containers that may range in size from a few hundred MB to several GB (the disk size of the software), rather than massive images that could easily blossom to sizes larger than a TB.
 
-# How do I interact with a container?
+## How do I interact with a container?
 
 **Example**
 
@@ -76,11 +78,11 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
-# How do I build a Singularity image to use with my own project?
+## How do I build a Singularity image to use with my own project?
 
 Because containers interact so closely with the host system, installing Singularity, and building Singularity images requires sudo/root level permissions. While many users of shared computing clusters are unlikely to have these permission levels on the clusters where they intend to run the analysis, they may have those permissions on whatever local computer (laptop/desktop) they use to ssh into the shared computing cluster. If you happen to have linux-based OS with sudo permissions, go ahead and jump to the section [Start here if linux user with sudo/root privileges](https://github.com/cjprybol/reproducibility-via-singularity#start-here-if-linux-user-with-sudoroot-privileges). If you have a Windows OS or an Apple OS (with OR without sudo/root), or a linux OS without sudo/root, you'll need to get access to a linux machine where you do have sudo/root permissions. For most, the easiest way to do so is to launch a virtual machine that runs inside of your personal computer. If you're already familiar with the process of setting up virtual machines, go ahead with whatever method you know. If installing a virtual machine is a new thing for you, I recommend checking out [VirtualBox](https://www.virtualbox.org/). If you don't have the admin permissions to setup a virtual machine on your computer, ask a system administrator for assistance.
 
-# Starting from a mac with [Homebrew](http://brew.sh/) installed
+## Starting from a mac with [Homebrew](http://brew.sh/) installed
 ```bash
 brew tap caskroom/cask
 brew cask install vagrant
@@ -127,7 +129,7 @@ vagrant up && vagrant ssh
 You are now a linux user with sudo/root privileges!
 
 
-# Start here if linux user with sudo/root privileges
+## Start here if linux user with sudo/root privileges
 
 Here we will install Singularity starting from an Ubuntu 14.04 LTS "Trusty" 64-bit base installation
 ```bash
@@ -256,15 +258,15 @@ wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproduci
 
 That's it! I've tried to cover a wide array of software, but this list won't cover the needs of every user, so go ahead and adjust these installation steps to your needs.
 
-# How do I see the full list of available software with version numbers?
+## How do I see the full list of available software with version numbers?
 ```bash
 singularity run test.img
 ```
 
-# Do I have to manually build a container each time I want to do this?
+## Do I have to manually build a container each time I want to do this?
 No! But I do recommend the interactive method when trying to install software for the first time, since it'll be easier to troubleshoot any issues. But once you have a reliable installation recipe ready, checkout [the documentation](http://singularity.lbl.gov/#bootstrap) for how to create a definition file for bootstrapping ready-to-go containers!
 
-# Can I run Jupyter notebooks on remote servers with this?
+## Can I run Jupyter notebooks on remote servers with this?
 
 This will start a notebook on the remote server
 ```
@@ -279,7 +281,7 @@ ssh -NL localhost:9999:${remote-node}:8888 your_username@your_domain.com
 Then just go to the url `localhost:9999` in your web browser
 
 
-# Contributions
+## Contributions
 Thank you to everyone who has contributed!
 - [gmkurtzer](https://github.com/gmkurtzer): building Singularity, and feedback on examples and document contents
 - [dwaggott](https://github.com/dwaggott): providing a great list of R packages, and an example of how to install R packages from the command line via an R script
