@@ -1,4 +1,4 @@
-# Reproducability via [Singularity](https://github.com/gmkurtzer/singularity)
+# Reproducibility via [Singularity](https://github.com/gmkurtzer/singularity)
 
 If a tree falls in a forest and no one is around to hear it, does it make a sound? If a paper is published and no one is able to reproduce the analyses, should we trust it's conclusions?
 
@@ -34,7 +34,7 @@ singularity exec demo.img bash reproduce_project.sh
 
 I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will download 1 sample of paired-end RNA sequencing reads, and quantify transcript isoform abundances in the sample. You can examine the results by running the command `less Kallisto/abundance.tsv` from inside the project directory!
 
-This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducing research analyses can be, and should be, be as simple as running 4 code instructions. You could condense the instructions further, but I wanted to keep the steps of acquiring the code and the acquiring the software environment to run that code seperate, to highlight the idea of making each modular. By extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects.
+This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducing research analyses can be, and should be, be as simple as running 4 code instructions. You could condense the instructions further, but I wanted to keep the steps of acquiring the code and the acquiring the software environment to run that code separate, to highlight the idea of making each modular. By extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects.
 
 Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducibility lowers the barrier for others to investigate your work. This encourages responsible research conduct and promotes increased rates of knowledge transfer.
 
@@ -271,7 +271,7 @@ rm /environment && \
 wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
 ```
 
-Here we will install the [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). GATK is license restriced, and you can acquire a copy by going to website and accepting the terms of agreement (and purchase a license, if you're working commercially). If you have the option to host your copy on a private FTP server, you can save yourself a few steps by downloading your copy directly into the container with `wget`.
+Here we will install the [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). GATK is license restricted, and you can acquire a copy by going to website and accepting the terms of agreement (and purchase a license, if you're working commercially). If you have the option to host your copy on a private FTP server, you can save yourself a few steps by downloading your copy directly into the container with `wget`.
 
 ```bash
 wget <ftp address for your copy> && \
