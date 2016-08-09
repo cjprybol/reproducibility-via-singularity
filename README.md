@@ -24,7 +24,8 @@ Universities and research laboratories often conduct their work on shared HPC cl
 Run this code on a linux-based operating system with Singularity installed and in the `$PATH`
 ```bash
 git clone https://github.com/cjprybol/reproducibility-via-singularity.git && cd reproducibility-via-singularity && \
-wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/fbuap57hb3ywl7f741t1x4mcq9akznl4.img -O demo.img && \ singularity exec demo.img bash reproduce_project.sh
+wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/fbuap57hb3ywl7f741t1x4mcq9akznl4.img -O demo.img && \
+singularity exec demo.img bash reproduce_project.sh
 ```
 
 **Time to run** < 5 minutes on a modern laptop with ~ 10 MB/s download rates
@@ -200,7 +201,9 @@ git clone https://github.com/Linuxbrew/brew.git /Software/.linuxbrew
 
 Install Anaconda
 ```bash
-wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh && bash Anaconda3-4.1.0-Linux-x86_64.sh -b -p /Software/anaconda3 && rm Anaconda3-4.1.0-Linux-x86_64.sh
+wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh && \
+bash Anaconda3-4.1.0-Linux-x86_64.sh -b -p /Software/anaconda3 && \
+rm Anaconda3-4.1.0-Linux-x86_64.sh
 ```
 
 Add the new software to the `$PATH`
@@ -212,22 +215,43 @@ With each package manager, we will install a few essential and commonly used lib
 
 Linuxbrew
 ```bash
-brew install --force-bottle open-mpi && brew install automake bash cmake curl git libtool parallel pigz wget && echo "will cite" | parallel --citation && ln -sf /Software/.linuxbrew/bin/bash /bin/bash && brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && rm -r $(brew --cache)
+brew install --force-bottle open-mpi && \
+brew install automake bash cmake curl git libtool parallel pigz wget && \
+echo "will cite" | parallel --citation && \
+ln -sf /Software/.linuxbrew/bin/bash /bin/bash && \
+brew tap homebrew/science && \
+brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
+rm -r $(brew --cache)
 ```
 
 Anaconda
 ```bash
-conda update -y conda && conda update -y anaconda && conda config --add channels r && conda config --add channels bioconda && conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano && conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow && /Software/anaconda3/bin/pip install keras && conda install -y --channel r r && conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 kallisto pindel plink2 rsem sailfish salmon sambamba star trinity && conda clean -y --all
+conda update -y conda && \
+conda update -y anaconda && \
+conda config --add channels r && \
+conda config --add channels bioconda && \
+conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano && \
+conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow && /Software/anaconda3/bin/pip install keras && \
+conda install -y --channel r r && \
+conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 kallisto pindel plink2 rsem sailfish salmon sambamba star trinity && \
+conda clean -y --all
 ```
 
 Setup R packages
 ```bash
-wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/install_packages.R && chmod 775 install_packages.R && ./install_packages.R && rm install_packages.R
+wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/install_packages.R && \
+chmod 775 install_packages.R && \
+Rscript install_packages.R && \
+rm install_packages.R
 ```
 
 Install [Julia](http://julialang.org/)
 ```bash
-wget https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_64.tar.gz && tar xfz julia-0.4.6-linux-x86_64.tar.gz && rm julia-0.4.6-linux-x86_64.tar.gz && ln -s /Software/julia-*/bin/julia /usr/local/bin/julia
+cd /Software && \
+wget https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_64.tar.gz && \
+tar xfz julia-0.4.6-linux-x86_64.tar.gz && \
+rm julia-0.4.6-linux-x86_64.tar.gz && \
+ln -s /Software/julia-*/bin/julia /usr/local/bin/julia
 ```
 
 Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
