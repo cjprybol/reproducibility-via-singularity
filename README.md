@@ -159,13 +159,6 @@ Now you should be inside of the image. Feel free to jump around the file system 
 
 [Linuxbrew](http://linuxbrew.sh/) and [Anaconda](https://www.continuum.io/downloads) are two great package managers that simplify the process of installing and managing software. The default software available via apt-get is often out of date compared to those available via either Linuxbrew and Anaconda, and additionally, both of these package managers have recipes to install a wide-variety of software useful for researchers.
 
-By default, when entering into a shell session within a container, you stay in the same directory on the host where you started from. Run `pwd` and notice the `(unreachable)` pre-pension to the path. Our current directory is immutable because we have both remained in a directory on the host computer, but also specified that we want to `--contain` our actions to only interact with the contents of the container.
-
-Let's change to the user directory of our current user, which is `root`, inside of the container so we have a mutable space that allows for temporary file generation.
-```bash
-cd /root
-```
-
 First, I will add two directories that I found I needed to add to get my Singularity container to work on my University's cluster. On this cluster, the lab spaces are setup as follows:
 ```
 /scratch/PI/{PI_name}/"All lab data and projects go here"
@@ -205,7 +198,7 @@ With each package manager, we will install a few essential and commonly used lib
 
 Linuxbrew
 ```bash
-brew install --force-bottle open-mpi && brew install automake cmake curl git libtool parallel pigz wget && brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && rm -r $(brew --cache)
+brew install --force-bottle open-mpi && brew install automake bash cmake curl git libtool parallel pigz wget && echo "will cite" | parallel --citation && ln -sf /Software/.linuxbrew/bin/bash /bin/bash && brew tap homebrew/science && brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && rm -r $(brew --cache)
 ```
 
 Anaconda
@@ -225,17 +218,7 @@ wget https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_
 
 Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
 ```bash
-cd /Software && wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip && unzip rtg-core-non-commercial-3.6.2-linux-x64.zip && rm rtg-core-non-commercial-3.6.2-linux-x64.zip && ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin
-```
-
-Here is an example of a configuration step that needs to be performed **BEFORE** trying to use the container without sudo/root permissions on the cluster. The first time you run RTG, it will ask whether or not it can perform logging to help the developers improve the software. Because we intend to run the container without sudo and not in `--writable` mode, any attempts RTG makes to save log files to disk will fail, so say no. RTG will save your answer to a config file inside of the directory where RTG is installed, so if you try this without using the `--writable` flag, it will fail.
-```bash
-Singularity.test.img> rtg
-RTG has a facility to automatically send basic usage information to Real
-Time Genomics. This does not contain confidential information such as
-command-line parameters or dataset contents.
-
-Would you like to enable automatic usage logging (y/n)? n
+cd /Software && wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip && unzip rtg-core-non-commercial-3.6.2-linux-x64.zip && rm rtg-core-non-commercial-3.6.2-linux-x64.zip && ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin && echo "n" | rtg
 ```
 
 We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone (e.g. calling `python3`, rather than `/Software/anaconda3/bin/python3`). In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. This functionality is not present in earlier versions of Singularity.
@@ -246,9 +229,7 @@ cd / && rm /environment && wget --no-check-certificate https://raw.githubusercon
 Here we will install the [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). GATK is license restriced, and you can acquire a copy by going to website and accepting the terms of agreement (and purchase a license, if you're working commercially). If you have the option to host your copy on a private FTP server, you can save yourself a few steps by downloading your copy directly into the container with `wget`.
 
 ```bash
-wget <ftp address for your copy>
-gatk-register GenomeAnalysisTK-3.6.tar.bz2
-rm GenomeAnalysisTK-3.6.tar.bz2
+wget <ftp address for your copy> && gatk-register GenomeAnalysisTK-3.6.tar.bz2 && rm GenomeAnalysisTK-3.6.tar.bz2
 ```
 
 We'll download another script that will list all software installed with version numbers. Note that if you install any software manually from source that is not included in this example, you'll need to update the script to include that software in the list.
