@@ -256,23 +256,33 @@ ln -s /Software/julia-*/bin/julia /usr/local/bin/julia
 
 Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
 ```bash
-cd /Software && wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip && unzip rtg-core-non-commercial-3.6.2-linux-x64.zip && rm rtg-core-non-commercial-3.6.2-linux-x64.zip && ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin && echo "n" | rtg
+cd /Software && \
+wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip && \
+unzip rtg-core-non-commercial-3.6.2-linux-x64.zip && \
+rm rtg-core-non-commercial-3.6.2-linux-x64.zip && \
+ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin && \
+echo "n" | rtg
 ```
 
 We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone (e.g. calling `python3`, rather than `/Software/anaconda3/bin/python3`). In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. This functionality is not present in earlier versions of Singularity.
 ```bash
-cd / && rm /environment && wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
+cd / && \
+rm /environment && \
+wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
 ```
 
 Here we will install the [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). GATK is license restriced, and you can acquire a copy by going to website and accepting the terms of agreement (and purchase a license, if you're working commercially). If you have the option to host your copy on a private FTP server, you can save yourself a few steps by downloading your copy directly into the container with `wget`.
 
 ```bash
-wget <ftp address for your copy> && gatk-register GenomeAnalysisTK-3.6.tar.bz2 && rm GenomeAnalysisTK-3.6.tar.bz2
+wget <ftp address for your copy> && \
+gatk-register GenomeAnalysisTK-3.6.tar.bz2 && \
+rm GenomeAnalysisTK-3.6.tar.bz2
 ```
 
 We'll download another script that will list all software installed with version numbers. Note that if you install any software manually from source that is not included in this example, you'll need to update the script to include that software in the list.
 ```bash
-wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/singularity && chmod 775 singularity
+wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/singularity && \
+chmod 775 singularity
 ```
 
 That's it! I've tried to cover a wide array of software, but this list won't cover the needs of every user, so go ahead and adjust these installation steps to your needs.
