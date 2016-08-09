@@ -1,6 +1,6 @@
 # Reproducability via [Singularity](https://github.com/gmkurtzer/singularity)
 
-If a tree falls in a forest and no one is around to hear it, does it make a sound? If a paper is published and no one is able to reproduce the results, should we trust it's conclusions?
+If a tree falls in a forest and no one is around to hear it, does it make a sound? If a paper is published and no one is able to reproduce the results, should we trust that it was done correctly the first time?
 
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
