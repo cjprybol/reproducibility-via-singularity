@@ -1,5 +1,3 @@
-#!/usr/bin/env Rscript
-
 install.packages(c(
 "adabag",
 "argparse",
