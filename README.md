@@ -1,8 +1,12 @@
+# Reproducability via [Singularity](https://github.com/gmkurtzer/singularity)
+
+If a tree falls in a forest and no one is around to hear it, does it make a sound? If a paper is published and no one is able to reproduce the results, should we trust it's conclusions?
+
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
-# Make your research more reproducible with [Singularity](http://singularity.lbl.gov)
+## Make your research more reproducible with Singularity
 
 Services like [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org), and [GitLab](https://about.gitlab.com/) have democratized access to affordable (or free!) tools that reinforce reproducibility in research, via the code repositories that these services offer. These services make it easier to backup, version control, collaborate on, and distribute code (or any other text-based file). These features make it easier for researchers to write and maintain high-quality code. These features also increase the chance that someone else will review the code for errors or bugs. These reviews can be done by some combination of reading and executing the code. Unfortunately, unless the code is run on the exact same computer, while logged in as the same user, getting the same code to run the same way can be a research project in and of itself.
 
@@ -19,10 +23,8 @@ Universities and research laboratories often conduct their work on shared HPC cl
 
 Run this code on a linux-based operating system with Singularity installed and in the `$PATH`
 ```bash
-git clone https://github.com/cjprybol/reproducibility-via-singularity.git
-cd reproducibility-via-singularity
-wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/fbuap57hb3ywl7f741t1x4mcq9akznl4.img -O demo.img
-./reproduce_project.sh
+git clone https://github.com/cjprybol/reproducibility-via-singularity.git && cd reproducibility-via-singularity && \
+wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/fbuap57hb3ywl7f741t1x4mcq9akznl4.img -O demo.img && \ singularity exec demo.img bash reproduce_project.sh
 ```
 
 **Time to run** < 5 minutes on a modern laptop with ~ 10 MB/s download rates
@@ -31,7 +33,7 @@ wget --no-check-certificate https://stanfordmedicine.box.com/shared/static/fbuap
 
 I encourage you to read and execute the `reproduce_project.sh` file and see for yourself! But in summary, it will download 1 sample of paired-end RNA sequencing reads, and quantify transcript isoform abundances in the sample. You can examine the results by running the command `less Kallisto/abundance.tsv` from inside the project directory!
 
-This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducible research can be, and should be, be as simple as running 4 code instructions. However, by extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects.
+This is a contrived example, designed to run quickly and efficiently to demonstrate a point that reproducing research analyses can be, and should be, be as simple as running 4 code instructions. You could condense the instructions further, but I wanted to keep the steps of acquiring the code and the acquiring the software environment to run that code seperate, to highlight the idea of making each modular. By extending the software libraries in the container, and extending the analytical complexity in the analysis scripts, these same 4 lines of code can be sufficient to reproduce entire thesis projects.
 
 Requiring little more effort for others than the wait required to perform the computation, this simplicity of reproducibility lowers the barrier for others to investigate your work. This encourages responsible research conduct and promotes increased rates of knowledge transfer.
 
@@ -54,12 +56,24 @@ If you would normally run a command as:
 CMD --flag1 --flag2 argument1 argument2 ...
 ```
 
-That command can be executed by the software inside of the container, instead of by the host software, by prepending the appropriate command
+That command can be executed by the software inside of the container, instead of by the host software, by prepending the `singularity exec` command, followed by the container you wish to use for the code execution
 ```bash
-singularity exec my_singularity_container.img CMD --flag1 --flag2 argument1 argument2 ...
+singularity exec <your container>.img CMD --flag1 --flag2 argument1 argument2 ...
 ```
 
 You can also chain commands together using standard shell syntax you are already used to, such as `|` pipes and `&&` operators
+
+If you compose your analysis as a series of shell scripts that then call other processes, you can just use the shell interpreter within the container.
+
+will run using the software installed locally
+```
+bash reproduce_analysis.sh
+```
+
+will run using the software installed within the container
+```
+singularity exec <your container>.img bash reproduce_analysis.sh
+```
 
 **Show me a real example**
 
