@@ -273,6 +273,14 @@ ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin && \
 echo "n" | rtg
 ```
 
+Install [Cell Ranger](http://support.10xgenomics.com/single-cell/software/pipelines/latest/what-is-cell-ranger)
+```
+wget --no-check-certificate -O cellranger-1.1.0.tar.gz <get the url by requesting access on the 10x website>
+tar -xzvf cellranger-1.1.0.tar.gz
+rm cellranger-1.1.0.tar.gz
+ln -s /Software/cellranger-1.1.0/cellranger /usr/local/bin
+```
+
 We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone (e.g. calling `python3`, rather than `/Software/anaconda3/bin/python3`). In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. This functionality is not present in earlier versions of Singularity.
 ```bash
 cd / && \
