@@ -147,6 +147,7 @@ You are now a linux user with sudo/root privileges!
 
 Here we will install Singularity starting from an Ubuntu 14.04 LTS "Trusty" 64-bit base installation
 ```bash
+sudo apt-get update && \
 sudo apt-get install -y build-essential git vim autoconf libtool curl debootstrap && \
 git clone https://github.com/gmkurtzer/singularity.git && \
 cd singularity && \
