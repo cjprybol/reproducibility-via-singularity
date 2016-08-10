@@ -66,12 +66,12 @@ You can also chain commands together using standard shell syntax you are already
 If you compose your analysis as a series of shell scripts that then call other processes, you can just use the shell interpreter within the container.
 
 will run on the host, as usual
-```
+```bash
 bash reproduce_analysis.sh
 ```
 
 will run using the bash environment and software within the container
-```
+```bash
 singularity exec <your container>.img bash reproduce_analysis.sh
 ```
 
@@ -322,12 +322,12 @@ No! But I do recommend the interactive method when trying to install software fo
 ## Can I run Jupyter notebooks on remote servers with this?
 
 This will start a notebook on the remote server
-```
+```bash
 singularity exec test.img jupyter notebook --no-browser --ip \*
 ```
 
 And on your local computer
-```
+```bash
 ssh -NL localhost:9999:${remote-node}:8888 your_username@your_domain.com
 ```
 
