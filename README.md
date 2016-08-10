@@ -56,7 +56,7 @@ If you would normally run a command as:
 CMD --flag1 --flag2 argument1 argument2 ...
 ```
 
-That command can be executed by the software inside of the container, instead of by the host software, by prepending the `singularity exec` command, followed by the container you wish to use for the code execution
+That command can be executed by the environment inside of the container, instead of by the host, by prepending the `singularity exec` command, followed by the container you wish to use.
 ```bash
 singularity exec <your container>.img CMD --flag1 --flag2 argument1 argument2 ...
 ```
@@ -65,12 +65,12 @@ You can also chain commands together using standard shell syntax you are already
 
 If you compose your analysis as a series of shell scripts that then call other processes, you can just use the shell interpreter within the container.
 
-will run using the software installed locally
+will run on the host, as usual
 ```
 bash reproduce_analysis.sh
 ```
 
-will run using the software installed within the container
+will run using the bash environment and software within the container
 ```
 singularity exec <your container>.img bash reproduce_analysis.sh
 ```
@@ -301,6 +301,21 @@ That's it! I've tried to cover a wide array of software, but this list won't cov
 singularity run test.img
 ```
 
+And it should print something that looks like this (`...` indicate that I'm skipping lines in the output). The Python packages and the command line tools installed via Anaconda are both listed under `Anaconda`
+```bash
+Using Anaconda Cloud api site https://api.anaconda.org
+abyss                   1.9.0_1       Homebrew
+alabaster               0.7.8         Anaconda
+...
+...
+julia                   0.4.6         User_Install
+...
+...
+abind                   1.4-5        R_package
+acepack                 1.3-3.3      R_package
+....
+```
+
 ## Do I have to manually build a container each time I want to do this?
 No! But I do recommend the interactive method when trying to install software for the first time, since it'll be easier to troubleshoot any issues. But once you have a reliable installation recipe ready, checkout [the documentation](http://singularity.lbl.gov/#bootstrap) for how to create a definition file for bootstrapping ready-to-go containers!
 
@@ -318,6 +333,15 @@ ssh -NL localhost:9999:${remote-node}:8888 your_username@your_domain.com
 
 Then just go to the url `localhost:9999` in your web browser
 
+## I built a container inside of a vagrant VM. How do I get it out of the VM and onto the server where I work?
+
+Exit out of the container and vagrant VM back to your host computer. From within the same directory where your Vagrantfile is (the directory where you initialized your VM)
+```bash
+vagrant plugin install vagrant-scp
+vagrant scp default:/home/vagrant/test.img .
+```
+
+Now the container will be available on your local machine, and you can use `scp` or whatever your preferred method is for moving the container to where you need it!
 
 ## Contributions
 Thank you to everyone who has contributed!
