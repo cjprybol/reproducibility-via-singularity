@@ -125,7 +125,7 @@ Find the code block that looks like this
 # end
 ```
 
-Uncomment the code block and the memory line, setting the memory to 4GB
+Uncomment the code block and the memory line, setting the memory to 4GB.
 ```
 config.vm.provider "virtualbox" do |vb|
 #   # Display the VirtualBox GUI when booting the machine
@@ -135,6 +135,18 @@ config.vm.provider "virtualbox" do |vb|
   vb.memory = "4096"
 end
 ```
+
+ You are welcome to increase this further, and it's also possible allocate additional CPUs (if you have them) by adding `vb.cpus = <number of cpus you want to use>` below the `vb.memory` line, like so.
+ ```
+ config.vm.provider "virtualbox" do |vb|
+#   # Display the VirtualBox GUI when booting the machine
+#   vb.gui = true
+#
+#   # Customize the amount of memory on the VM:
+  vb.memory = "8192"
+  vb.cpus = "2"
+end
+ ```
 
 Restart the virtual machine and ssh into it
 ```bash
