@@ -193,7 +193,7 @@ mkdir /scratch /share /local-scratch
 Here we install required system dependencies for other software. The dependencies necessary to install the software you require may be different.
 ```bash
 apt-get update && \
-apt-get install -y build-essential cmake curl wget git python-setuptools ruby nettle-dev ed && \
+apt-get install -y alien build-essential cmake curl wget git python-setuptools ruby nettle-dev ed && \
 apt-get clean
 ```
 
@@ -275,9 +275,14 @@ echo "n" | rtg
 
 Install [Cell Ranger](http://support.10xgenomics.com/single-cell/software/pipelines/latest/what-is-cell-ranger)
 ```bash
-wget --no-check-certificate -O cellranger-1.1.0.tar.gz <get the url by requesting access on the 10x website>
-tar -xzvf cellranger-1.1.0.tar.gz
-rm cellranger-1.1.0.tar.gz
+wget ftp://webdata2:webdata2@ussd-ftp.illumina.com/downloads/software/bcl2fastq/bcl2fastq2-v2.17.1.14-Linux-x86_64.zip && \
+unzip bcl2fastq2-v2.17.1.14-Linux-x86_64.zip && \
+rm bcl2fastq2-v2.17.1.14-Linux-x86_64.zip && \
+alien -i bcl2fastq2-v2.17.1.14-Linux-x86_64.rpm && \
+rm bcl2fastq2-v2.17.1.14-Linux-x86_64.rpm && \
+wget --no-check-certificate -O cellranger-1.1.0.tar.gz <get the url by requesting access on the 10x website> && \
+tar -xzvf cellranger-1.1.0.tar.gz && \
+rm cellranger-1.1.0.tar.gz && \
 ln -s /Software/cellranger-1.1.0/cellranger /usr/local/bin
 ```
 
