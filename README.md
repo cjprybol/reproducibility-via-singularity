@@ -274,7 +274,7 @@ echo "n" | rtg
 ```
 
 Install [Cell Ranger](http://support.10xgenomics.com/single-cell/software/pipelines/latest/what-is-cell-ranger)
-```
+```bash
 wget --no-check-certificate -O cellranger-1.1.0.tar.gz <get the url by requesting access on the 10x website>
 tar -xzvf cellranger-1.1.0.tar.gz
 rm cellranger-1.1.0.tar.gz
