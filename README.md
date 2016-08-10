@@ -1,7 +1,5 @@
 # Reproducibility via [Singularity](https://github.com/gmkurtzer/singularity)
 
-If a tree falls in a forest and no one is around to hear it, does it make a sound? If a paper is published and no one is able to reproduce the analyses, should we trust it's conclusions?
-
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
@@ -230,7 +228,7 @@ brew install automake bash cmake curl git libtool parallel pigz wget && \
 echo "will cite" | parallel --citation && \
 ln -sf /Software/.linuxbrew/bin/bash /bin/bash && \
 brew tap homebrew/science && \
-brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last lighter novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
+brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
 rm -r $(brew --cache)
 ```
 
@@ -243,7 +241,7 @@ conda config --add channels bioconda && \
 conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano && \
 conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow && /Software/anaconda3/bin/pip install keras && \
 conda install -y --channel r r && \
-conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 kallisto pindel plink2 rsem sailfish salmon sambamba star trinity && \
+conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 kallisto lighter pindel plink2 rsem sailfish salmon sambamba star trinity && \
 conda clean -y --all
 ```
 
