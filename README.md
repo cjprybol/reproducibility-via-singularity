@@ -125,7 +125,7 @@ Find the code block that looks like this
 # end
 ```
 
-Uncomment the code block and the memory line, setting the memory to 4GB
+Uncomment the code block and the memory line, setting the memory to 4GB.
 ```
 config.vm.provider "virtualbox" do |vb|
 #   # Display the VirtualBox GUI when booting the machine
@@ -135,6 +135,18 @@ config.vm.provider "virtualbox" do |vb|
   vb.memory = "4096"
 end
 ```
+
+ You are welcome to increase this further, and it's also possible allocate additional CPUs (if you have them) by adding `vb.cpus = <number of cpus you want to use>` below the `vb.memory` line, like so.
+ ```
+ config.vm.provider "virtualbox" do |vb|
+#   # Display the VirtualBox GUI when booting the machine
+#   vb.gui = true
+#
+#   # Customize the amount of memory on the VM:
+  vb.memory = "8192"
+  vb.cpus = "2"
+end
+ ```
 
 Restart the virtual machine and ssh into it
 ```bash
@@ -193,7 +205,7 @@ mkdir /scratch /share /local-scratch
 Here we install required system dependencies for other software. The dependencies necessary to install the software you require may be different.
 ```bash
 apt-get update && \
-apt-get install -y build-essential cmake curl wget git python-setuptools ruby nettle-dev ed && \
+apt-get install -y alien build-essential cmake curl wget git python-setuptools ruby nettle-dev ed && \
 apt-get clean
 ```
 
@@ -271,6 +283,19 @@ unzip rtg-core-non-commercial-3.6.2-linux-x64.zip && \
 rm rtg-core-non-commercial-3.6.2-linux-x64.zip && \
 ln -s /Software/rtg-core-non-commercial-3.6.2/rtg /usr/local/bin && \
 echo "n" | rtg
+```
+
+Install [Cell Ranger](http://support.10xgenomics.com/single-cell/software/pipelines/latest/what-is-cell-ranger)
+```bash
+wget ftp://webdata2:webdata2@ussd-ftp.illumina.com/downloads/software/bcl2fastq/bcl2fastq2-v2.17.1.14-Linux-x86_64.zip && \
+unzip bcl2fastq2-v2.17.1.14-Linux-x86_64.zip && \
+rm bcl2fastq2-v2.17.1.14-Linux-x86_64.zip && \
+alien -i bcl2fastq2-v2.17.1.14-Linux-x86_64.rpm && \
+rm bcl2fastq2-v2.17.1.14-Linux-x86_64.rpm && \
+wget --no-check-certificate -O cellranger-1.1.0.tar.gz <get the url by requesting access on the 10x website> && \
+tar -xzvf cellranger-1.1.0.tar.gz && \
+rm cellranger-1.1.0.tar.gz && \
+ln -s /Software/cellranger-1.1.0/cellranger /usr/local/bin
 ```
 
 We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone (e.g. calling `python3`, rather than `/Software/anaconda3/bin/python3`). In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. This functionality is not present in earlier versions of Singularity.
