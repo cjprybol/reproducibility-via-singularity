@@ -179,7 +179,8 @@ sudo singularity create --size 15000 test.img
 
 We will preload a Ubuntu 14.04 LTS "Trusty" 64-bit base install
 ```bash
-sudo singularity bootstrap test.img $HOME/singularity/examples/ubuntu.def
+wget https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/ubuntu.def && \
+sudo singularity bootstrap test.img ubuntu.def
 ```
 Congratulations, you've made a container!
 
