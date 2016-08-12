@@ -6,8 +6,5 @@ Setup
 Bootstrap
 
 RunCmd sed -i 's/$/ universe/' /etc/apt/sources.list
-RunCmd apt-get update
-
-InstallPkgs vim
 
 Cleanup
