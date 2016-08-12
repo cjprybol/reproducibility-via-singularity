@@ -223,9 +223,9 @@ git clone https://github.com/Linuxbrew/brew.git /Software/.linuxbrew
 
 Install Anaconda
 ```bash
-wget http://repo.continuum.io/archive/Anaconda3-4.1.0-Linux-x86_64.sh && \
-bash Anaconda3-4.1.0-Linux-x86_64.sh -b -p /Software/anaconda3 && \
-rm Anaconda3-4.1.0-Linux-x86_64.sh
+wget http://repo.continuum.io/archive/Anaconda3-4.1.1-Linux-x86_64.sh && \
+bash Anaconda3-4.1.1-Linux-x86_64.sh -b -p /Software/anaconda3 && \
+rm Anaconda3-4.1.1-Linux-x86_64.sh
 ```
 
 Add the new software to the `$PATH`
