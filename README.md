@@ -239,7 +239,6 @@ Linuxbrew
 ```bash
 brew install --force-bottle open-mpi && \
 brew install automake bash cmake curl git libtool parallel pigz wget && \
-echo "will cite" | parallel --citation && \
 ln -sf /Software/.linuxbrew/bin/bash /bin/bash && \
 brew tap homebrew/science && \
 brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
