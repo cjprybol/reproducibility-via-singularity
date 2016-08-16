@@ -242,7 +242,6 @@ brew install automake bash cmake curl git libtool parallel pigz wget && \
 ln -sf /Software/.linuxbrew/bin/bash /bin/bash && \
 brew tap homebrew/science && \
 brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
-brew install --build-from-source kallisto && \
 rm -r $(brew --cache)
 ```
 
@@ -255,7 +254,7 @@ conda config --add channels bioconda && \
 conda install -y pyaml pybedtools pyfasta pysam python-igraph pyvcf theano && \
 conda install -y --channel https://conda.anaconda.org/conda-forge tensorflow && /Software/anaconda3/bin/pip install keras && \
 conda install -y --channel r r && \
-conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 lighter pindel plink2 rsem sailfish salmon sambamba star trinity && \
+conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk impute2 kallisto lighter pindel plink2 rsem sailfish salmon sambamba star trinity && \
 conda clean -y --all
 ```
 
