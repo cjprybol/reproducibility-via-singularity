@@ -269,10 +269,11 @@ rm install_packages.R
 Install [Julia](http://julialang.org/)
 ```bash
 cd /Software && \
-wget https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_64.tar.gz && \
-tar xfz julia-0.4.6-linux-x86_64.tar.gz && \
-rm julia-0.4.6-linux-x86_64.tar.gz && \
-ln -s /Software/julia-*/bin/julia /usr/local/bin/julia
+git clone git://github.com/JuliaLang/julia.git && \
+cd julia && \
+git checkout release-0.5 && \
+make && \
+ln -s /Software/julia/julia /usr/local/bin/julia
 ```
 
 Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
