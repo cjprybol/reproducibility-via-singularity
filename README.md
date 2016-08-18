@@ -266,12 +266,21 @@ Rscript install_packages.R && \
 rm install_packages.R
 ```
 
-Install [Julia](http://julialang.org/)
+Install [Julia](http://julialang.org/). **note** Make.user is to address https://github.com/JuliaLang/julia/issues/17884.
 ```bash
+wget https://julialang.s3.amazonaws.com/bin/linux/x64/0.5/julia-0.5.0-rc2-linux-x86_64.tar.gz
+tar -xzf julia-0.5.0-rc2-linux-x86_64.tar.gz
+rm julia-0.5.0-rc2-linux-x86_64.tar.gz
+ln -s /Software/julia-0350e5769b/bin/julia /usr/local/bin/julia
+
+# temp
+brew install libunwind pcre lapack fftw gmp mpfr arpack suitesparse libuv utf8proc mbedtls libssh2 libgit2 patchelf
+
 cd /Software && \
 git clone git://github.com/JuliaLang/julia.git && \
 cd julia && \
 git checkout release-0.5 && \
+echo "USE_SYSTEM_LIBUNWIND:=1\nUSE_SYSTEM_PCRE:=1\nUSE_SYSTEM_LAPACK:=1\nUSE_SYSTEM_FFTW:=1\nUSE_SYSTEM_GMP:=1\nUSE_SYSTEM_MPFR:=1\nUSE_SYSTEM_ARPACK:=1\nUSE_SYSTEM_SUITESPARSE:=1\nUSE_SYSTEM_LIBUV:=1\nUSE_SYSTEM_UTF8PROC:=1\nUSE_SYSTEM_MBEDTLS:=1\nUSE_SYSTEM_LIBSSH2:=1\nUSE_SYSTEM_LIBGIT2:=1\nUSE_SYSTEM_PATCHELF:=1" > Make.user && \
 make && \
 ln -s /Software/julia/julia /usr/local/bin/julia
 ```
