@@ -172,7 +172,7 @@ cd ..
 
 We want to create a Singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size (in MiB) that the container is allowed to take on. This container is allowed to take on a maximum of 15GiB. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
+First, we need to allocate the file. Here `--size` represents the maximum size (in MiB) that the container is allowed to take on. This container is allowed to take on a maximum of 15GiB. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah test.img`, and compare that disk size to what is returned by `du -h test.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
 sudo singularity create --size 15000 test.img
 ```
@@ -376,7 +376,9 @@ Just as you might experience problems configuring your user environment on a new
 
 ## Naming conventions
 
-I recommend that once you have successfully compiled a container with the software you want, make that your `1.0` version, where the naming convention is `[ compile from scratch # ].[ bug fix, version upgrade, or new package addition # ]`. Every time you find a bug, add a new piece of software, or update the installed software, update the minor version number from `1.0` to `1.1`, `1.2`, ..., `1.n`. If you ever run into a software conflict or accidentally break something, use the instructions from your previous build to re-compile a new image from scratch, and bump the major version number to `2.0`.
+Pick what works for you.
+
+If you need an idea, what I'm doing is moving up major versions (i.e. `1.0 -> 2.0 -> 3.0 -> ...`) every time I compile from scratch, where `1.0` is the first working container that passed all of my testing. With every edit to add additional software, fix bigs, or update to more recent versions, I'm bumping up the minor version (i.e. `1.0 -> 1.1 -> 1.2 -> ...`). Upon project completion, versions can be tagged and archived along with the source code and raw data.
 
 ## Contributions
 Thank you to everyone who has contributed!
