@@ -172,7 +172,7 @@ cd ..
 
 We want to create a Singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size (in MiB) that the container is allowed to take on. This container is allowed to take on a maximum of 15GiB. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah my_container.img`, and compare that disk size to what is returned by `du -h my_container.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
+First, we need to allocate the file. Here `--size` represents the maximum size (in MiB) that the container is allowed to take on. This container is allowed to take on a maximum of 15GiB. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah test.img`, and compare that disk size to what is returned by `du -h test.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
 sudo singularity create --size 15000 test.img
 ```
@@ -180,7 +180,8 @@ sudo singularity create --size 15000 test.img
 We will preload a Ubuntu 14.04 LTS "Trusty" 64-bit base install
 ```bash
 wget https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/ubuntu.def && \
-sudo singularity bootstrap test.img ubuntu.def
+sudo singularity bootstrap test.img ubuntu.def && \
+rm ubuntu.def
 ```
 Congratulations, you've made a container!
 
@@ -205,8 +206,9 @@ mkdir /scratch /share /local-scratch
 
 Here we install required system dependencies for other software. The dependencies necessary to install the software you require may be different.
 ```bash
+cd / && \
 apt-get update && \
-apt-get install -y alien build-essential cmake curl wget git python-setuptools ruby nettle-dev ed && \
+apt-get install -y alien build-essential cmake curl ed git libsm6 libxrender1 libfontconfig1 nettle-dev python-setuptools ruby wget zlib1g-dev && \
 apt-get clean
 ```
 
@@ -237,11 +239,10 @@ With each package manager, we will install a few essential and commonly used lib
 
 Linuxbrew
 ```bash
-brew install --force-bottle open-mpi && \
-brew install automake bash cmake curl git libtool parallel pigz wget && \
+brew install --force-bottle automake bash binutils cmake coreutils curl file-formula findutils gawk gcc git gnu-sed gnu-tar gnu-which grep libtool libgit2 make open-mpi parallel pigz util-linux wget && \
 ln -sf /Software/.linuxbrew/bin/bash /bin/bash && \
 brew tap homebrew/science && \
-brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
+brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc hisat hmmer htslib igv jellyfish last novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
 rm -r $(brew --cache)
 ```
 
@@ -266,16 +267,17 @@ Rscript install_packages.R && \
 rm install_packages.R
 ```
 
-Install [Julia](http://julialang.org/)
+Install [Julia](http://julialang.org/). Note: the `MARCH=x86-64` instructs Julia to compile to run on a generic 64-bit CPU, enabling the executable to run on different hardware on different clusters. `USE_SYSTEM_LIBGIT2=1` fixes a bug with Julia not finding the libcurl libraries in linuxbrew.
 ```bash
 cd /Software && \
-wget https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-linux-x86_64.tar.gz && \
-tar xfz julia-0.4.6-linux-x86_64.tar.gz && \
-rm julia-0.4.6-linux-x86_64.tar.gz && \
-ln -s /Software/julia-*/bin/julia /usr/local/bin/julia
+git clone git://github.com/JuliaLang/julia.git && \
+cd julia && \
+git checkout release-0.5 && \
+make MARCH=x86-64 USE_SYSTEM_LIBGIT2=1 && \
+ln -s /Software/julia/julia /usr/local/bin/julia
 ```
 
-Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
+Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **This software is restricted to non-commercial use**. If you intend to use it commercially, you'll have to buy a license through the website, or alternatively just skip this installation.
 ```bash
 cd /Software && \
 wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip && \
@@ -298,19 +300,19 @@ rm cellranger-1.1.0.tar.gz && \
 ln -s /Software/cellranger-1.1.0/cellranger /usr/local/bin
 ```
 
-We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone (e.g. calling `python3`, rather than `/Software/anaconda3/bin/python3`). In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. This functionality is not present in earlier versions of Singularity.
-```bash
-cd / && \
-rm /environment && \
-wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
-```
-
 Here we will install the [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). GATK is license restricted, and you can acquire a copy by going to website and accepting the terms of agreement (and purchase a license, if you're working commercially). If you have the option to host your copy on a private FTP server, you can save yourself a few steps by downloading your copy directly into the container with `wget`.
 
 ```bash
 wget <ftp address for your copy> && \
 gatk-register GenomeAnalysisTK-3.6.tar.bz2 && \
 rm GenomeAnalysisTK-3.6.tar.bz2
+```
+
+We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone (e.g. calling `python3`, rather than `/Software/anaconda3/bin/python3`). In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. This functionality is not present in earlier versions of Singularity.
+```bash
+cd / && \
+rm /environment && \
+wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
 ```
 
 We'll download another script that will list all software installed with version numbers. Note that if you install any software manually from source that is not included in this example, you'll need to update the script to include that software in the list.
@@ -358,7 +360,7 @@ ssh -NL localhost:9999:${remote-node}:8888 your_username@your_domain.com
 
 Then just go to the url `localhost:9999` in your web browser
 
-## I built a container inside of a vagrant VM. How do I get it out of the VM and onto the server where I work?
+## I built a container inside of a vagrant VM. How do I get the container out of the VM and onto the server where I work?
 
 Exit out of the container and vagrant VM back to your host computer. From within the same directory where your Vagrantfile is (the directory where you initialized your VM)
 ```bash
@@ -367,6 +369,16 @@ vagrant scp default:/home/vagrant/test.img .
 ```
 
 Now the container will be available on your local machine, and you can use `scp` or whatever your preferred method is for moving the container to where you need it!
+
+## Troubleshooting
+
+Just as you might experience problems configuring your user environment on a new cluster, you are likely to experience some issues trying to configure your container for the first time. Even if you install all of the software successfully, there is a chance that when you transfer the container to the cluster on which you work, you may find some new errors when trying to execute your code. It may take a few iterative feedback cycles of testing and debugging before you have it all worked out.
+
+## Naming conventions
+
+Pick what works for you.
+
+If you need an idea, what I'm doing is moving up major versions (i.e. `1.0 -> 2.0 -> 3.0 -> ...`) every time I compile from scratch, where `1.0` is the first working container that passed all of my testing. With every edit to add additional software, fix bigs, or update to more recent versions, I'm bumping up the minor version (i.e. `1.0 -> 1.1 -> 1.2 -> ...`). Upon project completion, versions can be tagged and archived along with the source code and raw data.
 
 ## Contributions
 Thank you to everyone who has contributed!
