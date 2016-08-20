@@ -300,19 +300,19 @@ rm cellranger-1.1.0.tar.gz && \
 ln -s /Software/cellranger-1.1.0/cellranger /usr/local/bin
 ```
 
-We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone (e.g. calling `python3`, rather than `/Software/anaconda3/bin/python3`). In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. This functionality is not present in earlier versions of Singularity.
-```bash
-cd / && \
-rm /environment && \
-wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
-```
-
 Here we will install the [Genome Analysis Toolkit](https://www.broadinstitute.org/gatk/). GATK is license restricted, and you can acquire a copy by going to website and accepting the terms of agreement (and purchase a license, if you're working commercially). If you have the option to host your copy on a private FTP server, you can save yourself a few steps by downloading your copy directly into the container with `wget`.
 
 ```bash
 wget <ftp address for your copy> && \
 gatk-register GenomeAnalysisTK-3.6.tar.bz2 && \
 rm GenomeAnalysisTK-3.6.tar.bz2
+```
+
+We've got our system fully loaded with the software we want, but our `$PATH` update was only for this session. We'll need to make our `$PATH` updates permanent to make the software installed inside of the `/Software` directory available by name alone (e.g. calling `python3`, rather than `/Software/anaconda3/bin/python3`). In Singularity version >= 2.1, you can update the `$PATH` by modifying the `/environment` file, which is loaded each time you interact with the container. This functionality is not present in earlier versions of Singularity.
+```bash
+cd / && \
+rm /environment && \
+wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/environment
 ```
 
 We'll download another script that will list all software installed with version numbers. Note that if you install any software manually from source that is not included in this example, you'll need to update the script to include that software in the list.
