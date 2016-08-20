@@ -180,7 +180,8 @@ sudo singularity create --size 15000 test.img
 We will preload a Ubuntu 14.04 LTS "Trusty" 64-bit base install
 ```bash
 wget https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/ubuntu.def && \
-sudo singularity bootstrap test.img ubuntu.def
+sudo singularity bootstrap test.img ubuntu.def && \
+rm ubuntu.def
 ```
 Congratulations, you've made a container!
 
@@ -205,8 +206,9 @@ mkdir /scratch /share /local-scratch
 
 Here we install required system dependencies for other software. The dependencies necessary to install the software you require may be different.
 ```bash
+cd / && \
 apt-get update && \
-apt-get install -y alien build-essential cmake curl ed git nettle-dev python-setuptools ruby wget zlib1g-dev && \
+apt-get install -y alien build-essential cmake curl ed git libsm6 libxrender1 libfontconfig1 nettle-dev python-setuptools ruby wget zlib1g-dev && \
 apt-get clean
 ```
 
@@ -237,11 +239,10 @@ With each package manager, we will install a few essential and commonly used lib
 
 Linuxbrew
 ```bash
-brew install --force-bottle open-mpi && \
-brew install automake bash cmake curl git libtool parallel pigz wget && \
+brew install --force-bottle automake bash binutils cmake coreutils curl file-formula findutils gawk gcc git gnu-sed gnu-tar gnu-which grep libtool libgit2 make open-mpi parallel pigz util-linux wget && \
 ln -sf /Software/.linuxbrew/bin/bash /bin/bash && \
 brew tap homebrew/science && \
-brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc gmap-gsnap hisat hmmer htslib igv jellyfish last novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner snpeff soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
+brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc hisat hmmer htslib igv jellyfish last novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
 rm -r $(brew --cache)
 ```
 
@@ -266,28 +267,17 @@ Rscript install_packages.R && \
 rm install_packages.R
 ```
 
-Install [Julia](http://julialang.org/).
-
-precompiled
-```bash
-wget https://julialang.s3.amazonaws.com/bin/linux/x64/0.5/julia-0.5.0-rc2-linux-x86_64.tar.gz
-tar -xzf julia-0.5.0-rc2-linux-x86_64.tar.gz
-rm julia-0.5.0-rc2-linux-x86_64.tar.gz
-ln -s /Software/julia-0350e5769b/bin/julia /usr/local/bin/julia
-```
-
-compile from source
+Install [Julia](http://julialang.org/). Note: the `MARCH=x86-64` instructs Julia to compile to run on a generic 64-bit CPU, enabling the executable to run on different hardware on different clusters. `USE_SYSTEM_LIBGIT2=1` fixes a bug with Julia not finding the libcurl libraries in linuxbrew.
 ```bash
 cd /Software && \
 git clone git://github.com/JuliaLang/julia.git && \
 cd julia && \
 git checkout release-0.5 && \
-echo "USE_SYSTEM_LIBGIT2:=1" > Make.user && \
-make && \
+make MARCH=x86-64 USE_SYSTEM_LIBGIT2=1 && \
 ln -s /Software/julia/julia /usr/local/bin/julia
 ```
 
-Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **NOTE** This software is license restricted. It's free for non-commercial academic use, but if you intend to use it commercially you'll have to buy a license (alternatively, just skip this installation).
+Install [RTG core](http://realtimegenomics.com/products/rtg-core/). **This software is restricted to non-commercial use**. If you intend to use it commercially, you'll have to buy a license through the website, or alternatively just skip this installation.
 ```bash
 cd /Software && \
 wget --no-check-certificate https://github.com/RealTimeGenomics/rtg-core/releases/download/3.6.2/rtg-core-non-commercial-3.6.2-linux-x64.zip && \
@@ -370,7 +360,7 @@ ssh -NL localhost:9999:${remote-node}:8888 your_username@your_domain.com
 
 Then just go to the url `localhost:9999` in your web browser
 
-## I built a container inside of a vagrant VM. How do I get it out of the VM and onto the server where I work?
+## I built a container inside of a vagrant VM. How do I get the container out of the VM and onto the server where I work?
 
 Exit out of the container and vagrant VM back to your host computer. From within the same directory where your Vagrantfile is (the directory where you initialized your VM)
 ```bash
@@ -379,6 +369,14 @@ vagrant scp default:/home/vagrant/test.img .
 ```
 
 Now the container will be available on your local machine, and you can use `scp` or whatever your preferred method is for moving the container to where you need it!
+
+## Troubleshooting
+
+Just as you might experience problems configuring your user environment on a new cluster, you are likely to experience some issues trying to configure your container for the first time. Even if you install all of the software successfully, there is a chance that when you transfer the container to the cluster on which you work, you may find some new errors when trying to execute your code. It may take a few iterative feedback cycles of testing and debugging before you have it all worked out.
+
+## Naming conventions
+
+I recommend that once you have successfully compiled a container with the software you want, make that your `1.0` version, where the naming convention is `[ compile from scratch # ].[ bug fix, version upgrade, or new package addition # ]`. Every time you find a bug, add a new piece of software, or update the installed software, update the minor version number from `1.0` to `1.1`, `1.2`, ..., `1.n`. If you ever run into a software conflict or accidentally break something, use the instructions from your previous build to re-compile a new image from scratch, and bump the major version number to `2.0`.
 
 ## Contributions
 Thank you to everyone who has contributed!
