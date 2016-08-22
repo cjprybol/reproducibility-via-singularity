@@ -350,14 +350,29 @@ And it should print something that looks like this (but not exactly like this. `
 Using Anaconda Cloud api site https://api.anaconda.org
 abyss                   1.9.0_1       Homebrew
 alabaster               0.7.8         Anaconda
-...
-...
-julia                   0.4.6         User_Install
-...
-...
-abind                   1.4-5        R_package
-acepack                 1.3-3.3      R_package
-....
+anaconda-client         1.4.0         Anaconda
+anaconda                custom        Anaconda
+anaconda-navigator      1.2.1         Anaconda
+argcomplete             1.0.0         Anaconda
+argtable                2.13          Homebrew
+art                     031915        Homebrew
+astropy                 1.1.2         Anaconda
+autoconf                2.69          Homebrew
+automake                1.15          Homebrew
+babel                   2.3.3         Anaconda
+backports               1.0           Anaconda
+bamtools                2.4.0_1       Homebrew
+bash                    4.3.46        Homebrew
+bcftools                1.3.1         Anaconda
+bcftools                1.3.1         Homebrew
+bcl2fastq               v2.17.1.14    User_Install
+...                     ...           ...
+julia                   0.5.0-rc2     GitHub
+...                     ...           ...
+R                       3.3.1         CRAN
+...                     ...           ...
+affy                    1.50.0      R_package
+...                     ...           ...
 ```
 
 ## Do I have to manually build a container each time I want to do this?
