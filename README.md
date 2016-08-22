@@ -402,6 +402,18 @@ vagrant scp default:/home/vagrant/test.img .
 
 Now the container will be available on your local machine, and you can use `scp` or whatever your preferred method is for moving the container to where you need it!
 
+## Julia packages, where are they?
+
+Julia will create a package directory in the users `$HOME` directory on the host/outside the container the first time you try and install a package.
+
+If you decide to preload any Julia packages onto the container, you'll need to make sure you compile them before shipping the container. A nice function to accomplish this can be found [here](https://github.com/JuliaLang/julia/issues/16409#issuecomment-228873060).
+
+You can install a Julia kernel for Jupyter with `Pkg.add("IJulia"); using IJulia`. To install `PyCall` and `RCall`, you'll need to specify the paths to the R and Python we want to use.
+```
+ENV["PYTHON"] = "python3"; Pkg.add("PyCall"); using PyCall
+ENV["R_HOME"] = "/usr/lib/R"; Pkg.add("RCall"); using RCall
+```
+
 ## Troubleshooting
 
 Just as you might experience problems configuring your user environment on a new cluster, you are likely to experience some issues trying to configure your container for the first time. Even if you install all of the software successfully, there is a chance that when you transfer the container to the cluster on which you work, you may find some new errors when trying to execute your code. It may take a few iterative feedback cycles of testing and debugging before you have it all worked out.
