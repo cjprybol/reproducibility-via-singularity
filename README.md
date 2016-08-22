@@ -172,9 +172,9 @@ cd ..
 
 We want to create a Singularity container, load it with an operating system, and install and configure the software necessary to run our analysis onto it.
 
-First, we need to allocate the file. Here `--size` represents the maximum size (in MiB) that the container is allowed to take on. This container is allowed to take on a maximum of 15GiB. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah test.img`, and compare that disk size to what is returned by `du -h test.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
+First, we need to allocate the file. Here `--size` represents the maximum size (in MiB) that the container is allowed to take on. This container is allowed to take on a maximum of 20GiB. **Interesting aside** Containers are initialized as sparse images. If you evaluate the allocated space for the image with `ls -lah test.img`, and compare that disk size to what is returned by `du -h test.img`, you'll see that the files are only keeping track of the informative content installed, rather than the total possible disk space they could use.
 ```bash
-sudo singularity create --size 15000 test.img
+sudo singularity create --size 20000 test.img
 ```
 
 We will preload a Ubuntu 14.04 LTS "Trusty" 64-bit base install
@@ -207,9 +207,8 @@ mkdir /scratch /share /local-scratch
 Here we install required system dependencies for other software. The dependencies necessary to install the software you require may be different.
 ```bash
 cd / && \
-apt-get update && \
-apt-get install -y alien build-essential cmake curl ed git libsm6 libxrender1 libfontconfig1 nettle-dev python-setuptools ruby wget zlib1g-dev && \
-apt-get clean
+apt-get update -y && \
+apt-get install -y alien build-essential cmake curl ed gdebi-core git libsm6 libxrender1 libfontconfig1 lsb-release nettle-dev python-setuptools ruby software-properties-common vim wget zlib1g-dev
 ```
 
 Make a new directory for installing additional software
@@ -238,11 +237,24 @@ PATH="/Software/.linuxbrew/bin:/Software/anaconda3/bin:$PATH"
 With each package manager, we will install a few essential and commonly used libraries, and then extend the library of available software by loading additional channels. We will tap into the [Homebrew-science](https://github.com/Homebrew/homebrew-science) channel as well as the [Bioconda channel of anaconda](https://github.com/bioconda/bioconda-recipes/tree/master/recipes). There are other channels available for both package managers as well, with installation recipes for software specific to other domains of research.
 
 Linuxbrew
+
+Temp fix for open-mpi until the linuxbrew bottle comes back
 ```bash
+rm /Software/.linuxbrew/Library/Taps/homebrew/homebrew-core/Formula/open-mpi.rb && \
+wget -P /Software/.linuxbrew/Library/Taps/homebrew/homebrew-core/Formula https://raw.githubusercontent.com/Linuxbrew/homebrew-core/4e682fe09ae928bd468a421fc1e8067a54799a3a/Formula/open-mpi.rb && \
+cd /Software && \
+wget http://linuxbrew.bintray.com/bottles/open-mpi-1.10.2_1.x86_64_linux.bottle.tar.gz && \
+cd $(brew --prefix)/Cellar && tar -zxf /Software/open-mpi-1.10.2_1.x86_64_linux.bottle.tar.gz && brew link open-mpi && \
+cd /Software && \
+rm open-mpi-1.10.2_1.x86_64_linux.bottle.tar.gz
+```
+
+```bash
+brew tap homebrew/dupes && \
 brew install --force-bottle automake bash binutils cmake coreutils curl file-formula findutils gawk gcc git gnu-sed gnu-tar gnu-which grep libtool libgit2 make open-mpi parallel pigz util-linux wget && \
 ln -sf /Software/.linuxbrew/bin/bash /bin/bash && \
 brew tap homebrew/science && \
-brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc hisat hmmer htslib igv jellyfish last novoalign openblas picard-tools plink r repeatmasker samtools snap-aligner soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
+brew install abyss art bamtools bcftools beagle bedops bedtools bowtie bowtie2 blat bwa clustal-omega clustal-w exonerate fastq-tools fastqc hisat hmmer htslib igv jellyfish last novoalign openblas picard-tools plink repeatmasker samtools snap-aligner soapdenovo sratoolkit tophat trimmomatic varscan vcflib vcftools velvet && \
 rm -r $(brew --cache)
 ```
 
@@ -259,11 +271,16 @@ conda install -y --channel bioconda cramtools cufflinks cutadapt freebayes gatk 
 conda clean -y --all
 ```
 
-Setup R packages
+Install the latest R from CRAN, install and configure packages
 ```bash
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
+add-apt-repository -y "deb http://cran.rstudio.com/bin/linux/ubuntu $(lsb_release -s -c)/" && \
+apt-get update -y && \
+apt-get install -y r-base r-base-dev && \
+apt-get clean && \
 wget --no-check-certificate https://raw.githubusercontent.com/cjprybol/reproducibility-via-singularity/master/install_packages.R && \
 chmod 775 install_packages.R && \
-Rscript install_packages.R && \
+R --vanilla --slave < install_packages.R && \
 rm install_packages.R
 ```
 
@@ -328,7 +345,7 @@ That's it! I've tried to cover a wide array of software, but this list won't cov
 singularity run test.img
 ```
 
-And it should print something that looks like this (`...` indicate that I'm skipping lines in the output). The Python packages and the command line tools installed via Anaconda are both listed under `Anaconda`
+And it should print something that looks like this (but not exactly like this. `...` indicate that I'm skipping lines in the output, and these versions are not up to date). The Python packages and the command line tools installed via Anaconda are both listed under `Anaconda`
 ```bash
 Using Anaconda Cloud api site https://api.anaconda.org
 abyss                   1.9.0_1       Homebrew
@@ -358,7 +375,7 @@ And on your local computer
 ssh -NL localhost:9999:${remote-node}:8888 your_username@your_domain.com
 ```
 
-Then just go to the url `localhost:9999` in your web browser
+Then just go to the url `localhost:9999` in your web browser.
 
 ## I built a container inside of a vagrant VM. How do I get the container out of the VM and onto the server where I work?
 
