@@ -161,8 +161,10 @@ Here we will install Singularity starting from an Ubuntu 14.04 LTS "Trusty" 64-b
 ```bash
 sudo apt-get update && \
 sudo apt-get install -y build-essential git vim autoconf libtool curl debootstrap && \
-git clone https://github.com/gmkurtzer/singularity.git && \
-cd singularity && \
+wget https://github.com/gmkurtzer/singularity/archive/2.1.2.tar.gz && \
+tar -xzf 2.1.2.tar.gz && \
+rm 2.1.2.tar.gz && \
+cd singularity-2.1.2 && \
 ./autogen.sh && \
 ./configure --prefix=/usr/local && \
 make && \
